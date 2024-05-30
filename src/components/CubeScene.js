@@ -1,6 +1,7 @@
 // src/ThreeScene.js
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 const CubeScene = () => {
     const mountRef = useRef(null);
@@ -44,17 +45,20 @@ const CubeScene = () => {
         scene.add(light2);
         scene.add(cube);
 
+        const controls = new OrbitControls(camera, renderer.domElement);
+
         const animate = () => {
             renderer.render(scene, camera);
-            cube.rotation.x += 0.01;
-            cube.rotation.z -= 0.01;
+            // cube.rotation.x += 0.01;
+            // cube.rotation.z -= 0.01;
+            controls.update();
             requestAnimationFrame(animate);
         }
 
         const handleResize = () => {
-            renderer.setSize(window.innerWidth, window.innerHeight);
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
         };
 
         animate();
