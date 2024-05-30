@@ -1,3 +1,7 @@
+body {
+    background-color: #282c34;
+}
+
 .cube-scene {
     /*width: 800px;*/
     height: 600px;
@@ -22,5 +26,22 @@
     font-size: 14px;
     font-family: Consolas, monospace;
     padding: 10px;
-    background-color: #f8f8f8;
+    color: white;
+    background-color: #343940;
+    border: 1px solid black;
+    outline: none;
+}
+
+.code-editor textarea:focus {
+    /*border: none;*/
+}
+
+.code-editor button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: steelblue;
+    color: white;
+    border: none;
+    cursor: pointer;
 }

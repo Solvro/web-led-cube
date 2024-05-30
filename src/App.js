@@ -12,12 +12,11 @@ function App() {
         setCode(newCode);
     };
 
-
     return (
-    <div className="App">
-        <CubeScene code={code} />
-        <CodeEditor onExecute={handleExecuteCode} />
-    </div>
+        <div className="App">
+            <CubeScene code={code} />
+            <CodeEditor onExecute={handleExecuteCode} />
+        </div>
   );
 }
 

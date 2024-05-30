@@ -50,6 +50,7 @@ const CubeScene = ({ code }) => {
 
         const animate = () => {
             try {
+                /* eslint-disable no-eval */
                 eval(code);
             } catch (error) {
                 console.error("Error executing code: ", error);
