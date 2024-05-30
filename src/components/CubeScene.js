@@ -1,10 +1,10 @@
 // src/ThreeScene.js
-import React, { useRef, useEffect } from 'react';
+import React, {useRef, useEffect} from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import './../App.css';
 
-const CubeScene = ({ code }) => {
+const CubeScene = ({ code, setIsError }) => {
     const mountRef = useRef(null);
 
     useEffect(() => {
@@ -52,8 +52,10 @@ const CubeScene = ({ code }) => {
             try {
                 /* eslint-disable no-eval */
                 eval(code);
+                setIsError(false);
             } catch (error) {
                 console.error("Error executing code: ", error);
+                setIsError(true);
             }
             // cube.rotation.y += 0.01;
             renderer.render(scene, camera);
@@ -77,7 +79,7 @@ const CubeScene = ({ code }) => {
                 currentMount.removeChild(renderer.domElement);
             }
         };
-    }, [code]);
+    }, [code, setIsError]);
 
     return <div className="cube-scene" ref={mountRef}></div>;
 };

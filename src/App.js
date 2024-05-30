@@ -7,6 +7,8 @@ import {useState} from "react";
 function App() {
 
     const [code, setCode] = useState("")
+    const [isError, setIsError] = useState(false);
+
 
     const handleExecuteCode = (newCode) => {
         setCode(newCode);
@@ -14,8 +16,8 @@ function App() {
 
     return (
         <div className="App">
-            <CubeScene code={code} />
-            <CodeEditor onExecute={handleExecuteCode} />
+            <CubeScene code={code} setIsError={setIsError} />
+            <CodeEditor onExecute={handleExecuteCode} isError={isError} />
         </div>
   );
 }

@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 
 
-const CodeEditor = ({ onExecute }) => {
+const CodeEditor = ({ onExecute, isError }) => {
 
     const [code, setCode] = useState("")
 
@@ -18,6 +18,7 @@ const CodeEditor = ({ onExecute }) => {
             <textarea
                 value={code}
                 onChange={handleChange}
+                style={{ borderColor: isError ? "red" : "black" }}
             />
             <button onClick={handleExecute}>Execute Code</button>
         </div>
