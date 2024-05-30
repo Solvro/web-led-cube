@@ -2,8 +2,9 @@
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import './../App.css';
 
-const CubeScene = () => {
+const CubeScene = ({ code }) => {
     const mountRef = useRef(null);
 
     useEffect(() => {
@@ -12,16 +13,16 @@ const CubeScene = () => {
 
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(
-            20, window.innerWidth / window.innerHeight, 0.01, 1000
+            20, currentMount.clientWidth / currentMount.clientHeight, 0.01, 1000
         );
         camera.position.z = 10;
 
         const renderer = new THREE.WebGLRenderer({
             antialias: true,
-            // alpha: true
+            alpha: true
         });
 
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
         currentMount.appendChild(renderer.domElement);
 
         const colorYellow = new THREE.Color("hsl(40, 100%, 60%)");
@@ -48,17 +49,21 @@ const CubeScene = () => {
         const controls = new OrbitControls(camera, renderer.domElement);
 
         const animate = () => {
+            try {
+                eval(code);
+            } catch (error) {
+                console.error("Error executing code: ", error);
+            }
+            // cube.rotation.y += 0.01;
             renderer.render(scene, camera);
-            // cube.rotation.x += 0.01;
-            // cube.rotation.z -= 0.01;
             controls.update();
             requestAnimationFrame(animate);
         }
 
         const handleResize = () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.aspect = currentMount.clientWidth / currentMount.clientHeight;
             camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
         };
 
         animate();
@@ -71,9 +76,9 @@ const CubeScene = () => {
                 currentMount.removeChild(renderer.domElement);
             }
         };
-    }, []);
+    }, [code]);
 
-    return <div ref={mountRef}></div>;
+    return <div className="cube-scene" ref={mountRef}></div>;
 };
 
 export default CubeScene;

@@ -1,0 +1,26 @@
+.cube-scene {
+    /*width: 800px;*/
+    height: 600px;
+    border: 1px solid black;
+    /*margin: 20px auto;*/
+}
+
+.code-editor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.code-editor textarea {
+    width: 90%;
+    height: 200px;
+    resize: none;
+    margin-top: 10px;
+    /*border: none;*/
+    /*outline: none;*/
+    font-size: 14px;
+    font-family: Consolas, monospace;
+    padding: 10px;
+    background-color: #f8f8f8;
+}
