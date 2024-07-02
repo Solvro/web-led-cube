@@ -21,8 +21,6 @@ body {
     height: 200px;
     resize: none;
     margin-top: 10px;
-    /*border: none;*/
-    /*outline: none;*/
     font-size: 14px;
     font-family: Consolas, monospace;
     padding: 10px;
@@ -30,10 +28,7 @@ body {
     background-color: #343940;
     border: 1px solid black;
     outline: none;
-}
 
-.code-editor textarea:focus {
-    /*border: none;*/
 }
 
 .code-editor button {
@@ -44,4 +39,30 @@ body {
     color: white;
     border: none;
     cursor: pointer;
+}
+
+.tab-button{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.tab-button.button-active{
+    background-color: green;
+}
+.tab-button.button-not-empty{
+    background-color: rgb(151, 151, 59);
+}
+.text-area-container{
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 220px;
+    width: 90%;
+    padding-bottom: 10px;
+}
+.text-area{
+    position: absolute;
+    display: none;
+}
+.text-area.visible{
+    display: flex;
 }
