@@ -2,18 +2,44 @@ body {
     background-color: #282c34;
 }
 
+.App {
+    display: grid;
+    height: 100vh;
+    grid-template-columns: 1fr auto; 
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    width: 100%;
+    height: 100%;
+}
+
 .cube-scene {
-    /*width: 800px;*/
-    height: 600px;
-    border: 1px solid black;
-    /*margin: 20px auto;*/
+    height: 100%;
+    overflow: auto;
+
+}
+
+.resizer {
+    position: absolute;
+    left: -5px; 
+    top: 0;
+    bottom: 0;
+    width: 10px; 
+    cursor: ew-resize;
+    background:#14161b;
 }
 
 .code-editor {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background-color: #14161b;
+    width: 90%;
+    height: 100%;
 }
 
 .code-editor textarea {
@@ -28,7 +54,6 @@ body {
     background-color: #343940;
     border: 1px solid black;
     outline: none;
-
 }
 
 .code-editor button {
@@ -41,17 +66,20 @@ body {
     cursor: pointer;
 }
 
-.tab-button{
+.tab-button {
     margin-left: 5px;
     margin-right: 5px;
 }
-.tab-button.button-active{
+
+.tab-button.button-active {
     background-color: green;
 }
-.tab-button.button-not-empty{
+
+.tab-button.button-not-empty {
     background-color: rgb(151, 151, 59);
 }
-.text-area-container{
+
+.text-area-container {
     align-items: center;
     justify-content: center;
     position: relative;
@@ -59,10 +87,12 @@ body {
     width: 90%;
     padding-bottom: 10px;
 }
-.text-area{
+
+.text-area {
     position: absolute;
     display: none;
 }
-.text-area.visible{
+
+.text-area.visible {
     display: flex;
 }
