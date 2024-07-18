@@ -7,7 +7,7 @@ function App() {
     const [code, setCode] = useState("");
     const [isError, setIsError] = useState(false);
     const [editorWidth, setEditorWidth] = useState(600);
-    const minEditorWidth = 100;
+    const minEditorWidth = 200;
 
     const handleExecuteCode = (newCode) => {
         setCode(newCode);

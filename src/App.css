@@ -1,5 +1,5 @@
 body {
-    background-color: #282c34;
+    background-color: #05060E;
 }
 
 .App {
@@ -28,7 +28,7 @@ body {
     bottom: 0;
     width: 10px; 
     cursor: ew-resize;
-    background:#14161b;
+    background:#191b20;
 }
 
 .code-editor {
@@ -37,7 +37,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #14161b;
+    background-color: #191b20;
     width: 90%;
     height: 100%;
 }
@@ -51,7 +51,7 @@ body {
     font-family: Consolas, monospace;
     padding: 10px;
     color: white;
-    background-color: #343940;
+    background-color: #323338;
     border: 1px solid black;
     outline: none;
 }
@@ -60,15 +60,21 @@ body {
     margin-top: 10px;
     padding: 10px 20px;
     font-size: 16px;
-    background-color: steelblue;
+    background-color: #606166;
     color: white;
     border: none;
     cursor: pointer;
+}
+.control-buttons{
+display: grid;
+grid-template-columns: auto auto;
+    justify-content: center;
 }
 
 .tab-button {
     margin-left: 5px;
     margin-right: 5px;
+
 }
 
 .tab-button.button-active {
