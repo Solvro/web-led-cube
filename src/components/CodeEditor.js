@@ -1,66 +1,100 @@
-import React, {useState} from "react";
-
+import React, { useState, useEffect } from "react";
+import CodeMirror from "@uiw/react-codemirror";
+import { vscodeDark } from "@uiw/codemirror-theme-vscode";
+import { javascript } from "@codemirror/lang-javascript";
 
 const CodeEditor = ({ onExecute, isError }) => {
 
-    const [code, setCode] = useState(["/* Kod idzie tutaj */"]);
-    // const [buttonCount, setButtonCount] = useState(2);
-    const [visibleIndex, setVisibleIndex] = useState(0);
+  const [code, setCode] = useState(() => {
+    const savedCode = localStorage.getItem("code");
+    return savedCode !== null
+      ? JSON.parse(savedCode)
+      : ["/* Kod idzie tutaj */"];
+  });
 
-    const handleVisibility = (index) => {
-        setVisibleIndex(index);
-    };
+  useEffect(() => {
+    localStorage.setItem("code", JSON.stringify(code));
+  }, [code]);
 
-    const handleTextChange = (e, index) => {
-        const newCode = [...code];
-        newCode[index] = e.target.value;
-        setCode(newCode);
-    };
+  const [visibleIndex, setVisibleIndex] = useState(() => {
+    const savedIndex = localStorage.getItem("visibleIndex");
+    return savedIndex !== null ? JSON.parse(savedIndex) : 0;
+  });
 
-    const handleExecute = () => {
-        onExecute(code[visibleIndex]);
-    };
+  useEffect(() => {
+    localStorage.setItem("visibleIndex", JSON.stringify(visibleIndex));
+  }, [visibleIndex]);
+// local storage things
 
-    const addTextarea = () => {
-        setCode([...code, ""]);
-        setVisibleIndex(code.length);
-    };
 
-    const removeTextarea = () => {
-        if (code.length > 1) {
-          setCode(code.slice(0, -1));
-          setVisibleIndex(code.length - 2);
-        }
-    };
+  const handleVisibility = (index) => {
+    setVisibleIndex(index);
+  };
 
-    return (
-        <div className="code-editor">
-            <div className="buttons-container">
-                {code.map((_, index) => (
-                <button 
-                key={index} 
-                className={`tab-button ${(code[index] !== "" && visibleIndex !== index) ? 'button-not-empty' : ''} ${visibleIndex === index ? 'button-active' : ''}`}
-                onClick={() => handleVisibility(index)}>{index + 1}</button>
-                ))}
-            </div>
-            <div className="text-area-container">
-                {code.map((text_area_code, index) => (
-                <textarea
-                key={index}
-                className={`text-area ${visibleIndex === index ? 'visible' : ''}`}
-                value={text_area_code}
-                onChange={(e) => handleTextChange(e, index)}
-                style={{ borderColor: isError ? "red" : "black" }}/>
-                ))}
-            </div>
-            {/* <button>Add</button> */}
-            <div className="control-buttons">
-                <button className="tab-button" onClick={addTextarea}>Add New Textarea</button>
-                <button className="tab-button" onClick={removeTextarea}>Remove Last Textarea</button>
-            </div>
-            <button onClick={handleExecute}>Execute Code</button>
-        </div>
-    );
-}
+  const handleTextChange = (value, index) => {
+    const newCode = [...code];
+    newCode[index] = value;
+    setCode(newCode);
+  };
+
+  const handleExecute = () => {
+    onExecute(code[visibleIndex]);
+  };
+
+  const addTextarea = () => {
+    setCode([...code, ""]);
+    setVisibleIndex(code.length);
+  };
+
+  const removeTextarea = () => {
+    if (code.length > 1) {
+      const newCode = code.slice(0, -1);
+      setCode(newCode);
+      setVisibleIndex(newCode.length - 1);
+    }
+  };
+
+  return (
+    <div className="code-editor">
+      <div className="buttons-container">
+        {code.map((_, index) => (
+          <button
+            key={index}
+            className={`tab-button ${
+              code[index] !== "" && visibleIndex !== index
+                ? "button-not-empty"
+                : ""
+            } ${visibleIndex === index ? "button-active" : ""}`}
+            onClick={() => handleVisibility(index)}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
+      <div className="text-area-container">
+        {code.map((text_area_code, index) => (
+          <CodeMirror
+            extensions={[javascript({ jsx: true })]}
+            key={index}
+            theme={vscodeDark}
+            className={`text-area ${visibleIndex === index ? "visible" : ""}`}
+            value={text_area_code}
+            onChange={(value) => handleTextChange(value, index)}
+            style={{ borderColor: isError ? "red" : "black" }}
+          />
+        ))}
+      </div>
+      <div className="control-buttons">
+        <button className="tab-button" onClick={addTextarea}>
+          Add New Textarea
+        </button>
+        <button className="tab-button" onClick={removeTextarea}>
+          Remove Last Textarea
+        </button>
+      </div>
+      <button onClick={handleExecute}>Execute Code</button>
+    </div>
+  );
+};
 
 export default CodeEditor;
