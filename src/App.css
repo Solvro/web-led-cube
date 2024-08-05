@@ -1,5 +1,6 @@
 body {
     background-color: #05060E;
+    overflow: hidden;
 }
 
 .App {
@@ -18,6 +19,8 @@ body {
 .cube-scene {
     flex-grow: 1;
     overflow: auto;
+    position:relative;
+    transition: all 0.3s ease-in-out;
 }
 
 .resizer {
@@ -39,7 +42,10 @@ body {
     background-color: #191b20;
     width: auto; 
     height: 100%; 
+
 }
+
+
 
 .code-editor textarea {
     width: 90%;
@@ -83,6 +89,10 @@ body {
     background-color: rgb(151, 151, 59);
 }
 
+.toggle-button{
+    display: none;
+}
+
 .text-area-container {
     display: flex;
     align-items: center;
@@ -116,5 +126,17 @@ body {
     .code-editor {
         width: 100% !important; 
         height: auto; 
+        transition: 0.5s;
+    }
+    .cube-scene{
+        width: 100%;
+        height: 100%;
+    }
+    .toggle-button{
+        display: block;
+    }
+    .code-editor.hidden {
+        transform: translateY(88%);
+
     }
 }

@@ -4,9 +4,11 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import './../App.css';
 
-const CubeScene = ({ code, setIsError }) => {
+const CubeScene = ({ code, setIsError, isEditorVisible }) => {
     const mountRef = useRef(null);
+    
 
+    
     useEffect(() => {
         const currentMount = mountRef.current;
         if (!currentMount) return;
@@ -72,6 +74,18 @@ const CubeScene = ({ code, setIsError }) => {
         animate();
         window.addEventListener('resize', handleResize);
 
+        if (mountRef.current) {
+          
+            if (isEditorVisible) {
+                mountRef.current.style.height = 'auto';
+                mountRef.current.style.top = '0px';
+            } else {
+                mountRef.current.style.height = '200%';
+                mountRef.current.style.top = '200px';
+
+            }
+        }
+
         // Cleanup przy odmontowaniu komponentu
         return () => {
             window.removeEventListener('resize', handleResize);
@@ -79,7 +93,7 @@ const CubeScene = ({ code, setIsError }) => {
                 currentMount.removeChild(renderer.domElement);
             }
         };
-    }, [code, setIsError]);
+    }, [code, setIsError, isEditorVisible]);
 
     return <div className="cube-scene" ref={mountRef}></div>;
 };
