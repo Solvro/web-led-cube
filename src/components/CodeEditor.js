@@ -56,7 +56,7 @@ const CodeEditor = ({ onExecute, isError }) => {
   };
 
   return (
-    <div className="code-editor">
+    <div className="code-editor-container">
       <div className="buttons-container">
         {code.map((_, index) => (
           <button
