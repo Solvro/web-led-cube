@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-
+import { VscDiffAdded, VscDiffRemoved, VscDebugStart } from "react-icons/vsc";
 
 const CodeEditor = ({ onExecute, isError }) => {
 
@@ -55,10 +55,10 @@ const CodeEditor = ({ onExecute, isError }) => {
             </div>
             {/* <button>Add</button> */}
             <div className="control-buttons">
-                <button className="tab-button" onClick={addTextarea}>Add New Textarea</button>
-                <button className="tab-button" onClick={removeTextarea}>Remove Last Textarea</button>
+                <button className="tab-button" onClick={addTextarea}> <VscDiffAdded/></button>
+                <button className="tab-button" onClick={removeTextarea}><VscDiffRemoved/></button>
             </div>
-            <button onClick={handleExecute}>Execute Code</button>
+            <button onClick={handleExecute}><VscDebugStart/></button>
         </div>
     );
 }

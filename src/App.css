@@ -14,13 +14,14 @@ body {
     width: 100%;
     height: 100%;
     flex-direction: row; 
+    
 }
 
 .cube-scene {
     flex-grow: 1;
     overflow: auto;
     position:relative;
-    transition: all 0.3s ease-in-out;
+    /* transition: all 0.3s ease-in-out; */
 }
 
 .resizer {
@@ -32,6 +33,7 @@ body {
     cursor: ew-resize;
     background: #191b20;
 }
+
 
 .code-editor {
     position: relative;
@@ -99,7 +101,7 @@ body {
     justify-content: center;
     position: relative;
     height: 220px;
-    width: 90%;
+    width: 320px;
     padding-bottom: 10px;
 }
 
@@ -111,6 +113,7 @@ body {
 .text-area.visible {
     display: flex;
 }
+
 
 
 @media (max-width: 768px) {
@@ -126,7 +129,7 @@ body {
     .code-editor {
         width: 100% !important; 
         height: auto; 
-        transition: 0.5s;
+        /* transition: 0.5s; */
     }
     .cube-scene{
         width: 100%;
@@ -137,6 +140,7 @@ body {
     }
     .code-editor.hidden {
         transform: translateY(88%);
-
     }
+    
+    
 }
