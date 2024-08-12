@@ -4,12 +4,14 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import "./../App.css";
 
-const CubeScene = ({ code, setIsError }) => {
-  const mountRef = useRef(null);
+const CubeScene = ({ code, setIsError, isEditorVisible }) => {
+    const mountRef = useRef(null);
+    
 
-  useEffect(() => {
-    const currentMount = mountRef.current;
-    if (!currentMount) return;
+    
+    useEffect(() => {
+        const currentMount = mountRef.current;
+        if (!currentMount) return;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
@@ -126,14 +128,14 @@ const CubeScene = ({ code, setIsError }) => {
     animate();
     window.addEventListener("resize", handleResize);
 
-    // Cleanup przy odmontowaniu komponentu
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      if (currentMount) {
-        currentMount.removeChild(renderer.domElement);
-      }
-    };
-  }, [code, setIsError]);
+        // Cleanup przy odmontowaniu komponentu
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            if (currentMount) {
+                currentMount.removeChild(renderer.domElement);
+            }
+        };
+    }, [code, setIsError, isEditorVisible]);
 
   return <div className="cube-scene" ref={mountRef}></div>;
 };
