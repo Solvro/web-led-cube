@@ -32,6 +32,13 @@ body {
   width: 10px;
   cursor: ew-resize;
   background: #191b20;
+  position: absolute;
+  left: -5px;
+  top: 0;
+  bottom: 0;
+  width: 10px;
+  cursor: ew-resize;
+  background: #191b20;
 }
 
 
@@ -128,6 +135,13 @@ body {
   color: white;
   border: none;
   cursor: pointer;
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #606166;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 .control-buttons{
   display: grid;
@@ -143,9 +157,11 @@ body {
 
 .tab-button.button-active {
   background-color: green;
+  background-color: green;
 }
 
 .tab-button.button-not-empty {
+  background-color: rgb(151, 151, 59);
   background-color: rgb(151, 151, 59);
 }
 

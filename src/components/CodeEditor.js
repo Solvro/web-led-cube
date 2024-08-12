@@ -27,7 +27,31 @@ const CodeEditor = ({ onExecute, isError }) => {
   }, [visibleIndex]);
 // local storage things
 
+  const [code, setCode] = useState(() => {
+    const savedCode = localStorage.getItem("code");
+    return savedCode !== null
+      ? JSON.parse(savedCode)
+      : ["/* Kod idzie tutaj */"];
+  });
 
+  useEffect(() => {
+    localStorage.setItem("code", JSON.stringify(code));
+  }, [code]);
+
+  const [visibleIndex, setVisibleIndex] = useState(() => {
+    const savedIndex = localStorage.getItem("visibleIndex");
+    return savedIndex !== null ? JSON.parse(savedIndex) : 0;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("visibleIndex", JSON.stringify(visibleIndex));
+  }, [visibleIndex]);
+// local storage things
+
+
+  const handleVisibility = (index) => {
+    setVisibleIndex(index);
+  };
   const handleVisibility = (index) => {
     setVisibleIndex(index);
   };
@@ -37,7 +61,15 @@ const CodeEditor = ({ onExecute, isError }) => {
     newCode[index] = value;
     setCode(newCode);
   };
+  const handleTextChange = (value, index) => {
+    const newCode = [...code];
+    newCode[index] = value;
+    setCode(newCode);
+  };
 
+  const handleExecute = () => {
+    onExecute(code[visibleIndex]);
+  };
   const handleExecute = () => {
     onExecute(code[visibleIndex]);
   };
@@ -46,7 +78,18 @@ const CodeEditor = ({ onExecute, isError }) => {
     setCode([...code, ""]);
     setVisibleIndex(code.length);
   };
+  const addTextarea = () => {
+    setCode([...code, ""]);
+    setVisibleIndex(code.length);
+  };
 
+  const removeTextarea = () => {
+    if (code.length > 1) {
+      const newCode = code.slice(0, -1);
+      setCode(newCode);
+      setVisibleIndex(newCode.length - 1);
+    }
+  };
   const removeTextarea = () => {
     if (code.length > 1) {
       const newCode = code.slice(0, -1);
