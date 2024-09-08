@@ -1,9 +1,11 @@
-# About project
+# Virtual 3D LED Cube
+
+## About
 The Cube 3D project focuses on simulating LED cube animations. The animations are created using code typed in build-in text editor. Thanks to this the simulator is as close as possible to animations performed using microcontrollers. 
 
-<img src="appOverwiew.png"/>
+![overview](docs/screens/overview.png)
 
-# Setup
+## Setup
 To run this this project first type: 
 ```
 npm install 
