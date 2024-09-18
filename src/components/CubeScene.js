@@ -67,7 +67,8 @@ const CubeScene = ({ code, setIsError, isEditorVisible }) => {
             emissiveIntensity: 2,
           });
 
-          const mesh = new THREE.Mesh(geometry, material);
+                  
+                    cubes[x][y][z] = new THREE.Mesh(geometry, material);
 
           // set the position with offset to ensure the grid is centered
           mesh.position.set(
@@ -171,26 +172,15 @@ const CubeScene = ({ code, setIsError, isEditorVisible }) => {
           } catch (error) {
             console.error("Error executing code: ", error);
             setIsError(true);
-          }
+          } 
           renderer.render(scene, camera);
- 
         };
 
-    const handleResize = () => {
-      camera.aspect = currentMount.clientWidth / currentMount.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
-
-      // coord Cube
-      coordCamRef.current.aspect =
-        currentMount.clientHeight / currentMount.clientHeight;
-      coordCamRef.current.updateProjectionMatrix();
-      button.style.width = `${currentMount.clientHeight / 6}px`;
-      secondaryRenderer.setSize(
-        currentMount.clientHeight / 6,
-        currentMount.clientHeight / 6
-      );
-    };
+        const handleResize = () => {
+          camera.aspect = currentMount.clientWidth / currentMount.clientHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
+        };
 
         // Execute the animation once
         animate();
