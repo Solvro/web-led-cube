@@ -49,6 +49,7 @@ const CubeScene = ({ code, setIsError, isEditorVisible }) => {
                         emissiveIntensity: 2,
                     });
 
+                  
                     cubes[x][y][z] = new THREE.Mesh(geometry, material);
 
                     cubes[x][y][z].position.set(
@@ -103,10 +104,8 @@ const CubeScene = ({ code, setIsError, isEditorVisible }) => {
           } catch (error) {
             console.error("Error executing code: ", error);
             setIsError(true);
-          }
+          } 
           renderer.render(scene, camera);
-          controls.update();
-          requestAnimationFrame(animate);
         };
 
         const handleResize = () => {
@@ -115,7 +114,17 @@ const CubeScene = ({ code, setIsError, isEditorVisible }) => {
           renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
         };
 
+        // Execute the animation once
         animate();
+
+        // Keep the camera controls active
+        const renderLoop = () => {
+          controls.update();
+          renderer.render(scene, camera);
+          requestAnimationFrame(renderLoop);
+        };
+        renderLoop();
+
         window.addEventListener("resize", handleResize);
             // Cleanup while unmount component
             return () => {
