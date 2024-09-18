@@ -95,7 +95,7 @@ const CubeScene = ({ code, setIsError, isEditorVisible }) => {
       0.01,
       1000
     );
-    camera.position.z = 10;
+    camera.position.z = 3;
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -216,6 +216,16 @@ const CubeScene = ({ code, setIsError, isEditorVisible }) => {
     };
 
     animate();
+
+      // Keep the camera controls active
+      const renderLoop = () => {
+        controls.update();
+        renderer.render(scene, camera);
+        requestAnimationFrame(renderLoop);
+      };
+      renderLoop();
+
+
     window.addEventListener("resize", handleResize);
     // Cleanup while unmount component
     return () => {
