@@ -1,23 +1,76 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { createSecondaryScene } from "./SecondaryScene";
 import "./../App.css";
 
-const CubeScene = ({ code, setIsError, isEditorVisible }) => {
+const CubeScene = ({ code, execute, setIsError, isEditorVisible }) => {
   const mountRef = useRef(null);
 
-  // coordCube refs
-  const coordCamRef = useRef(null);
-  const coordSceneRef = useRef(null);
-  const coordCubeRef = useRef(null);
+  const sceneRef = useRef(null);
+  const cameraRef = useRef(null);
+  const rendererRef = useRef(null);
+  const controlsRef = useRef(null);
+  const cubeRef = useRef(null);
+  const cubesRef = useRef(null);
+
+  let stopRender = false;
 
   useEffect(() => {
-    const { secondaryScene, secondaryCamera, coordCube } =
-      createSecondaryScene();
-    coordSceneRef.current = secondaryScene;
-    coordCamRef.current = secondaryCamera;
-    coordCubeRef.current = coordCube;
+    initializeScene();
+    // buttons are temporary
+    const resetButton = document.createElement('button');
+    resetButton.innerHTML = 'Reset Scene';
+    resetButton.style.position = 'absolute';
+    resetButton.style.top = '10px';
+    resetButton.style.left = '10px';
+    resetButton.style.padding = '10px 20px';
+    resetButton.style.backgroundColor = '#007BFF';
+    resetButton.style.color = 'white';
+    resetButton.style.border = 'none';
+    resetButton.style.borderRadius = '5px';
+    resetButton.style.cursor = 'pointer';
+    resetButton.addEventListener('mouseover', () => resetButton.style.backgroundColor = '#0056b3');
+    resetButton.addEventListener('mouseout', () => resetButton.style.backgroundColor = '#007BFF');
+    resetButton.addEventListener('click', resetScene);
+    
+    const cleanupButton = document.createElement('button');
+    cleanupButton.innerHTML = 'Cleanup Scene';
+    cleanupButton.style.position = 'absolute';
+    cleanupButton.style.top = '50px';
+    cleanupButton.style.left = '10px';
+    cleanupButton.style.padding = '10px 20px';
+    cleanupButton.style.backgroundColor = '#28a745';
+    cleanupButton.style.color = 'white';
+    cleanupButton.style.border = 'none';
+    cleanupButton.style.borderRadius = '5px';
+    cleanupButton.style.cursor = 'pointer';
+    cleanupButton.addEventListener('mouseover', () => cleanupButton.style.backgroundColor = '#218838');
+    cleanupButton.addEventListener('mouseout', () => cleanupButton.style.backgroundColor = '#28a745');
+    cleanupButton.addEventListener('click', cleanupScene);
+    
+    const clearButton = document.createElement('button');
+    clearButton.innerHTML = 'Clear Scene';
+    clearButton.style.position = 'absolute';
+    clearButton.style.top = '90px';
+    clearButton.style.left = '10px';
+    clearButton.style.padding = '10px 20px';
+    clearButton.style.backgroundColor = '#dc3545';
+    clearButton.style.color = 'white';
+    clearButton.style.border = 'none';
+    clearButton.style.borderRadius = '5px';
+    clearButton.style.cursor = 'pointer';
+    clearButton.addEventListener('mouseover', () => clearButton.style.backgroundColor = '#c82333');
+    clearButton.addEventListener('mouseout', () => clearButton.style.backgroundColor = '#dc3545');
+    clearButton.addEventListener('click', clearScene);
+    
+    document.body.appendChild(resetButton);
+    document.body.appendChild(cleanupButton);
+    document.body.appendChild(clearButton);
+
+    return () => {
+      cleanupScene();
+      stopRender = true;
+    };
   }, []);
 
   const createCubes = () => {
@@ -77,6 +130,7 @@ const CubeScene = ({ code, setIsError, isEditorVisible }) => {
           );
 
           cubes[x][y][z] = mesh;
+          cubesRef.current = cubes;
         }
       }
     }
@@ -84,10 +138,15 @@ const CubeScene = ({ code, setIsError, isEditorVisible }) => {
     return cubes;
   };
 
-  useEffect(() => {
+  const initializeScene = () => {
     const currentMount = mountRef.current;
     if (!currentMount) return;
 
+    // cleanup existing scene for nice reset
+    cleanupScene();
+    stopRender = false;
+
+    // new scene, camera and renderer initialization
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
       20,
@@ -108,6 +167,7 @@ const CubeScene = ({ code, setIsError, isEditorVisible }) => {
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
     scene.add(ambientLight);
 
+    // create and add cubes
     const cube = new THREE.Object3D();
     const cubes = createCubes();
     cubes.map((x) => x.map((y) => y.map((z) => cube.add(z))));
@@ -116,126 +176,98 @@ const CubeScene = ({ code, setIsError, isEditorVisible }) => {
 
     const controls = new OrbitControls(camera, renderer.domElement);
 
-    // Coord cube
-    const secondaryRenderer = new THREE.WebGLRenderer({
-      antialias: true,
-      alpha: true,
-    });
-    secondaryRenderer.setSize(
-      currentMount.clientHeight / 6,
-      currentMount.clientHeight / 6
-    );
-    secondaryRenderer.setClearColor(0x191b20, 0.8);
+    sceneRef.current = scene;
+    cameraRef.current = camera;
+    rendererRef.current = renderer;
+    controlsRef.current = controls;
+    cubeRef.current = cube;
 
-    // secondary renderer atatch to the main component
-    // button CSS is in part in App.css!!!
-    const secondaryCubeDiv = document.createElement("div");
-    secondaryCubeDiv.style.position = "absolute";
-    secondaryCubeDiv.style.top = "30px";
-    secondaryCubeDiv.style.left = "10px";
-    secondaryCubeDiv.style.pointerEvents = "none"; // ignore pointer events for this overlay
-    currentMount.appendChild(secondaryCubeDiv);
-    secondaryCubeDiv.appendChild(secondaryRenderer.domElement);
-
-    let button = document.getElementById("coord-button");
-    function createButton() {
-      let button = document.getElementById("coord-button");
-      if (!button) {
-        button = document.createElement("button");
-        button.id = "coord-button";
-        button.style.width = `${currentMount.clientHeight / 6}px`;
-        document.body.appendChild(button);
-        button.innerHTML = "Hide Coordinates";
+    const renderLoop = () => {
+      if (!stopRender) {
+        controlsRef.current.update();
+        rendererRef.current.render(sceneRef.current, cameraRef.current);
+        requestAnimationFrame(renderLoop);
       }
-      button.addEventListener("click", () => {
-        if (secondaryCubeDiv.style.display === "none") {
-          secondaryCubeDiv.style.display = "block";
-          button.innerHTML = "Hide Coordinates";
-          button.classList.remove("coord-button-closed");
-        } else {
-          secondaryCubeDiv.style.display = "none";
-          button.innerHTML = "Show Coordinates";
-          button.className = "coord-button-closed";
-        }
-      });
-    }
-    createButton();
-
-    const fixedDistance = 1.9; // distance between camera and cube
-
-    const animate = () => {
-      try {
-        /* eslint-disable no-eval */
-        eval(code); // This code modifies the main cube
-        setIsError(false);
-      } catch (error) {
-        console.error("Error executing code: ", error);
-        setIsError(true);
-      }
-    
-    
-      // Maintain the constant distance between coordCube and coordCam
-      const direction = new THREE.Vector3();
-      direction
-        .subVectors(coordCamRef.current.position, coordCubeRef.current.position)
-        .normalize();
-      
-      const mainCameraDirection = new THREE.Vector3();
-      camera.getWorldDirection(mainCameraDirection);
-    
-      const newPosition = new THREE.Vector3();
-      newPosition
-        .copy(coordCubeRef.current.position)
-        .add(mainCameraDirection.multiplyScalar(-fixedDistance));
-    
-      coordCamRef.current.position.copy(newPosition);
-      coordCamRef.current.lookAt(coordCubeRef.current.position);
-    
-      // Render both scenes
-      renderer.render(scene, camera);
-      secondaryRenderer.render(coordSceneRef.current, coordCamRef.current);
-    
-      controls.update();
-
     };
+
+    renderLoop();
 
     const handleResize = () => {
       camera.aspect = currentMount.clientWidth / currentMount.clientHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(currentMount.clientWidth, currentMount.clientHeight);
-
-      // coord Cube
-      coordCamRef.current.aspect =
-        currentMount.clientHeight / currentMount.clientHeight;
-      coordCamRef.current.updateProjectionMatrix();
-      button.style.width = `${currentMount.clientHeight / 6}px`;
-      secondaryRenderer.setSize(
-        currentMount.clientHeight / 6,
-        currentMount.clientHeight / 6
-      );
     };
-
-    animate();
-
-      // Keep the camera controls active
-      const renderLoop = () => {
-        controls.update();
-        renderer.render(scene, camera);
-        requestAnimationFrame(renderLoop);
-      };
-      renderLoop();
-
 
     window.addEventListener("resize", handleResize);
-    // Cleanup while unmount component
+
+    // cleanup listener on unmount
     return () => {
       window.removeEventListener("resize", handleResize);
-      if (currentMount) {
-        currentMount.removeChild(renderer.domElement);
-        currentMount.removeChild(secondaryCubeDiv);
-      }
     };
-  }, [code, setIsError, isEditorVisible]);
+  };
+
+  const cleanupScene = () => {
+    if (rendererRef.current) {
+      const currentMount = mountRef.current;
+      if (
+        currentMount &&
+        rendererRef.current.domElement.parentNode === currentMount
+      ) {
+        currentMount.removeChild(rendererRef.current.domElement);
+      }
+      rendererRef.current.dispose();
+    }
+
+    if (controlsRef.current) {
+      controlsRef.current.dispose();
+    }
+
+    if (sceneRef.current) {
+      sceneRef.current.traverse((object) => {
+        if (object.geometry) object.geometry.dispose();
+        if (object.material) {
+          if (Array.isArray(object.material)) {
+            object.material.forEach((mat) => mat.dispose());
+          } else {
+            object.material.dispose();
+          }
+        }
+      });
+      sceneRef.current.clear(); // explicitly remove objects
+    }
+  };
+
+  const clearScene = () => {
+    // remove objects from the scene
+    while (sceneRef.current.children.length > 0) {
+      sceneRef.current.remove(sceneRef.current.children[0]);
+    }
+
+    rendererRef.current.clear();
+  };
+
+  const resetScene = () => {
+    initializeScene();
+    controlsRef.current.reset();
+    setIsError(false);
+  };
+
+  const executeCode = () => {
+    try {
+      const customEval = new Function("scene", "camera", "renderer", "controls", "cube", "cubes",code);
+
+      customEval(sceneRef.current, cameraRef.current, rendererRef.current, controlsRef.current, cubeRef.current, cubesRef.current);
+  
+      setIsError(false);
+    } catch (error) {
+      console.error("Error executing code: ", error);
+      setIsError(true);
+    }
+  };
+
+  useEffect(() => {
+    executeCode();
+  }, [execute]);
 
   return <div className="cube-scene" ref={mountRef}></div>;
 };

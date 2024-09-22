@@ -7,6 +7,8 @@ import { VscChevronDown, VscChevronUp } from "react-icons/vsc";
 
 function App() {
     const [code, setCode] = useState("");
+    const [execute, setExecute] = useState(""); // that's stupid and temporary aproach to trigger useEffect even when the code does not change
+    // I wanted to use Providers and context, but something does not work i don't know what - i will fix it later
     const [isError, setIsError] = useState(false);
     const [editorWidth, setEditorWidth] = useState(600);
     const [isEditorVisible, setIsEditorVisible] = useState(true);
@@ -17,6 +19,11 @@ function App() {
 
     const handleExecuteCode = (newCode) => {
         setCode(newCode);
+        if(execute === 1){
+            setExecute(0);
+        }else{
+            setExecute(1);
+        }
     };
 
     const handleMouseDown = (event) => {
@@ -58,7 +65,8 @@ function App() {
     return (
         <div className="App">
             <div className="container">
-                <CubeScene 
+                <CubeScene
+                    execute={execute}
                     key={cubeSceneKey} 
                     code={code} 
                     setIsError={setIsError} 
