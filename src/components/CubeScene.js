@@ -95,7 +95,7 @@ const CubeScene = ({ code, setIsError, isEditorVisible }) => {
       0.01,
       1000
     );
-    camera.position.z = 10;
+    camera.position.z = 3;
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -172,31 +172,6 @@ const CubeScene = ({ code, setIsError, isEditorVisible }) => {
         console.error("Error executing code: ", error);
         setIsError(true);
       }
-    
-    
-      // Maintain the constant distance between coordCube and coordCam
-      const direction = new THREE.Vector3();
-      direction
-        .subVectors(coordCamRef.current.position, coordCubeRef.current.position)
-        .normalize();
-      
-      const mainCameraDirection = new THREE.Vector3();
-      camera.getWorldDirection(mainCameraDirection);
-    
-      const newPosition = new THREE.Vector3();
-      newPosition
-        .copy(coordCubeRef.current.position)
-        .add(mainCameraDirection.multiplyScalar(-fixedDistance));
-    
-      coordCamRef.current.position.copy(newPosition);
-      coordCamRef.current.lookAt(coordCubeRef.current.position);
-    
-      // Render both scenes
-      renderer.render(scene, camera);
-      secondaryRenderer.render(coordSceneRef.current, coordCamRef.current);
-    
-      controls.update();
-      requestAnimationFrame(animate);
     };
 
     const handleResize = () => {
@@ -216,6 +191,30 @@ const CubeScene = ({ code, setIsError, isEditorVisible }) => {
     };
 
     animate();
+
+    // Keep the camera controls active
+    const renderLoop = () => {
+      // CoordCube - Maintain the constant distance between coordCube and coordCam
+      const direction = new THREE.Vector3();
+      direction
+        .subVectors(coordCamRef.current.position, coordCubeRef.current.position)
+        .normalize();
+      const mainCameraDirection = new THREE.Vector3();
+      camera.getWorldDirection(mainCameraDirection);
+      const newPosition = new THREE.Vector3();
+      newPosition
+        .copy(coordCubeRef.current.position)
+        .add(mainCameraDirection.multiplyScalar(-fixedDistance));
+      coordCamRef.current.position.copy(newPosition);
+      coordCamRef.current.lookAt(coordCubeRef.current.position);
+
+      controls.update();
+      renderer.render(scene, camera);
+      secondaryRenderer.render(coordSceneRef.current, coordCamRef.current);
+      requestAnimationFrame(renderLoop);
+    };
+    renderLoop();
+
     window.addEventListener("resize", handleResize);
     // Cleanup while unmount component
     return () => {
