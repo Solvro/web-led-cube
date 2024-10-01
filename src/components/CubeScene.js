@@ -1,9 +1,11 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect} from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import "./../App.css";
+import { createCubes } from "./CreateCubes";
+import { cleanupCoordScene, initializeCoordScene} from "./CoordScene";
 
-const CubeScene = ({ code, execute, setIsError, isEditorVisible }) => {
+const CubeScene = ({ code, execute, setIsError}) => {
   const mountRef = useRef(null);
 
   const sceneRef = useRef(null);
@@ -13,15 +15,26 @@ const CubeScene = ({ code, execute, setIsError, isEditorVisible }) => {
   const cubeRef = useRef(null);
   const cubesRef = useRef(null);
 
+  const coordRefs = {
+    mountRef,
+    coordSceneRef: useRef(null),
+    coordCamRef: useRef(null),
+    coordRendererRef: useRef(null),
+    coordCubeRef: useRef(null),
+    mainCamera: cameraRef,
+    secondaryCubeDiv: null, // To hold secondaryCubeDiv for cleanup
+  };
+
   let stopRender = false;
 
   useEffect(() => {
     initializeScene();
+    initializeCoordScene(coordRefs, cameraRef);
     // buttons are temporary
     const resetButton = document.createElement('button');
     resetButton.innerHTML = 'Reset Scene';
     resetButton.style.position = 'absolute';
-    resetButton.style.top = '10px';
+    resetButton.style.top = '200px';
     resetButton.style.left = '10px';
     resetButton.style.padding = '10px 20px';
     resetButton.style.backgroundColor = '#007BFF';
@@ -36,7 +49,7 @@ const CubeScene = ({ code, execute, setIsError, isEditorVisible }) => {
     const cleanupButton = document.createElement('button');
     cleanupButton.innerHTML = 'Cleanup Scene';
     cleanupButton.style.position = 'absolute';
-    cleanupButton.style.top = '50px';
+    cleanupButton.style.top = '250px';
     cleanupButton.style.left = '10px';
     cleanupButton.style.padding = '10px 20px';
     cleanupButton.style.backgroundColor = '#28a745';
@@ -48,95 +61,14 @@ const CubeScene = ({ code, execute, setIsError, isEditorVisible }) => {
     cleanupButton.addEventListener('mouseout', () => cleanupButton.style.backgroundColor = '#28a745');
     cleanupButton.addEventListener('click', cleanupScene);
     
-    const clearButton = document.createElement('button');
-    clearButton.innerHTML = 'Clear Scene';
-    clearButton.style.position = 'absolute';
-    clearButton.style.top = '90px';
-    clearButton.style.left = '10px';
-    clearButton.style.padding = '10px 20px';
-    clearButton.style.backgroundColor = '#dc3545';
-    clearButton.style.color = 'white';
-    clearButton.style.border = 'none';
-    clearButton.style.borderRadius = '5px';
-    clearButton.style.cursor = 'pointer';
-    clearButton.addEventListener('mouseover', () => clearButton.style.backgroundColor = '#c82333');
-    clearButton.addEventListener('mouseout', () => clearButton.style.backgroundColor = '#dc3545');
-    clearButton.addEventListener('click', clearScene);
-    
     document.body.appendChild(resetButton);
     document.body.appendChild(cleanupButton);
-    document.body.appendChild(clearButton);
 
     return () => {
       cleanupScene();
       stopRender = true;
     };
   }, []);
-
-  const createCubes = () => {
-    const color1 = new THREE.Color(0xff0000); // Red
-    const color2 = new THREE.Color(0x00ff00); // Green
-    const color3 = new THREE.Color(0x0000ff); // Blue
-
-    const cubesInRow = 5;
-    const smallCubeSize = 0.01;
-    const cubes = [];
-
-    // calculate the total size of the grid
-    const gridSize = cubesInRow * 0.1; // 0.1 is the spacing between each cube
-    const gridOffset = gridSize / 2 - 0.1 / 2; // center offset
-
-    for (let x = 0; x < cubesInRow; x++) {
-      cubes[x] = [];
-
-      for (let y = 0; y < cubesInRow; y++) {
-        cubes[x][y] = [];
-
-        for (let z = 0; z < cubesInRow; z++) {
-          const geometry = new THREE.BoxGeometry(
-            smallCubeSize,
-            smallCubeSize,
-            smallCubeSize
-          );
-
-          const normalizedX = x / (cubesInRow - 1);
-          const normalizedY = y / (cubesInRow - 1);
-          const normalizedZ = z / (cubesInRow - 1);
-
-          const averageRatio = (normalizedX + normalizedY + normalizedZ) / 3;
-
-          let color;
-          if (averageRatio < 0.5) {
-            const ratio = averageRatio * 2; // Scale to [0, 1]
-            color = color1.clone().lerp(color2, ratio);
-          } else {
-            const ratio = (averageRatio - 0.5) * 2; // Scale to [0, 1]
-            color = color2.clone().lerp(color3, ratio);
-          }
-
-          const material = new THREE.MeshPhongMaterial({
-            color: color,
-            emissive: color,
-            emissiveIntensity: 2,
-          });
-
-          const mesh = new THREE.Mesh(geometry, material);
-
-          // set the position with offset to ensure the grid is centered
-          mesh.position.set(
-            x * 0.1 - gridOffset,
-            y * 0.1 - gridOffset,
-            z * 0.1 - gridOffset
-          );
-
-          cubes[x][y][z] = mesh;
-          cubesRef.current = cubes;
-        }
-      }
-    }
-
-    return cubes;
-  };
 
   const initializeScene = () => {
     const currentMount = mountRef.current;
@@ -181,9 +113,11 @@ const CubeScene = ({ code, execute, setIsError, isEditorVisible }) => {
     rendererRef.current = renderer;
     controlsRef.current = controls;
     cubeRef.current = cube;
+    cubesRef.current = cubes;
 
     const renderLoop = () => {
       if (!stopRender) {
+        // renderCoordScene(coordRefs, cameraRef);
         controlsRef.current.update();
         rendererRef.current.render(sceneRef.current, cameraRef.current);
         requestAnimationFrame(renderLoop);
@@ -237,15 +171,6 @@ const CubeScene = ({ code, execute, setIsError, isEditorVisible }) => {
     }
   };
 
-  const clearScene = () => {
-    // remove objects from the scene
-    while (sceneRef.current.children.length > 0) {
-      sceneRef.current.remove(sceneRef.current.children[0]);
-    }
-
-    rendererRef.current.clear();
-  };
-
   const resetScene = () => {
     initializeScene();
     controlsRef.current.reset();
@@ -254,8 +179,9 @@ const CubeScene = ({ code, execute, setIsError, isEditorVisible }) => {
 
   const executeCode = () => {
     try {
-      const customEval = new Function("scene", "camera", "renderer", "controls", "cube", "cubes",code);
-
+      /* eslint-disable */
+      const customEval = new Function("scene", "camera", "renderer", "controls", "cube", "cubes", code);
+  
       customEval(sceneRef.current, cameraRef.current, rendererRef.current, controlsRef.current, cubeRef.current, cubesRef.current);
   
       setIsError(false);
