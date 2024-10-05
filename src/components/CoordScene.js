@@ -1,11 +1,21 @@
 import * as THREE from "three";
-import { createSecondaryScene } from "./SecondaryScene";
+import { createSecondaryScene } from "./SecondarySceneCreation";
 
 export const initializeCoordScene = (coordRefs) => {
-  const { mountRef, coordSceneRef, coordCamRef, coordRendererRef, coordCubeRef, mainCamera } =
-    coordRefs;
+  const {
+    mountRef,
+    coordSceneRef,
+    coordCamRef,
+    coordRendererRef,
+    coordCubeRef,
+    mainCamera,
+    stopRenderRef,
+  } = coordRefs;
   if (!mountRef.current) return;
+
   cleanupCoordScene(coordRefs);
+
+  stopRenderRef.current = false;
 
   const coordRenderer = new THREE.WebGLRenderer({
     antialias: true,
@@ -58,39 +68,44 @@ export const initializeCoordScene = (coordRefs) => {
   });
 
   const renderLoop = () => {
-    const fixedDistance = 1.9;
+    if (!stopRenderRef.current) {
+      const fixedDistance = 1.9;
 
-    const direction = new THREE.Vector3();
-    direction
-      .subVectors(coordCamRef.current.position, coordCubeRef.current.position)
-      .normalize();
+      const direction = new THREE.Vector3();
+      direction
+        .subVectors(coordCamRef.current.position, coordCubeRef.current.position)
+        .normalize();
 
-    const mainCameraDirection = new THREE.Vector3();
-    mainCamera.current.getWorldDirection(mainCameraDirection);
+      const mainCameraDirection = new THREE.Vector3();
+      mainCamera.current.getWorldDirection(mainCameraDirection);
 
-    const newPosition = new THREE.Vector3();
-    newPosition
-      .copy(coordCubeRef.current.position)
-      .add(mainCameraDirection.multiplyScalar(-fixedDistance));
-    coordCamRef.current.position.copy(newPosition);
-    coordCamRef.current.lookAt(coordCubeRef.current.position);
+      const newPosition = new THREE.Vector3();
+      newPosition
+        .copy(coordCubeRef.current.position)
+        .add(mainCameraDirection.multiplyScalar(-fixedDistance));
+      coordCamRef.current.position.copy(newPosition);
+      coordCamRef.current.lookAt(coordCubeRef.current.position);
 
-    coordRendererRef.current.render(coordSceneRef.current, coordCamRef.current);
+      coordRendererRef.current.render(
+        coordSceneRef.current,
+        coordCamRef.current
+      );
 
-    requestAnimationFrame(renderLoop);
+      requestAnimationFrame(renderLoop);
+    }
   };
 
   renderLoop();
 
   const handleResize = () => {
     coordCamRef.current.aspect =
-    mountRef.current.clientHeight / mountRef.current.clientHeight;
-      coordCamRef.current.updateProjectionMatrix();
-      button.style.width = `${mountRef.current.clientHeight / 6}px`;
-      coordRendererRef.current.setSize(
-        mountRef.current.clientHeight / 6,
-        mountRef.current.clientHeight / 6
-      );
+      mountRef.current.clientHeight / mountRef.current.clientHeight;
+    coordCamRef.current.updateProjectionMatrix();
+    button.style.width = `${mountRef.current.clientHeight / 6}px`;
+    coordRendererRef.current.setSize(
+      mountRef.current.clientHeight / 6,
+      mountRef.current.clientHeight / 6
+    );
   };
 
   window.addEventListener("resize", handleResize);
@@ -100,33 +115,6 @@ export const initializeCoordScene = (coordRefs) => {
     window.removeEventListener("resize", handleResize);
   };
 };
-
-// export const renderCoordScene = (coordRefs, mainCamera) => {
-//   const { coordCamRef, coordCubeRef, coordRendererRef, coordSceneRef } =
-//     coordRefs;
-
-//   // Fixed distance between coordCamera and coordCube
-//   const fixedDistance = 1.9;
-
-//   const direction = new THREE.Vector3();
-//   direction
-//     .subVectors(coordCamRef.current.position, coordCubeRef.current.position)
-//     .normalize();
-
-//   const mainCameraDirection = new THREE.Vector3();
-//   mainCamera.getWorldDirection(mainCameraDirection);
-
-//   const newPosition = new THREE.Vector3();
-//   newPosition
-//     .copy(coordCubeRef.current.position)
-//     .add(mainCameraDirection.multiplyScalar(-fixedDistance));
-//   coordCamRef.current.position.copy(newPosition);
-//   coordCamRef.current.lookAt(coordCubeRef.current.position);
-
-//   coordRendererRef.current.render(coordSceneRef.current, coordCamRef.current);
-
-//   requestAnimationFrame(renderCoordScene);
-// };
 
 export const cleanupCoordScene = (coordRefs) => {
   const { coordSceneRef, coordRendererRef, secondaryCubeDiv } = coordRefs;

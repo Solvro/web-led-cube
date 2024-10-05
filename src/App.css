@@ -19,7 +19,7 @@ body {
 .cube-scene {
   flex-grow: 1;
   overflow: auto;
-  position:relative;
+  position: relative;
   /* transition: all 0.3s ease-in-out; */
 
 }
@@ -182,7 +182,7 @@ body {
   border-top-left-radius: 0.3rem;
   border-top-right-radius: 0.3rem;
 
-  font-size: 0.8vw; /* Adjust the text size based on viewport width */
+  font-size: 1.2vh; /* Adjust the text size based on viewport width */
   text-align: center;
   white-space: nowrap;
   overflow: hidden;

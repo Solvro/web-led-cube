@@ -1,5 +1,5 @@
 import './App.css';
-import CubeScene from './components/CubeScene';
+import Scenes from './components/Scenes';
 import CodeEditor from './components/CodeEditor';
 import { useState, useRef } from "react";
 
@@ -65,7 +65,7 @@ function App() {
     return (
         <div className="App">
             <div className="container">
-                <CubeScene
+                <Scenes
                     execute={execute}
                     key={cubeSceneKey} 
                     code={code} 
