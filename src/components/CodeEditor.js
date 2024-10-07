@@ -95,14 +95,14 @@ const CodeEditor = ({ onExecute, isError }) => {
           />
         ))}
       </div>
-      <div className="control-buttons">
+      {/* <div className="control-buttons">
         <button className="tab-button" onClick={addTextarea}>
           <VscDiffAdded />
         </button>
         <button className="tab-button" onClick={removeTextarea}>
           <VscDiffRemoved />
         </button>
-      </div>
+      </div> */}
       <button onClick={handleExecute}>
         <VscDebugStart />
       </button>

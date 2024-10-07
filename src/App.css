@@ -167,6 +167,7 @@ body {
   border-radius: 15px 0 15px 0;
   position: relative;
   font-weight: bold;
+  animation: windowAnimation 1s;
 
   &:hover {
     cursor: pointer;
@@ -181,6 +182,7 @@ body {
   width: calc(100% - 15px);
   height: 2px;
   background-color: green;
+  animation: lineAnimation 1s;
 }
 
 .delete-icon {
@@ -208,6 +210,27 @@ body {
     cursor: pointer;
     scale: 1.1;
     transition: "1s";
+  }
+}
+
+@keyframes lineAnimation {
+  0% {
+    left: 50%;
+    width: 0;
+  }
+
+  100% {
+    left: 0;
+  }
+}
+
+@keyframes windowAnimation {
+  0% {
+    scale: 0;
+  }
+
+  100% {
+    scale: 1;
   }
 }
 
