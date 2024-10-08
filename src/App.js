@@ -70,7 +70,6 @@ function App() {
                     key={cubeSceneKey} 
                     code={code} 
                     setIsError={setIsError} 
-                    isEditorVisible={isEditorVisible}
                     className={`cube-scene ${cubeSceneVisible ? '' : 'hidden'}`} 
                 />
                 <div className={`code-editor ${isEditorVisible ? '' : 'hidden'}`} style={{ width: editorWidth }}>

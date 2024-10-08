@@ -29,16 +29,16 @@ export const initializeCoordScene = (coordRefs) => {
   coordRendererRef.current = coordRenderer;
 
   coordRendererRef.current.setSize(
-    mountRef.current.clientHeight / 6,
-    mountRef.current.clientHeight / 6
+    mountRef.current.clientHeight,
+    mountRef.current.clientHeight
   );
   coordRendererRef.current.setClearColor(0x191b20, 0.8);
 
   // Attach secondary renderer to the main component
   const secondaryCubeDiv = document.createElement("div");
   secondaryCubeDiv.style.position = "absolute";
-  secondaryCubeDiv.style.top = "30px";
-  secondaryCubeDiv.style.left = "10px";
+  secondaryCubeDiv.style.top = "0px";
+  secondaryCubeDiv.style.left = "0px";
   secondaryCubeDiv.style.pointerEvents = "none"; // ignore pointer events for this overlay
   mountRef.current.appendChild(secondaryCubeDiv);
   secondaryCubeDiv.appendChild(coordRendererRef.current.domElement);
@@ -50,7 +50,8 @@ export const initializeCoordScene = (coordRefs) => {
   if (!button) {
     button = document.createElement("button");
     button.id = "coord-button";
-    button.style.width = `${mountRef.current.clientHeight / 6}px`;
+    button.style.width = `${mountRef.current.clientHeight}px`;
+    button.style.top =`${mountRef.current.clientHeight}px`;
     document.body.appendChild(button);
     button.innerHTML = "Hide Coordinates";
   }
@@ -98,13 +99,14 @@ export const initializeCoordScene = (coordRefs) => {
   renderLoop();
 
   const handleResize = () => {
+    if (!mountRef.current) return;
     coordCamRef.current.aspect =
       mountRef.current.clientHeight / mountRef.current.clientHeight;
     coordCamRef.current.updateProjectionMatrix();
-    button.style.width = `${mountRef.current.clientHeight / 6}px`;
+    button.style.width = `${mountRef.current.clientHeight}px`;
     coordRendererRef.current.setSize(
-      mountRef.current.clientHeight / 6,
-      mountRef.current.clientHeight / 6
+      mountRef.current.clientHeight,
+      mountRef.current.clientHeight
     );
   };
 

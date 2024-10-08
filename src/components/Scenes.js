@@ -4,7 +4,8 @@ import {cleanupCoordScene, initializeCoordScene} from "./CoordScene";
 import { cleanupMainScene, initializeMainScene} from "./MainScene";
 
 const Scenes = ({ code, execute, setIsError}) => {
-  const mountRef = useRef(null);
+  const mainMountRef = useRef(null);
+  const coordMountRef = useRef(null);
 
   const sceneRef = useRef(null);
   const cameraRef = useRef(null);
@@ -16,7 +17,7 @@ const Scenes = ({ code, execute, setIsError}) => {
   const stopRenderRef = useRef(false);
 
   const mainRefs = {
-    mountRef: mountRef,
+    mountRef: mainMountRef,
     sceneRef: sceneRef,
     cameraRef: cameraRef,
     rendererRef: rendererRef,
@@ -27,7 +28,7 @@ const Scenes = ({ code, execute, setIsError}) => {
   }
 
   const coordRefs = {
-    mountRef: mountRef,
+    mountRef: coordMountRef,
     coordSceneRef: useRef(null),
     coordCamRef: useRef(null),
     coordRendererRef: useRef(null),
@@ -41,22 +42,6 @@ const Scenes = ({ code, execute, setIsError}) => {
     initializeMainScene(mainRefs);
     initializeCoordScene(coordRefs);
     // buttons are temporary
-    const resetButton = document.createElement('button');
-    resetButton.innerHTML = 'Reset Scene';
-    resetButton.style.position = 'absolute';
-    resetButton.style.top = '200px';
-    resetButton.style.left = '10px';
-    resetButton.style.padding = '10px 20px';
-    resetButton.style.backgroundColor = '#007BFF';
-    resetButton.style.color = 'white';
-    resetButton.style.border = 'none';
-    resetButton.style.borderRadius = '5px';
-    resetButton.style.cursor = 'pointer';
-    resetButton.addEventListener('mouseover', () => resetButton.style.backgroundColor = '#0056b3');
-    resetButton.addEventListener('mouseout', () => resetButton.style.backgroundColor = '#007BFF');
-    resetButton.addEventListener('click', resetScene);
-    
-    document.body.appendChild(resetButton);
 
     return () => {
       cleanupMainScene(mainRefs);
@@ -91,7 +76,11 @@ const Scenes = ({ code, execute, setIsError}) => {
     executeCode();
   }, [execute]);
 
-  return <div className="cube-scene" ref={mountRef}></div>;
+  return <><div className="main-scene" ref={mainMountRef}>
+    <div className="coord-scene" ref={coordMountRef}></div>
+    <button onClick={() => resetScene()} style={{position: "absolute"}}>Reset Scene</button>
+  </div>
+  </>
 };
 
 export default Scenes;
