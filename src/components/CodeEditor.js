@@ -3,9 +3,10 @@ import CodeMirror from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { javascript } from "@codemirror/lang-javascript";
 import { VscDiffAdded, VscDiffRemoved, VscDebugStart } from "react-icons/vsc";
+import { BiSolidPlusCircle } from "react-icons/bi";
+import { BiWindowClose } from "react-icons/bi";
 
 const CodeEditor = ({ onExecute, isError }) => {
-
   const [code, setCode] = useState(() => {
     const savedCode = localStorage.getItem("code");
     return savedCode !== null
@@ -25,8 +26,7 @@ const CodeEditor = ({ onExecute, isError }) => {
   useEffect(() => {
     localStorage.setItem("visibleIndex", JSON.stringify(visibleIndex));
   }, [visibleIndex]);
-// local storage things
-
+  // local storage things
 
   const handleVisibility = (index) => {
     setVisibleIndex(index);
@@ -57,20 +57,30 @@ const CodeEditor = ({ onExecute, isError }) => {
 
   return (
     <div className="code-editor-container">
-      <div className="buttons-container">
+      <div className="tab-container">
         {code.map((_, index) => (
-          <button
+          // <button
+          //   key={index}
+          // className={`tab-button ${
+          //   code[index] !== "" && visibleIndex !== index
+          //     ? "button-not-empty"
+          //     : ""
+          // } ${visibleIndex === index ? "button-active" : ""}`}
+          //   onClick={() => handleVisibility(index)}
+          // >
+          //   {index + 1}
+          // </button>
+          <div
             key={index}
-            className={`tab-button ${
-              code[index] !== "" && visibleIndex !== index
-                ? "button-not-empty"
-                : ""
-            } ${visibleIndex === index ? "button-active" : ""}`}
+            className={"tab-window"}
             onClick={() => handleVisibility(index)}
           >
-            {index + 1}
-          </button>
+            Page {index + 1}
+            <BiWindowClose onClick={removeTextarea} className="delete-icon" />
+            {visibleIndex === index && <div className="window-active"></div>}
+          </div>
         ))}
+        <BiSolidPlusCircle className="add-icon" onClick={addTextarea} />
       </div>
       <div className="text-area-container">
         {code.map((text_area_code, index) => (
@@ -85,15 +95,17 @@ const CodeEditor = ({ onExecute, isError }) => {
           />
         ))}
       </div>
-      <div className="control-buttons">
+      {/* <div className="control-buttons">
         <button className="tab-button" onClick={addTextarea}>
-          <VscDiffAdded/>
+          <VscDiffAdded />
         </button>
         <button className="tab-button" onClick={removeTextarea}>
-          <VscDiffRemoved/>
+          <VscDiffRemoved />
         </button>
-      </div>
-      <button onClick={handleExecute}><VscDebugStart/></button>
+      </div> */}
+      <button onClick={handleExecute}>
+        <VscDebugStart />
+      </button>
     </div>
   );
 };
