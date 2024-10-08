@@ -1,27 +1,26 @@
 body {
-    background-color: #05060E;
-    overflow: hidden;
+  background-color: #05060e;
+  overflow: hidden;
 }
 
 .App {
   display: flex;
   height: 100vh;
-  flex-direction: row; 
+  flex-direction: row;
 }
 
 .container {
   display: flex;
   width: 100%;
   height: 100%;
-  flex-direction: row; 
+  flex-direction: row;
 }
 
 .cube-scene {
   flex-grow: 1;
   overflow: auto;
-  position:relative;
+  position: relative;
   /* transition: all 0.3s ease-in-out; */
-
 }
 
 .resizer {
@@ -41,7 +40,6 @@ body {
   background: #191b20;
 }
 
-
 .code-editor {
   position: relative;
   display: flex;
@@ -49,8 +47,8 @@ body {
   align-items: center;
   justify-content: center;
   background-color: #191b20;
-  width: auto; 
-  height: 100%; 
+  width: auto;
+  height: 100%;
 }
 .code-editor-container {
   position: relative;
@@ -59,10 +57,9 @@ body {
   align-items: center;
   justify-content: center;
 
-  width: 100%; 
-  height: 100%; 
+  width: 100%;
+  height: 100%;
 }
-
 
 .text-area-container {
   display: flex;
@@ -70,9 +67,9 @@ body {
   justify-content: center;
   position: relative;
   height: 50%;
-  width: 80%;
+  width: 100%;
   padding-bottom: 10px;
-  padding-TOP: 10px;
+  padding-top: 10px;
 }
 
 .text-area.visible {
@@ -143,7 +140,7 @@ body {
   border: none;
   cursor: pointer;
 }
-.control-buttons{
+.control-buttons {
   display: grid;
   grid-template-columns: auto auto;
   justify-content: center;
@@ -152,7 +149,89 @@ body {
 .tab-button {
   margin-left: 5px;
   margin-right: 5px;
+}
 
+.tab-container {
+  width: 100%;
+  display: flex;
+}
+.tab-window {
+  background-color: rgba(107, 83, 83, 0.792);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  width: 150px;
+  height: 30px;
+  text-align: center;
+  border-radius: 15px 0 15px 0;
+  position: relative;
+  font-weight: bold;
+  animation: windowAnimation 1s;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.window-active {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  border-radius: 10px 10px 0 0;
+  width: calc(100% - 15px);
+  height: 2px;
+  background-color: green;
+  animation: lineAnimation 1s;
+}
+
+.delete-icon {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  width: 20px;
+  height: 18px;
+  color: rgb(99, 6, 6);
+
+  &:hover {
+    cursor: pointer;
+    scale: 1.1;
+    transition: "1s";
+  }
+}
+
+.add-icon {
+  color: green;
+  width: 30px;
+  height: 30px;
+  margin-left: 3px;
+
+  &:hover {
+    cursor: pointer;
+    scale: 1.1;
+    transition: "1s";
+  }
+}
+
+@keyframes lineAnimation {
+  0% {
+    left: 50%;
+    width: 0;
+  }
+
+  100% {
+    left: 0;
+  }
+}
+
+@keyframes windowAnimation {
+  0% {
+    scale: 0;
+  }
+
+  100% {
+    scale: 1;
+  }
 }
 
 .tab-button.button-active {
@@ -165,8 +244,8 @@ body {
   background-color: rgb(151, 151, 59);
 }
 
-.toggle-button{
-    display: none;
+.toggle-button {
+  display: none;
 }
 
 #coord-button {
@@ -187,49 +266,44 @@ body {
   white-space: nowrap;
   overflow: hidden;
 }
-#coord-button.coord-button-closed{
+#coord-button.coord-button-closed {
   border-radius: 0.3rem;
 }
 
-
-
-
-
 @media (max-width: 768px) {
-    .App {
-        flex-direction: column;
-    }
+  .App {
+    flex-direction: column;
+  }
 
-    .container {
-        flex-direction: column;
-        align-items: center;
-    }
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
 
-    .code-editor {
-        width: 100% !important; 
-        height: auto; 
-        /* transition: 0.5s; */
-    }
-    
-    .cube-scene{
-        width: 100%;
-        height: 100%;
-    }
-    .toggle-button{
-        display: block;
-    }
-    .code-editor.hidden {
-        transform: translateY(88%);
-    }
-    .text-area-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      height: 10rem;
-      width: 100%;
-      padding-bottom: 10px;
-      padding-TOP: 10px;
-    }
-    
+  .code-editor {
+    width: 100% !important;
+    height: auto;
+    /* transition: 0.5s; */
+  }
+
+  .cube-scene {
+    width: 100%;
+    height: 100%;
+  }
+  .toggle-button {
+    display: block;
+  }
+  .code-editor.hidden {
+    transform: translateY(88%);
+  }
+  .text-area-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 10rem;
+    width: 100%;
+    padding-bottom: 10px;
+    padding-top: 10px;
+  }
 }
