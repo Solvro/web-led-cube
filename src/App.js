@@ -64,6 +64,7 @@ function App() {
     <div className="App">
       <div className="container">
         <Scenes
+          execute={execute}
           key={cubeSceneKey}
           code={code}
           setIsError={setIsError}
