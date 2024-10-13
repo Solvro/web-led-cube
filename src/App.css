@@ -61,6 +61,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  z-index: 1000;
 
   width: 100%;
   height: 100%;
@@ -256,6 +257,7 @@ body {
 #coord-button {
   position: absolute;
   height: 25px;
+  z-index: -1;
 
   background-color: #191b20;
   box-shadow: none;
