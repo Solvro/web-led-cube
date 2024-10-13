@@ -13,6 +13,7 @@ function App() {
   const [isEditorVisible, setIsEditorVisible] = useState(true);
   const [cubeSceneVisible, setCubeSceneVisible] = useState(true); // State for visibility
   const [cubeSceneKey, setCubeSceneKey] = useState(0); // State for CubeScene key
+  const [numCubes, setNumCubes] = useState(5);
   const minEditorWidth = 200;
   const previousMouseX = useRef(null);
 
@@ -69,6 +70,7 @@ function App() {
           code={code}
           setIsError={setIsError}
           className={`cube-scene ${cubeSceneVisible ? "" : "hidden"}`}
+          numCubes={numCubes}
         />
         <div
           className={`code-editor ${isEditorVisible ? "" : "hidden"}`}
@@ -78,7 +80,7 @@ function App() {
             {isEditorVisible ? <VscChevronDown /> : <VscChevronUp />}
           </button>
           <div className="resizer" onMouseDown={handleMouseDown} />
-          <CodeEditor onExecute={handleExecuteCode} isError={isError} />
+          <CodeEditor onExecute={handleExecuteCode} isError={isError} numCubes={numCubes} setNumCubes={setNumCubes} />
         </div>
       </div>
     </div>

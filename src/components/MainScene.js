@@ -4,7 +4,7 @@ import { OrbitControls } from "three/examples/jsm/Addons.js";
 import { createCubes } from "./CreateCubes";
 
   
-  export const initializeMainScene = (mainRefs) => {
+  export const initializeMainScene = (mainRefs, numCubes) => {
     const { mountRef, sceneRef, cameraRef, rendererRef, controlsRef, cubeRef, cubesRef, stopRenderRef } =
     mainRefs;
   if (!mountRef.current) return;
@@ -37,7 +37,7 @@ import { createCubes } from "./CreateCubes";
 
     // create and add cubes
     const cube = new THREE.Object3D();
-    const cubes = createCubes();
+    const cubes = createCubes(numCubes);
     cubes.map((x) => x.map((y) => y.map((z) => cube.add(z))));
 
     scene.add(cube);

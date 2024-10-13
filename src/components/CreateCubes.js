@@ -1,10 +1,10 @@
 import * as THREE from "three";
-export const createCubes = () => {
+export const createCubes = (numCubes) => {
     const color1 = new THREE.Color(0xff0000); // Red
     const color2 = new THREE.Color(0x00ff00); // Green
     const color3 = new THREE.Color(0x0000ff); // Blue
 
-    const cubesInRow = 5;
+    const cubesInRow = numCubes;
     const smallCubeSize = 0.01;
     const cubes = [];
 

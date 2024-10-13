@@ -3,7 +3,7 @@ import "./../App.css";
 import {cleanupCoordScene, initializeCoordScene} from "./CoordScene";
 import { cleanupMainScene, initializeMainScene} from "./MainScene";
 
-const Scenes = ({ code, execute, setIsError}) => {
+const Scenes = ({ code, execute, setIsError, numCubes}) => {
   const mainMountRef = useRef(null);
   const coordMountRef = useRef(null);
 
@@ -39,7 +39,7 @@ const Scenes = ({ code, execute, setIsError}) => {
   };
 
   useEffect(() => {
-    initializeMainScene(mainRefs);
+    initializeMainScene(mainRefs, numCubes);
     initializeCoordScene(coordRefs);
     // buttons are temporary
 
@@ -52,7 +52,7 @@ const Scenes = ({ code, execute, setIsError}) => {
   }, []);
 
   const resetScene = () => {
-    initializeMainScene(mainRefs);
+    initializeMainScene(mainRefs, numCubes);
         // no changes to coordScene, so no need to reset (just controls)
     controlsRef.current.reset();
     setIsError(false);
@@ -75,6 +75,10 @@ const Scenes = ({ code, execute, setIsError}) => {
   useEffect(() => {
     executeCode();
   }, [execute]);
+
+  useEffect(() => {
+    resetScene();
+  }, [numCubes]);
 
   return <><div className="main-scene" ref={mainMountRef}>
     <div className="coord-scene" ref={coordMountRef}></div>
