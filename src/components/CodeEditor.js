@@ -6,13 +6,16 @@ import { VscDiffAdded, VscDiffRemoved, VscDebugStart } from "react-icons/vsc";
 import { BiSolidPlusCircle } from "react-icons/bi";
 import { BiWindowClose } from "react-icons/bi";
 
-const CodeEditor = ({ onExecute, isError }) => {
+const CodeEditor = ({ onExecute, isError , numCubes, setNumCubes, setReset }) => {
+  const [tempCubes, setTempCubes] = useState(numCubes);
   const [code, setCode] = useState(() => {
     const savedCode = localStorage.getItem("code");
     return savedCode !== null
       ? JSON.parse(savedCode)
       : ["/* Kod idzie tutaj */"];
   });
+
+
 
   useEffect(() => {
     localStorage.setItem("code", JSON.stringify(code));
@@ -38,8 +41,19 @@ const CodeEditor = ({ onExecute, isError }) => {
     setCode(newCode);
   };
 
+  const handleSliderChange = (event) => {
+    setTempCubes(event.target.value);
+  };
+
+  const handleSliderBlur = () => {
+    setNumCubes(tempCubes);
+  }
+
   const handleExecute = () => {
     onExecute(code[visibleIndex]);
+  };
+  const handleResetScene = () => {
+    setReset(prev => ++prev);
   };
 
   const addTextarea = () => {
@@ -57,6 +71,10 @@ const CodeEditor = ({ onExecute, isError }) => {
 
   return (
     <div className="code-editor-container">
+      <div className="slidecontainer">
+        <input type="range" min="5" max="10" step="1" value={tempCubes} onChange={handleSliderChange} onBlur={handleSliderBlur}/>
+        <div style={{color: "white"}}>{tempCubes}</div>
+      </div>
       <div className="tab-container">
         {code.map((_, index) => (
           // <button
@@ -105,6 +123,9 @@ const CodeEditor = ({ onExecute, isError }) => {
       </div> */}
       <button onClick={handleExecute}>
         <VscDebugStart />
+      </button>
+      <button onClick={handleResetScene}>
+        Reset Scene
       </button>
     </div>
   );

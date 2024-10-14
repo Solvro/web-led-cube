@@ -1,5 +1,5 @@
 import "./App.css";
-import CubeScene from "./components/CubeScene";
+import Scenes from "./components/Scenes";
 import CodeEditor from "./components/CodeEditor";
 import { useState, useRef } from "react";
 
@@ -7,16 +7,24 @@ import { VscChevronDown, VscChevronUp } from "react-icons/vsc";
 
 function App() {
   const [code, setCode] = useState("");
+
+
+  const [execute, setExecute] = useState(0); // that's stupid and temporary aproach to trigger useEffect even when the code does not change
+  const [reset, setReset] = useState(0); // same aproach for reset button - easy to correct but I have no idea
+
+
   const [isError, setIsError] = useState(false);
   const [editorWidth, setEditorWidth] = useState(600);
   const [isEditorVisible, setIsEditorVisible] = useState(true);
   const [cubeSceneVisible, setCubeSceneVisible] = useState(true); // State for visibility
   const [cubeSceneKey, setCubeSceneKey] = useState(0); // State for CubeScene key
+  const [numCubes, setNumCubes] = useState(5);
   const minEditorWidth = 200;
   const previousMouseX = useRef(null);
 
   const handleExecuteCode = (newCode) => {
     setCode(newCode);
+    setExecute(prev => ++prev);
   };
 
   const handleMouseDown = (event) => {
@@ -57,12 +65,14 @@ function App() {
   return (
     <div className="App">
       <div className="container">
-        <CubeScene
+        <Scenes
+          execute={execute}
+          reset={reset}
           key={cubeSceneKey}
           code={code}
           setIsError={setIsError}
-          isEditorVisible={isEditorVisible}
           className={`cube-scene ${cubeSceneVisible ? "" : "hidden"}`}
+          numCubes={numCubes}
         />
         <div
           className={`code-editor ${isEditorVisible ? "" : "hidden"}`}
@@ -72,7 +82,7 @@ function App() {
             {isEditorVisible ? <VscChevronDown /> : <VscChevronUp />}
           </button>
           <div className="resizer" onMouseDown={handleMouseDown} />
-          <CodeEditor onExecute={handleExecuteCode} isError={isError} />
+          <CodeEditor onExecute={handleExecuteCode} isError={isError} numCubes={numCubes} setNumCubes={setNumCubes} setReset={setReset} />
         </div>
       </div>
     </div>

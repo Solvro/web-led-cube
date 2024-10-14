@@ -16,11 +16,17 @@ body {
   flex-direction: row;
 }
 
-.cube-scene {
+.main-scene {
   flex-grow: 1;
   overflow: auto;
   position: relative;
   /* transition: all 0.3s ease-in-out; */
+}
+.coord-scene {
+  position: absolute;
+  top: 25px;
+  height: 18.5vh;
+  width: 18.5vh;
 }
 
 .resizer {
@@ -56,6 +62,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  z-index: 1000;
 
   width: 100%;
   height: 100%;
@@ -250,9 +257,10 @@ body {
 
 #coord-button {
   position: absolute;
-  left: 10px;
-  top: 5px;
   height: 25px;
+  z-index: 0;
+  width: 100%;
+  top: -25px;
 
   background-color: #191b20;
   box-shadow: none;
@@ -261,7 +269,7 @@ body {
   border-top-left-radius: 0.3rem;
   border-top-right-radius: 0.3rem;
 
-  font-size: 0.8vw; /* Adjust the text size based on viewport width */
+  font-size: 1.2vh; /* Adjust the text size based on viewport width */
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -286,7 +294,7 @@ body {
     /* transition: 0.5s; */
   }
 
-  .cube-scene {
+  .main-scene {
     width: 100%;
     height: 100%;
   }
