@@ -24,6 +24,7 @@ body {
 }
 .coord-scene {
   position: absolute;
+  top: 25px;
   height: 18.5vh;
   width: 18.5vh;
 }
@@ -257,14 +258,16 @@ body {
 #coord-button {
   position: absolute;
   height: 25px;
-  z-index: -1;
+  z-index: 0;
+  width: 100%;
+  top: -25px;
 
   background-color: #191b20;
   box-shadow: none;
   color: white;
   border: solid white 1px;
-  border-bottom-left-radius: 0.3rem;
-  border-bottom-right-radius: 0.3rem;
+  border-top-left-radius: 0.3rem;
+  border-top-right-radius: 0.3rem;
 
   font-size: 1.2vh; /* Adjust the text size based on viewport width */
   text-align: center;

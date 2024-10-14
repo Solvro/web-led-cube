@@ -45,16 +45,8 @@ export const initializeCoordScene = (coordRefs) => {
 
   coordRefs.secondaryCubeDiv = secondaryCubeDiv;
 
-  // Add toggle button to show/hide coordCube
+  // coord-button functionality
   let button = document.getElementById("coord-button");
-  if (!button) {
-    button = document.createElement("button");
-    button.id = "coord-button";
-    button.style.width = `${mountRef.current.clientHeight}px`;
-    button.style.top =`${mountRef.current.clientHeight}px`;
-    document.body.appendChild(button);
-    button.innerHTML = "Hide Coordinates";
-  }
 
   button.addEventListener("click", () => {
     if (secondaryCubeDiv.style.display === "none") {
@@ -103,7 +95,6 @@ export const initializeCoordScene = (coordRefs) => {
     coordCamRef.current.aspect =
       mountRef.current.clientHeight / mountRef.current.clientHeight;
     coordCamRef.current.updateProjectionMatrix();
-    button.style.width = `${mountRef.current.clientHeight}px`;
     coordRendererRef.current.setSize(
       mountRef.current.clientHeight,
       mountRef.current.clientHeight

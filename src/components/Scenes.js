@@ -3,7 +3,7 @@ import "./../App.css";
 import {cleanupCoordScene, initializeCoordScene} from "./CoordScene";
 import { cleanupMainScene, initializeMainScene} from "./MainScene";
 
-const Scenes = ({ code, execute, setIsError, numCubes}) => {
+const Scenes = ({ code, execute, reset, setIsError, numCubes}) => {
   const mainMountRef = useRef(null);
   const coordMountRef = useRef(null);
 
@@ -76,13 +76,15 @@ const Scenes = ({ code, execute, setIsError, numCubes}) => {
     executeCode();
   }, [execute]);
 
+
   useEffect(() => {
     resetScene();
-  }, [numCubes]);
+  }, [numCubes, reset]);
 
   return <><div className="main-scene" ref={mainMountRef}>
-    <div className="coord-scene" ref={coordMountRef}></div>
-    <button onClick={() => resetScene()} style={{position: "absolute"}}>Reset Scene</button>
+    <div className="coord-scene" ref={coordMountRef}>
+      <button id="coord-button">Hide Coordinates</button>
+    </div>
   </div>
   </>
 };

@@ -6,7 +6,7 @@ import { VscDiffAdded, VscDiffRemoved, VscDebugStart } from "react-icons/vsc";
 import { BiSolidPlusCircle } from "react-icons/bi";
 import { BiWindowClose } from "react-icons/bi";
 
-const CodeEditor = ({ onExecute, isError , numCubes, setNumCubes }) => {
+const CodeEditor = ({ onExecute, isError , numCubes, setNumCubes, setReset }) => {
   const [tempCubes, setTempCubes] = useState(numCubes);
   const [code, setCode] = useState(() => {
     const savedCode = localStorage.getItem("code");
@@ -51,6 +51,9 @@ const CodeEditor = ({ onExecute, isError , numCubes, setNumCubes }) => {
 
   const handleExecute = () => {
     onExecute(code[visibleIndex]);
+  };
+  const handleResetScene = () => {
+    setReset(prev => ++prev);
   };
 
   const addTextarea = () => {
@@ -120,6 +123,9 @@ const CodeEditor = ({ onExecute, isError , numCubes, setNumCubes }) => {
       </div> */}
       <button onClick={handleExecute}>
         <VscDebugStart />
+      </button>
+      <button onClick={handleResetScene}>
+        Reset Scene
       </button>
     </div>
   );
