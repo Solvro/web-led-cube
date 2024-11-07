@@ -3,7 +3,6 @@
 ## ponieważ LedCube zapewnia pole do nieskończenie wielu animacji przedstawimy tutaj proces tworzenia przykłądowej animacji która będzie zawierała najważniejsze elementy tworzenia animacji.
 
 
-
 ## Krok 1 - zmiana koloru
 
 Animacje tworzone za pomocą LedCube opierają się na zmianach koloru pojedynczego leda. Zatem, zanim sprawimy, by cała kostka zaświeciła się całą paletą barw nauczmy się najpierw jak zmienić kolor pojedynczego elementu.
@@ -21,7 +20,7 @@ Zatem, jeżeli chcemy się odwołać do kostki znajdującej się z przodu musimy
 
 ![Ilustracja](screens/cubewhitefront.png)
 
-Dobrą praktyką jest dopisanie linijki odnoszącej się do koloru samej kostki, a nie tylko do koloru emitowanego światła. Sprawi to, że kolory będą instensywniejsze:
+Dobrą praktyką jest dopisanie linijki odnoszącej się do koloru samej kostki, a nie tylko do koloru emitowanego światła. Sprawi to, że kolory będą intensywniejsze:
 ```
 cubes[0][0][4].material.color.set(0xffffff);
 cubes[0][0][4].material.emissive.set(0xffffff); 
@@ -48,7 +47,7 @@ Jak widać powyżej, cała przednia ściana zmieniła swój kolor na granatowy. 
 
 ## Krok 3 - wykorzystanie czasu
 
-Aby nasza animacja byłą w pełni funkcjonalna brakuje nam jednej rzeczy - zmiana w czasie. Aby sworzyć animację, a nie statyczne obrazy. Na szczęście, aby to wykonać wystarczy użyć wbudowanej funkcji `setTimeout()`. Aby działała, musimy jako pierwszy parametr podać funkcję którą chcemy wykonać, a jako drugi czas w milisekundach jaki chcemy odczekać. Aby zaprezentować działanie funkcji możemy wprowadzić małą zmianę do kodu z poprzedniego kroku: 
+Aby nasza animacja byłą w pełni funkcjonalna brakuje nam jednej rzeczy - zmiana w czasie. Aby stworzyć animację, a nie statyczne obrazy. Na szczęście, aby to wykonać wystarczy użyć wbudowanej funkcji `setTimeout()`. Aby działała, musimy jako pierwszy parametr podać funkcję którą chcemy wykonać, a jako drugi czas w milisekundach jaki chcemy odczekać. Aby zaprezentować działanie funkcji możemy wprowadzić małą zmianę do kodu z poprzedniego kroku: 
 ```
 
 let wallCount = cubes.length;
@@ -94,3 +93,4 @@ animateWalls();
 Jak widać utworzyliśmy rekurencje o nazwie `animateWalls`. Jej działanie opiera się na pętlach `for` których używamy do zmiany koloru kolejnych ścian. W wyniku działania tego kodu otrzymujemy poniższą animację:
 
 ![Animacja](screens/LedGIf.gif)
+
