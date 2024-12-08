@@ -1,92 +1,42 @@
-import "./App.css";
-import Scenes from "./components/Scenes";
-import CodeEditor from "./components/CodeEditor";
-import { useState, useRef } from "react";
+import React from 'react'
+import { Route, Routes } from 'react-router-dom'
+import { Layout } from './pages/Layout'
+import MainPage from './MainPage'
+import MissingPage from './pages/MissingPage'
+import Login from './pages/Login'
+import Registration from './pages/Registration'
+import RequireAuth from './components/RequireAuth'
+import Unauthorized from './pages/Unauthorized'
+// it's only temporary of course
+const ROLES = {
+  'User': 2001,
+  'Admin': 1984,
+  // just left admin for future reference, it's not needed/used
+}
 
-import { VscChevronDown, VscChevronUp } from "react-icons/vsc";
-
-function App() {
-  const [code, setCode] = useState("");
-
-
-  const [execute, setExecute] = useState(0); // that's stupid and temporary aproach to trigger useEffect even when the code does not change
-  const [reset, setReset] = useState(0); // same aproach for reset button - easy to correct but I have no idea
-
-
-  const [isError, setIsError] = useState(false);
-  const [editorWidth, setEditorWidth] = useState(600);
-  const [isEditorVisible, setIsEditorVisible] = useState(true);
-  const [cubeSceneVisible, setCubeSceneVisible] = useState(true); // State for visibility
-  const [cubeSceneKey, setCubeSceneKey] = useState(0); // State for CubeScene key
-  const [numCubes, setNumCubes] = useState(5);
-  const minEditorWidth = 200;
-  const previousMouseX = useRef(null);
-
-  const handleExecuteCode = (newCode) => {
-    setCode(newCode);
-    setExecute(prev => ++prev);
-  };
-
-  const handleMouseDown = (event) => {
-    event.preventDefault();
-    previousMouseX.current = event.clientX;
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
-  };
-
-  const handleMouseMove = (event) => {
-    const deltaX = event.clientX - previousMouseX.current;
-    previousMouseX.current = event.clientX;
-    setEditorWidth((prevWidth) => Math.max(minEditorWidth, prevWidth - deltaX));
-  };
-
-  const handleMouseUp = () => {
-    document.removeEventListener("mousemove", handleMouseMove);
-    document.removeEventListener("mouseup", handleMouseUp);
-    // First, hide the CubeScene
-    setCubeSceneVisible(false);
-    // After the transition duration, update the key and make it visible again
-    setTimeout(() => {
-      setCubeSceneKey((prevKey) => prevKey + 1);
-      setCubeSceneVisible(true);
-    }, 400); // 300ms matches the transition duration
-  };
-
-  const toggleEditorVisibility = () => {
-    setIsEditorVisible(!isEditorVisible);
-    // Force re-render of CubeScene when toggling editor visibility
-    setCubeSceneVisible(false);
-    setTimeout(() => {
-      setCubeSceneVisible(true);
-    }, 400);
-    setCubeSceneKey((prevKey) => prevKey + 1);
-  };
+const App = () => {
+  
 
   return (
-    <div className="App">
-      <div className="container">
-        <Scenes
-          execute={execute}
-          reset={reset}
-          key={cubeSceneKey}
-          code={code}
-          setIsError={setIsError}
-          className={`cube-scene ${cubeSceneVisible ? "" : "hidden"}`}
-          numCubes={numCubes}
-        />
-        <div
-          className={`code-editor ${isEditorVisible ? "" : "hidden"}`}
-          style={{ width: editorWidth }}
-        >
-          <button className="toggle-button" onClick={toggleEditorVisibility}>
-            {isEditorVisible ? <VscChevronDown /> : <VscChevronUp />}
-          </button>
-          <div className="resizer" onMouseDown={handleMouseDown} />
-          <CodeEditor onExecute={handleExecuteCode} isError={isError} numCubes={numCubes} setNumCubes={setNumCubes} setReset={setReset} />
-        </div>
-      </div>
-    </div>
-  );
+    <Routes>
+    <Route path="/" element={<Layout/>}>
+      <Route path="/" element={<MainPage/>}/>
+      <Route path="login" element={<Login/>}/>
+      <Route path="register" element={<Registration/>}/>
+      <Route path="unauthorized" element={<Unauthorized/>}/>
+
+      <Route element={<RequireAuth allowedRoles={[ROLES.User]}/>}>
+        {/* This is for the future, checks for roles and if the user does not have
+        a certain role, they are brought to unauthorized or login
+        (will leave only login if there is only one role)*/}
+        <Route path="uploadtocube" element={""}/>
+      </Route>
+
+      {/* Missing page */}
+      <Route path="*" element={<MissingPage/>} />
+    </Route>
+    </Routes>
+  )
 }
 
 export default App;

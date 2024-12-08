@@ -1,5 +1,5 @@
 import React, { useRef, useEffect} from "react";
-import "./../App.css";
+import "./../MainPage.css";
 import {cleanupCoordScene, initializeCoordScene} from "./CoordScene";
 import { cleanupMainScene, initializeMainScene} from "./MainScene";
 

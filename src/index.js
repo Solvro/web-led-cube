@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { AuthProvider } from './context/AuthProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -14,7 +16,13 @@ if (process.env.NODE_ENV === 'production') {
 else {
     root.render(
         <React.StrictMode>
-            <App />
+            <BrowserRouter>
+                <AuthProvider>
+                    <Routes>
+                        <Route path="/*" element={<App/>}/>
+                    </Routes>
+                </AuthProvider>
+            </BrowserRouter>
         </React.StrictMode>
     );
 }

@@ -1,9 +1,10 @@
 body {
   background-color: #05060e;
+  color: white;
   overflow: hidden;
 }
 
-.App {
+.main-page {
   display: flex;
   height: 100vh;
   flex-direction: row;
