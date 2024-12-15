@@ -1,6 +1,6 @@
 body {
   background-color: #05060e;
-  color: white;
+  /* color: white; */
   overflow: hidden;
 }
 
@@ -100,10 +100,10 @@ body {
   display: none;
 
   border: 2px solid black;
+}
   /* tak na przyszłość: okazuje się że .text-area to dodatkowy div otaczający
     to co jest w codeMirror, za długo się pierdzieliłem z tym gdzie błąd, ale jak coś
     nie działa z CM to patrzcie tutaj raczej*/
-}
 
 .cm-editor {
   width: 100%;

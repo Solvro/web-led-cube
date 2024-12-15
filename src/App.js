@@ -7,17 +7,20 @@ import Login from './pages/Login'
 import Registration from './pages/Registration'
 import RequireAuth from './components/RequireAuth'
 import Unauthorized from './pages/Unauthorized'
+import { Toaster } from 'react-hot-toast'
+
 // it's only temporary of course
 const ROLES = {
-  'User': 2001,
-  'Admin': 1984,
-  // just left admin for future reference, it's not needed/used
+  'User': 2001
 }
 
 const App = () => {
   
 
   return (
+    <>
+    <Toaster/> 
+    {/* notifications - react-hot-toaster */}
     <Routes>
     <Route path="/" element={<Layout/>}>
       <Route path="/" element={<MainPage/>}/>
@@ -27,15 +30,15 @@ const App = () => {
 
       <Route element={<RequireAuth allowedRoles={[ROLES.User]}/>}>
         {/* This is for the future, checks for roles and if the user does not have
-        a certain role, they are brought to unauthorized or login
-        (will leave only login if there is only one role)*/}
+        a certain role, they are brought login*/}
         <Route path="uploadtocube" element={""}/>
       </Route>
 
-      {/* Missing page */}
+      {/* "*" is the rest of paths that are not stated*/}
       <Route path="*" element={<MissingPage/>} />
     </Route>
     </Routes>
+    </>
   )
 }
 
