@@ -1,9 +1,9 @@
 import "./MainPage.css";
 import Scenes from "./main-page/Scenes";
-import CodeEditor from "./main-page/CodeEditor";
 import { useState, useRef } from "react";
 
 import { VscChevronDown, VscChevronUp } from "react-icons/vsc";
+import PagesPanel from "./main-page/PagesPanel";
 
 function MainPage() {
   const [code, setCode] = useState("");
@@ -35,9 +35,9 @@ function MainPage() {
   const handleMouseMove = (event) => {
     const deltaX = event.clientX - previousMouseX.current;
     previousMouseX.current = event.clientX;
-    setEditorWidth((prevWidth) => Math.max(minEditorWidth, prevWidth - deltaX));
+    setEditorWidth((prevWidth) => Math.max(minEditorWidth, prevWidth - deltaX) > 360 ? Math.max(minEditorWidth, prevWidth - deltaX) : 360);
   };
-
+  console.log("isEditorVisible in parent:", isEditorVisible);
   const handleMouseUp = () => {
     document.removeEventListener("mousemove", handleMouseMove);
     document.removeEventListener("mouseup", handleMouseUp);
@@ -52,6 +52,7 @@ function MainPage() {
 
   const toggleEditorVisibility = () => {
     setIsEditorVisible(!isEditorVisible);
+    console.log("isEditorVisible in parent:", isEditorVisible);
     // Force re-render of CubeScene when toggling editor visibility
     setCubeSceneVisible(false);
     setTimeout(() => {
@@ -59,33 +60,34 @@ function MainPage() {
     }, 400);
     setCubeSceneKey((prevKey) => prevKey + 1);
   };
-
   return (
     <div className="main-page">
-      <div className="container">
+      <div className="mp-container">
         <Scenes
           execute={execute}
           reset={reset}
           key={cubeSceneKey}
           code={code}
           setIsError={setIsError}
-          className={`cube-scene ${cubeSceneVisible ? "" : "hidden"}`}
+          className={`cube-scene ${cubeSceneVisible ? "" : "mp-hidden"}`}
           numCubes={numCubes}
         />
         <div
-          className={`code-editor ${isEditorVisible ? "" : "hidden"}`}
+          className={`mp-panels ${isEditorVisible ? "" : "mp-hidden"}`}
           style={{ width: editorWidth }}
         >
-          <button className="toggle-button" onClick={toggleEditorVisibility}>
+          <button className="mp-toggle-button" onClick={toggleEditorVisibility}>
             {isEditorVisible ? <VscChevronDown /> : <VscChevronUp />}
           </button>
           <div className="resizer" onMouseDown={handleMouseDown} />
-          <CodeEditor
+          
+          <PagesPanel
             onExecute={handleExecuteCode}
             isError={isError}
             numCubes={numCubes}
             setNumCubes={setNumCubes}
             setReset={setReset}
+            isVisible={isEditorVisible}
           />
         </div>
       </div>

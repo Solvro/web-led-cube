@@ -1,0 +1,138 @@
+.tab-button {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  
+  .tab-container {
+    width: 100%;
+    display: flex;
+  }
+  .tab-window {
+    background-color: rgba(107, 83, 83, 0.792);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    width: 150px;
+    height: 30px;
+    text-align: center;
+    border-radius: 15px 0 15px 0;
+    position: relative;
+    font-weight: bold;
+    animation: windowAnimation 1s;
+  
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .code-editor .code-editor-button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #606166;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+
+  .text-area-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 50%;
+    width: 100%;
+    padding-bottom: 10px;
+    padding-top: 10px;
+  }
+  
+  .text-area.visible {
+    display: flex;
+    width: 100%;
+  }
+  
+  .text-area {
+    width: 20rem;
+    height: 100%;
+    resize: none;
+    margin-top: 10px;
+    font-size: 14px;
+    font-family: Consolas, monospace;
+    color: white;
+    background-color: #323338;
+    border: 1px solid black;
+    outline: none;
+    position: absolute;
+    display: none;
+  
+    border: 2px solid black;
+  }
+  /* tak na przyszłość: okazuje się że .text-area to dodatkowy div otaczający
+      to co jest w codeMirror, za długo się pierdzieliłem z tym gdzie błąd, ale jak coś
+      nie działa z CM to patrzcie tutaj raczej*/
+  
+  .cm-editor {
+    width: 100%;
+  }
+  .cm-content {
+    padding: 10px;
+  }
+  .cm-scroller {
+    overflow: auto;
+  }
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #282c34;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  ::-webkit-scrollbar-corner {
+    background: #282c34;
+  }
+  /* https://codemirror.net/examples/styling/ */
+
+  .add-icon {
+    color: green;
+    width: 30px;
+    height: 30px;
+    margin-left: 3px;
+  
+    &:hover {
+      cursor: pointer;
+      scale: 1.1;
+      transition: "1s";
+    }
+  }
+
+  .delete-icon {
+    position: absolute;
+    top: 0;
+    right: 5px;
+    width: 20px;
+    height: 18px;
+    color: rgb(99, 6, 6);
+  
+    &:hover {
+      cursor: pointer;
+      scale: 1.1;
+      transition: "1s";
+    }
+  }
+
+  .window-active {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    border-radius: 10px 10px 0 0;
+    width: calc(100% - 15px);
+    height: 2px;
+    background-color: green;
+    animation: lineAnimation 1s;
+  }

@@ -2,11 +2,18 @@ import React, { useState, useEffect } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { javascript } from "@codemirror/lang-javascript";
-import { VscDiffAdded, VscDiffRemoved, VscDebugStart } from "react-icons/vsc";
+import { VscDebugStart } from "react-icons/vsc";
 import { BiSolidPlusCircle } from "react-icons/bi";
 import { BiWindowClose } from "react-icons/bi";
+import "./../CodeEditor.css";
 
-const CodeEditor = ({ onExecute, isError , numCubes, setNumCubes, setReset }) => {
+const CodeEditor = ({
+  onExecute,
+  isError,
+  numCubes,
+  setNumCubes,
+  setReset,
+}) => {
   const [tempCubes, setTempCubes] = useState(numCubes);
   const [code, setCode] = useState(() => {
     const savedCode = localStorage.getItem("code");
@@ -14,8 +21,6 @@ const CodeEditor = ({ onExecute, isError , numCubes, setNumCubes, setReset }) =>
       ? JSON.parse(savedCode)
       : ["/* Kod idzie tutaj */"];
   });
-
-
 
   useEffect(() => {
     localStorage.setItem("code", JSON.stringify(code));
@@ -47,13 +52,13 @@ const CodeEditor = ({ onExecute, isError , numCubes, setNumCubes, setReset }) =>
 
   const handleSliderBlur = () => {
     setNumCubes(tempCubes);
-  }
+  };
 
   const handleExecute = () => {
     onExecute(code[visibleIndex]);
   };
   const handleResetScene = () => {
-    setReset(prev => ++prev);
+    setReset((prev) => ++prev);
   };
 
   const addTextarea = () => {
@@ -70,24 +75,9 @@ const CodeEditor = ({ onExecute, isError , numCubes, setNumCubes, setReset }) =>
   };
 
   return (
-    <div className="code-editor-container">
-      <div className="slidecontainer">
-        <input type="range" min="5" max="10" step="1" value={tempCubes} onChange={handleSliderChange} onBlur={handleSliderBlur}/>
-        <div style={{color: "white"}}>{tempCubes}</div>
-      </div>
+    <div style={{ width: "100%", height: "100%" }}>
       <div className="tab-container">
         {code.map((_, index) => (
-          // <button
-          //   key={index}
-          // className={`tab-button ${
-          //   code[index] !== "" && visibleIndex !== index
-          //     ? "button-not-empty"
-          //     : ""
-          // } ${visibleIndex === index ? "button-active" : ""}`}
-          //   onClick={() => handleVisibility(index)}
-          // >
-          //   {index + 1}
-          // </button>
           <div
             key={index}
             className={"tab-window"}
@@ -113,20 +103,24 @@ const CodeEditor = ({ onExecute, isError , numCubes, setNumCubes, setReset }) =>
           />
         ))}
       </div>
-      {/* <div className="control-buttons">
-        <button className="tab-button" onClick={addTextarea}>
-          <VscDiffAdded />
-        </button>
-        <button className="tab-button" onClick={removeTextarea}>
-          <VscDiffRemoved />
-        </button>
-      </div> */}
-      <button onClick={handleExecute}>
+      <button onClick={handleExecute} className="code-editor-button">
         <VscDebugStart />
       </button>
-      <button onClick={handleResetScene}>
+      <button onClick={handleResetScene} className="code-editor-button">
         Reset Scene
       </button>
+      <div>
+        <input
+          type="range"
+          min="5"
+          max="10"
+          step="1"
+          value={tempCubes}
+          onChange={handleSliderChange}
+          onBlur={handleSliderBlur}
+        />
+        <div style={{ color: "white" }}>{tempCubes}</div>
+      </div>
     </div>
   );
 };
