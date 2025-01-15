@@ -17,7 +17,7 @@ function MainPage() {
   const [cubeSceneVisible, setCubeSceneVisible] = useState(true); // State for visibility
   const [cubeSceneKey, setCubeSceneKey] = useState(0); // State for CubeScene key
   const [numCubes, setNumCubes] = useState(5);
-  const minEditorWidth = 200;
+  const minEditorWidth = 400;
   const previousMouseX = useRef(null);
 
   const handleExecuteCode = (newCode) => {

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./../MainPage.css";
 import "./subpages.css";
 import CodeEditor from "./CodeEditor";
+import Projects from "./ProjectsManager/Projects";
 //tymczasowe podejście
 //this is a panel that displays tabs that switch to different pages like
 // tutorial, upload etc.
@@ -23,9 +24,9 @@ const PagesPanel = ({ onExecute, isError , numCubes, setNumCubes, setReset, isVi
     },
     { 
       number: 2, 
-      text: "Tutorial", 
+      text: "Projects", 
       icon: "", 
-      content: <div>Here is your Profile Information.</div> 
+      content: <Projects chosenPage={chosenPage}/>
     },
     { 
       number: 3, 
@@ -54,13 +55,13 @@ const PagesPanel = ({ onExecute, isError , numCubes, setNumCubes, setReset, isVi
           <div key={number} className="sub-tab-container">
             <div className={`sub-tab-wall ${chosenPage === number ? "sub-active" : ""}`}><div className="colored-left"></div></div>
             <button onClick={() => switchSubPage(number)} className={`sub-tab-button ${chosenPage === number ? "sub-active" : ""}`}>
-              {icon} {text} {number}
+              {icon} {text}
             </button>
             <div className={`sub-tab-wall ${chosenPage === number ? "sub-active" : ""}`}><div className="colored-right"></div></div>
           </div>
         ))}
       </div>
-
+        {/* TO DO: make a react router to make visibility issues not a living hell */}
       {/* Page Content */}
       <div className={`sub-page-content-container`}>
         {/* {pages.find(({ page }) => page === chosenPage)?.content} */}
