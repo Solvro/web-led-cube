@@ -3,73 +3,79 @@ import "./../MainPage.css";
 import "./subpages.css";
 import CodeEditor from "./CodeEditor";
 import Projects from "./ProjectsManager/Projects";
+import { Outlet, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 //tymczasowe podejście
 //this is a panel that displays tabs that switch to different pages like
 // tutorial, upload etc.
-const PagesPanel = ({ onExecute, isError , numCubes, setNumCubes, setReset, isVisible }) => {
-  const [chosenPage, setChosenPage] = useState(1);
+const PagesPanel = ({
+  isVisible
+}) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isActive = (path) => {
+    if (path === "/" && location.pathname === "/") return true; // Home case
+    return location.pathname.startsWith(`/${path}`); // Match other paths correctly
+  };
 
   const pages = [
-    { 
-      number: 1, 
-      text: "Code", 
-      icon: "", 
-      content: <CodeEditor
-      onExecute={onExecute}
-      isError={isError}
-      numCubes={numCubes}
-      setNumCubes={setNumCubes}
-      setReset={setReset}
-    />
+    {
+      number: 1,
+      text: "Code",
+      path: "/",
     },
-    { 
-      number: 2, 
-      text: "Projects", 
-      icon: "", 
-      content: <Projects chosenPage={chosenPage}/>
+    {
+      number: 2,
+      text: "Projects",
+      path: "projects",
     },
-    { 
-      number: 3, 
-      text: "Info", 
-      icon: "", 
-      content: <div>Adjust your Settings here.</div> 
+    {
+      number: 3,
+      text: "Info",
+      path: "info",
     },
-    { 
-      number: 4, 
-      text: "Settings", 
-      icon: "", 
-      content: <div>Adjust your Settings here.</div> 
+    {
+      number: 4,
+      text: "Settings",
+      path: "settings",
     },
   ];
 
-  const switchSubPage = (index) => {
-    setChosenPage(index);
-  };
-  
-
   return (
-    <div className={`code-editor-container ${isVisible ? "" : "sub-page-hidden"}`}>
+    <div
+      className={`code-editor-container ${isVisible ? "" : "sub-page-hidden"}`}
+    >
       {/* Tabs */}
       <div className="sub-tabs-container">
-        {pages.map(({ number, text, icon }) => (
+        {pages.map(({ number, text, path }) => (
           <div key={number} className="sub-tab-container">
-            <div className={`sub-tab-wall ${chosenPage === number ? "sub-active" : ""}`}><div className="colored-left"></div></div>
-            <button onClick={() => switchSubPage(number)} className={`sub-tab-button ${chosenPage === number ? "sub-active" : ""}`}>
-              {icon} {text}
+            <div
+              className={`sub-tab-wall ${
+                isActive(path) ? "sub-active" : ""
+              }`}
+            >
+              <div className="colored-left"></div>
+            </div>
+            <button
+              onClick={() => navigate(path)}
+              className={`sub-tab-button ${
+                isActive(path) ? "sub-active" : ""
+              }`}
+            >
+              {text}
             </button>
-            <div className={`sub-tab-wall ${chosenPage === number ? "sub-active" : ""}`}><div className="colored-right"></div></div>
+            <div
+              className={`sub-tab-wall ${
+                isActive(path) ? "sub-active" : ""
+              }`}
+            >
+              <div className="colored-right"></div>
+            </div>
           </div>
         ))}
       </div>
-        {/* TO DO: make a react router to make visibility issues not a living hell */}
       {/* Page Content */}
       <div className={`sub-page-content-container`}>
-        {/* {pages.find(({ page }) => page === chosenPage)?.content} */}
-        {pages.map((page) => (
-          <div key={page.number} className={`sub-page-content ${chosenPage === page.number ? "sub-active-content" : ""}`}>
-              {page.content}
-          </div>
-        ))}
+        <Outlet/>
       </div>
     </div>
   );

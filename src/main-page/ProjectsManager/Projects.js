@@ -1,43 +1,44 @@
 import { useState } from 'react';
 import "./projectManager.css";
 import { YourProjects } from './YourProjects';
+import { Outlet, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 const pages = [
     { 
       number: 1, 
       text: "Zapisane", 
-      icon: "", 
-      content: <YourProjects/>
+      path: ""
     },
     { 
       number: 2, 
-      text: "Polubione", 
-      icon: "", 
-      content: <div>XDD</div>
+      text: "Polubione",
+      path: "saved"
     },
     { 
       number: 3, 
-      text: "Odkrywaj", 
-      icon: "", 
-      content: <div>XDDD</div> 
+      text: "Odkrywaj",
+      path: "discover"
     },
   ];
 
-const Projects = ({chosenPage}) => {
-  const [chosenSubPage, setChosenSubPage] = useState(1);
-  const switchSubPage = (index) => {
-    setChosenSubPage(index);
+const Projects = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isActive = (path) => {
+    return path === "" 
+    ? location.pathname === "/projects" || location.pathname === "/projects/"
+    : location.pathname === `/projects/${path}`;
   };
   return (
-    <div style={{ width: "100%", height: "100%", visibility: chosenPage === 2 ? "visible" : "hidden" }}>
+    <div style={{ width: "100%", height: "100%"}}>
       <div className='container'>
       <div className="projects-tabs-container">
-        {pages.map(({ number, text, icon }) => (
+        {pages.map(({ number, text, path }) => (
           <div key={number} className="projects-tab-container">
-            <button onClick={() => switchSubPage(number)} className={`projects-tab-button`}>
-              {icon} {text}
+            <button onClick={() => navigate(path)} className={`projects-tab-button`}>
+              {text}
             </button>
-            <div className={`projects-tabs-underline ${chosenSubPage === number ? "projects-active" : ""}`}></div>
+            <div className={`projects-tabs-underline ${isActive(path) ? "projects-active" : ""}`}></div>
           </div>
         ))}
         
@@ -45,11 +46,7 @@ const Projects = ({chosenPage}) => {
       <div className='projects-tab-underline'></div>
       </div>
       <div className={`sub-page-content-container`}>
-        {pages.map((page) => (
-          <div key={page.number} className={`sub-page-content ${chosenSubPage === page.number && chosenPage === 2 ? "sub-active-content" : ""}`}>
-              {page.content}
-          </div>
-        ))}
+        <Outlet/>
       </div>
 
     </div>
