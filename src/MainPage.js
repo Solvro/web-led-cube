@@ -4,7 +4,6 @@ import { useState, useRef } from "react";
 
 import { VscChevronDown, VscChevronUp } from "react-icons/vsc";
 import PagesPanel from "./main-page/PagesPanel";
-import { Outlet } from "react-router-dom";
 
 function MainPage({execute, reset, code, setIsError, numCubes, handleExecuteCode, isError, setNumCubes, setReset}) {
   const [editorWidth, setEditorWidth] = useState(600);

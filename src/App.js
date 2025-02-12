@@ -22,8 +22,7 @@ const App = () => {
   const [execute, setExecute] = useState(0); // that's stupid and temporary aproach to trigger useEffect even when the code does not change
   const [reset, setReset] = useState(0); // same aproach for reset button - easy to correct but I have no idea
   const [isError, setIsError] = useState(false);
-  const [numCubes, setNumCubes] = useState(6);
-
+  const [numCubes, setNumCubes] = useState(5);
 
   const handleExecuteCode = (newCode) => {
     setCode(newCode);
@@ -35,18 +34,38 @@ const App = () => {
       {/* notifications - react-hot-toaster */}
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route path="/" element={<MainPage execute={execute} handleExecuteCode={handleExecuteCode} reset={reset} setReset={setReset} code={code} numCubes={numCubes} setNumCubes={setNumCubes} isError={isError} setIsError={setIsError}/>}>
-            <Route index element={<CodeEditor
-          onExecute={handleExecuteCode}
-          setReset={setReset}
-          numCubes={numCubes}
-          setNumCubes={setNumCubes}
-          isError={isError}
-          />} />
+          <Route
+            path="/"
+            element={
+              <MainPage
+                execute={execute}
+                handleExecuteCode={handleExecuteCode}
+                reset={reset}
+                setReset={setReset}
+                code={code}
+                numCubes={numCubes}
+                setNumCubes={setNumCubes}
+                isError={isError}
+                setIsError={setIsError}
+              />
+            }
+          >
+            <Route
+              index
+              element={
+                <CodeEditor
+                  onExecute={handleExecuteCode}
+                  setReset={setReset}
+                  numCubes={numCubes}
+                  setNumCubes={setNumCubes}
+                  isError={isError}
+                />
+              }
+            />
             <Route path="projects" element={<Projects />}>
-              <Route index element={<YourProjects/> }/>
-              <Route path="saved" element={<div>XDD</div>}/>
-              <Route path="discover" element={<div>XDDD</div>}/>
+              <Route index element={<YourProjects />} />
+              <Route path="saved" element={<div>XDD</div>} />
+              <Route path="discover" element={<div>XDDD</div>} />
             </Route>
             <Route
               path="info"

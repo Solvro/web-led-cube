@@ -1,24 +1,37 @@
 import { useRef, useState, useEffect } from "react";
 import toast from 'react-hot-toast';
 import axios from "../api/axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { IoCheckmarkOutline } from "react-icons/io5";
 import { IoCloseOutline } from "react-icons/io5";
 
 const USER_REGEX = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
-// const EMAIL_REGEX = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g;
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const NAME_REGEX = /^[A-Za-z]+([ '-][A-Za-z]+)*$/;
+const LNAME_REGEX = /^[A-Za-z]+([ '-][A-Za-z]+)*$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
-const REGISTER_URL = "/register";
+const REGISTER_URL = "http://127.0.0.1:8000/auth/register/";
 
 const Registration = () => {
-
+  const navigate = useNavigate();
   const userRef = useRef();
 
   const [user, setUser] = useState("");
-  const [validName, setValidName] = useState(false);
+  const [validUser, setValidUser] = useState(false);
   const [userFocus, setUserFocus] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [validEmail, setValidEmail] = useState(false);
+
+  const [name, setName] = useState("");
+  const [validName, setValidName] = useState(false);
+  const [nameFocus, setNameFocus] = useState(false);
+
+  const [lname, setLname] = useState("");
+  const [validLname, setValidLname] = useState(false);
+  const [lnameFocus, setLnameFocus] = useState(false);
 
   const [pwd, setPwd] = useState("");
   const [validPwd, setValidPwd] = useState(false);
@@ -35,8 +48,23 @@ const Registration = () => {
   useEffect(() => {
     const result = USER_REGEX.test(user);
     console.log("User " + user + " + " + result);
-    setValidName(result);
+    setValidUser(result);
   }, [user]);
+  useEffect(() => {
+    const result = NAME_REGEX.test(name);
+    console.log("Name " + name + " + " + result);
+    setValidName(result);
+  }, [name]);
+  useEffect(() => {
+    const result = LNAME_REGEX.test(lname);
+    console.log("Lname " + lname + " + " + result);
+    setValidLname(result);
+  }, [lname]);
+  useEffect(() => {
+    const result = EMAIL_REGEX.test(email);
+    console.log("Email " + email + " + " + result);
+    setValidEmail(result);
+  }, [email]);
 
   useEffect(() => {
     const result = PWD_REGEX.test(pwd);
@@ -51,28 +79,45 @@ const Registration = () => {
     e.preventDefault();
 
     const v1 = USER_REGEX.test(user);
-    const v2 = PWD_REGEX.test(pwd);
-    if (!v1 || !v2) {
+    const v2 = EMAIL_REGEX.test(email);
+    const v3 = PWD_REGEX.test(pwd);
+    const v4 = NAME_REGEX.test(name)
+    const v5 = LNAME_REGEX.test(lname)
+    if (!v1 || !v2 || !v3 || !v4 || !v5) {
       toast.error("Invalid entry, try again");
       return;
     }
     try {
       const response = await axios.post(
         REGISTER_URL,
-        JSON.stringify({ Username: user, Password: pwd }),
+        JSON.stringify({ username: user, password: pwd, email: email, first_name: name, last_name: lname }),
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
-      toast.success(JSON.stringify(response.data));
+      // toast.success(JSON.stringify(response.data));
+      console.log(JSON.stringify(response.data))
+      toast.success("Registration complete");
       setUser("");
+      setEmail("");
+      setName("");
+      setLname("");
       setPwd("");
+      setMatchPwd("");
+      navigate("/login", { replace: true });
     } catch (err) {
-      if (!err?.respose) {
+      if (!err?.response) {
         toast.error("No Server Response");
-      } else if (err.response?.status === 409) {
-        toast.error("Username Taken");
+      } else if (err.response?.status === 400) {
+        // Check if the error is due to email conflict
+        if (err.response?.data?.email) {
+          toast.error("Email Already Taken");
+        } else if (err.response?.data?.username) {
+          toast.error("Username Taken");
+        } else {
+          toast.error("Registration Failed");
+        }
       } else {
         toast.error("Registration Failed");
       }
@@ -87,10 +132,10 @@ const Registration = () => {
           <div className="label-input-section">
             <label htmlFor="userName">
               USERNAME
-              <span className={validName ? "valid" : "hide"}>
+              <span className={validUser ? "valid" : "hide"}>
                 <IoCheckmarkOutline />
               </span>
-              <span className={validName || !user ? "hide" : "invalid"}>
+              <span className={validUser || !user ? "hide" : "invalid"}>
                 <IoCloseOutline />
               </span>
             </label>
@@ -102,7 +147,7 @@ const Registration = () => {
               onChange={(e) => setUser(e.target.value)}
               required
               value={user}
-              aria-invalid={validName ? "false" : "true"}
+              aria-invalid={validUser ? "false" : "true"}
               aria-describedby="uidnote"
               onFocus={() => setUserFocus(true)}
               onBlur={() => setUserFocus(false)}
@@ -112,12 +157,105 @@ const Registration = () => {
             <p
               id="uidnote"
               className={` tooltip
-            ${userFocus && user && !validName ? "" : "offscreen"}
-          `}
+            ${userFocus && user && !validUser ? "" : "offscreen"}
+            `}
             >
               4 to 24 characters. <br />
               Must begin with a letter. <br />
               Letters, numbers, underscores, hyphens allowed.
+            </p>
+          </div>
+          <div className="label-input-section">
+            <label htmlFor="email">
+              EMAIL
+              <span className={validEmail ? "valid" : "hide"}>
+                <IoCheckmarkOutline />
+              </span>
+              <span className={validEmail || !email ? "hide" : "invalid"}>
+                <IoCloseOutline />
+              </span>
+            </label>
+            <input
+              type="text"
+              id="email"
+              ref={userRef}
+              autoComplete="email"
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              value={email}
+              aria-invalid={validEmail ? "false" : "true"}
+              aria-describedby="uidnote"
+              placeholder="Enter your email"
+            />
+          </div>
+          <div className="label-input-section">
+            <label htmlFor="name">
+              FIRST NAME
+              <span className={validName ? "valid" : "hide"}>
+                <IoCheckmarkOutline />
+              </span>
+              <span className={validName || !name ? "hide" : "invalid"}>
+                <IoCloseOutline />
+              </span>
+            </label>
+            <input
+              type="text"
+              id="name"
+              ref={userRef}
+              autoComplete="firstName"
+              onChange={(e) => setName(e.target.value)}
+              required
+              value={name}
+              aria-invalid={validName ? "false" : "true"}
+              aria-describedby="uidnote"
+              onFocus={() => setNameFocus(true)}
+              onBlur={() => setNameFocus(false)}
+              placeholder="Enter your first name"
+            />
+            <p
+              id="uidnote"
+              className={` tooltip
+            ${nameFocus && name && !validName ? "" : "offscreen"}
+            `}
+            >
+              Cannot contain numbers. <br />
+              At least 1 letter long. <br />
+              Hyphens allowed.
+            </p>
+          </div>
+          <div className="label-input-section">
+            <label htmlFor="lname">
+              LAST NAME
+              <span className={validLname ? "valid" : "hide"}>
+                <IoCheckmarkOutline />
+              </span>
+              <span className={validLname || !lname ? "hide" : "invalid"}>
+                <IoCloseOutline />
+              </span>
+            </label>
+            <input
+              type="text"
+              id="lname"
+              ref={userRef}
+              autoComplete="firstName"
+              onChange={(e) => setLname(e.target.value)}
+              required
+              value={lname}
+              aria-invalid={validLname ? "false" : "true"}
+              aria-describedby="uidnote"
+              onFocus={() => setLnameFocus(true)}
+              onBlur={() => setLnameFocus(false)}
+              placeholder="Enter your last name"
+            />
+            <p
+              id="uidnote"
+              className={` tooltip
+            ${lnameFocus && lname && !validLname ? "" : "offscreen"}
+            `}
+            >
+              Cannot contain numbers. <br />
+              At least 1 letter long. <br />
+              Hyphens allowed.
             </p>
           </div>
           <div className="label-input-section">
@@ -177,6 +315,8 @@ const Registration = () => {
               autoComplete="new-password"
               onChange={(e) => setMatchPwd(e.target.value)}
               required
+              // I am not sure if I can give matchPwd value - if it causes problems, clear it
+              value={matchPwd}
               aria-invalid={validMatch ? "false" : "true"}
               aria-describedby="confirmnote"
               onFocus={() => setMatchFocus(true)}
@@ -194,7 +334,7 @@ const Registration = () => {
           </div>
 
           <button
-            disabled={!validName || !validPwd || !validMatch ? true : false}
+            disabled={!validUser || !validEmail || !validName || !validLname || !validPwd || !validMatch ? true : false}
             className="sign-in-button"
           >
             Sign Up

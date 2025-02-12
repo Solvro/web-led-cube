@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import "./../MainPage.css";
 import "./subpages.css";
-import CodeEditor from "./CodeEditor";
-import Projects from "./ProjectsManager/Projects";
-import { Outlet, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 //tymczasowe podejście
 //this is a panel that displays tabs that switch to different pages like
 // tutorial, upload etc.

@@ -6,7 +6,7 @@ import axios from "../api/axios";
 import "./Login.css";
 import { useAuth } from "../hooks/useAuth";
 
-const LOGIN_URL = "/auth";
+const LOGIN_URL = "http://127.0.0.1:8000/auth/token/";
 
 const Login = () => {
   const { setAuth } = useAuth();
@@ -30,26 +30,29 @@ const Login = () => {
     try {
       const response = await axios.post(
         LOGIN_URL,
-        JSON.stringify({ User: user, Password: pwd }),
+        JSON.stringify({ username: user, password: pwd }),
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
-      const accessToken = response?.data?.accessToken;
-      const roles = response?.data?.roles;
-      console.log("roles: " + roles + ", accessToken: " + accessToken);
-      setAuth({ user, pwd, roles, accessToken });
+      const accessToken = response?.data?.access;
+      const refreshToken = response?.data?.refresh;
+      // const roles = response?.data?.roles;
+      // console.log("roles: " + roles + ", accessToken: " + accessToken);
+      console.log("accessToken: " + accessToken + " ,refreshToken: " + refreshToken);
+      setAuth({ user, pwd, accessToken });
       setUser("");
       setPwd("");
       navigate(from, { replace: true });
+      toast.success("Logged in Successfully")
     } catch (err) {
       if (!err?.response) {
         toast.error("No server response")
       } else if (err.response?.status === 400) {
         toast.error("Missing Username or Password")
       } else if (err.response?.status === 401) {
-        toast.error("Unauthorized")
+        toast.error("Wrong Username or Password")
       } else {
         toast.error("Login Failed")
       }

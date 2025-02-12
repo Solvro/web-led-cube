@@ -1,7 +1,5 @@
-import { useState } from 'react';
 import "./projectManager.css";
-import { YourProjects } from './YourProjects';
-import { Outlet, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 const pages = [
     { 
