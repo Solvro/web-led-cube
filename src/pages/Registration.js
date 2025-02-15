@@ -93,7 +93,6 @@ const Registration = () => {
         JSON.stringify({ username: user, password: pwd, email: email, first_name: name, last_name: lname }),
         {
           headers: { "Content-Type": "application/json" },
-          withCredentials: true,
         }
       );
       // toast.success(JSON.stringify(response.data));

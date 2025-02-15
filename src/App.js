@@ -11,11 +11,10 @@ import { Toaster } from "react-hot-toast";
 import CodeEditor from "./main-page/CodeEditor";
 import Projects from "./main-page/ProjectsManager/Projects";
 import { YourProjects } from "./main-page/ProjectsManager/YourProjects";
+import { Test } from "./pages/Test";
+import { Test2 } from "./pages/Test2";
+import { PersistLogin } from "./components/PersistLogin";
 
-// it's only temporary of course
-const ROLES = {
-  User: 2001,
-};
 
 const App = () => {
   const [code, setCode] = useState("");
@@ -80,10 +79,9 @@ const App = () => {
           <Route path="register" element={<Registration />} />
           <Route path="unauthorized" element={<Unauthorized />} />
 
-          <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-            {/* This is for the future, checks for roles and if the user does not have
-        a certain role, they are brought login*/}
-            <Route path="uploadtocube" element={""} />
+          <Route element={<RequireAuth/>}>
+            <Route path="test" element={<Test/>} />
+            <Route path="test2" element={<Test2/>} />
           </Route>
 
           {/* "*" is the rest of paths that are not stated*/}

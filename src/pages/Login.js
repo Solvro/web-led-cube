@@ -33,15 +33,12 @@ const Login = () => {
         JSON.stringify({ username: user, password: pwd }),
         {
           headers: { "Content-Type": "application/json" },
-          withCredentials: true,
         }
       );
       const accessToken = response?.data?.access;
       const refreshToken = response?.data?.refresh;
-      // const roles = response?.data?.roles;
-      // console.log("roles: " + roles + ", accessToken: " + accessToken);
       console.log("accessToken: " + accessToken + " ,refreshToken: " + refreshToken);
-      setAuth({ user, pwd, accessToken });
+      setAuth(prev => ({ ...prev, user, accessToken, refreshToken }));
       setUser("");
       setPwd("");
       navigate(from, { replace: true });
