@@ -22,6 +22,8 @@ const pages = [
 const Projects = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  
   const isActive = (path) => {
     return path === "" 
     ? location.pathname === "/projects" || location.pathname === "/projects/"

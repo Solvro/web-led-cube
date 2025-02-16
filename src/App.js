@@ -13,8 +13,6 @@ import Projects from "./main-page/ProjectsManager/Projects";
 import { YourProjects } from "./main-page/ProjectsManager/YourProjects";
 import { Test } from "./pages/Test";
 import { Test2 } from "./pages/Test2";
-import { PersistLogin } from "./components/PersistLogin";
-
 
 const App = () => {
   const [code, setCode] = useState("");
@@ -62,9 +60,11 @@ const App = () => {
               }
             />
             <Route path="projects" element={<Projects />}>
-              <Route index element={<YourProjects />} />
-              <Route path="saved" element={<div>XDD</div>} />
-              <Route path="discover" element={<div>XDDD</div>} />
+              <Route element={<RequireAuth />}>
+                <Route index element={<YourProjects />} />
+                <Route path="saved" element={<div>XDD</div>} />
+                <Route path="discover" element={<div>XDDD</div>} />
+              </Route>
             </Route>
             <Route
               path="info"
@@ -79,9 +79,9 @@ const App = () => {
           <Route path="register" element={<Registration />} />
           <Route path="unauthorized" element={<Unauthorized />} />
 
-          <Route element={<RequireAuth/>}>
-            <Route path="test" element={<Test/>} />
-            <Route path="test2" element={<Test2/>} />
+          <Route element={<RequireAuth />}>
+            <Route path="test" element={<Test />} />
+            <Route path="test2" element={<Test2 />} />
           </Route>
 
           {/* "*" is the rest of paths that are not stated*/}

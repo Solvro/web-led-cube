@@ -1,17 +1,26 @@
-import { useLocation, Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { useEffect } from "react";
+import {Outlet, useLocation, Link } from "react-router-dom";
 
 const RequireAuth = () => {
-    const { auth } = useAuth();
+    const { auth } = useAuth();  // Get auth state from the useAuth hook
     const location = useLocation();
 
+    // Check if the access token is available in localStorage (persistent login)
+    const accessToken = localStorage.getItem("accessToken") || auth?.accessToken;
+
     return (
-        auth?.accessToken
-            ? <Outlet />
-            : <Navigate to="/login" state={{ from: location }} replace />
+        accessToken
+            ? <Outlet />  // If there's an access token, render the protected route
+            : (
+                <div>
+                    <button>
+                        <Link to="/login" state={{ from: location }} replace>
+                            Log in
+                        </Link>
+                    </button>
+                </div>  // Otherwise, show the "Log in" button
+            )
     );
 }
-
 
 export default RequireAuth;

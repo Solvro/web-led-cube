@@ -1,11 +1,13 @@
 import { useState } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate"
 import toast from 'react-hot-toast';
+import { useNavigate } from "react-router-dom";
 const ANIM_URL = "http://127.0.0.1:8000/animations/";
 
 export const Test2 = () => {
     const [data, setData] = useState([]);
     const axiosPrivate = useAxiosPrivate();
+    const navigate = useNavigate();
     const getData = async () => {
         try {
           const response = await axiosPrivate.get(
@@ -22,9 +24,18 @@ export const Test2 = () => {
           }
         }
       };
+      const LogOut = () => {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("user");
+        navigate("/login", { replace: true });
+    }
     
       return (
         <div>
+          <button onClick={() => LogOut()}>
+                            Log out
+                    </button>
             <button onClick={() => getData()}>
                 GET DATA
             </button>

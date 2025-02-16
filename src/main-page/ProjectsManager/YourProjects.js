@@ -1,14 +1,42 @@
 import DataTable, { createTheme } from 'react-data-table-component';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+
+const ANIM_URL = "http://127.0.0.1:8000/animations/";
+
 
 export const YourProjects = () => {
+    const axiosPrivate = useAxiosPrivate();
+    const [dataResponse, setDataResponse] = useState([]);
+
+    useEffect(() => {
+        const submitAnimation = async () => {
+            try {
+                const response = await axiosPrivate.get(
+                  ANIM_URL,
+                  {
+                    headers: { "Content-Type": "application/json" },
+                  }
+                );
+                setDataResponse(response.data);
+              } catch (err) {
+                if (!err?.response) {
+                  toast.error("Error " + err?.response);
+                }
+              }
+        };
+        submitAnimation();
+    }, []);
+
     const columns = [
         {
             name: 'Title',
             selector: row => row.title,
         },
         {
-            name: 'Date',
-            selector: row => row.date,
+            name: 'Description',
+            selector: row => row.description,
         },
         {
             name: 'Author',
@@ -20,21 +48,11 @@ export const YourProjects = () => {
         },
     ];
     
-    const data = [
-          {
-            id: 1,
-            title: 'Fireplace',
-            date: '14.02.2025',
-            author: 'xxUSERxX',
-    
-        },
-        {
-            id: 2,
-            title: 'Fireplace',
-            date: '14.02.2025',
-            author: 'xxUSERxX'
-        },
-    ]
+    const data = Array.isArray(dataResponse) ? dataResponse.map(project => ({
+        title: project.name,
+        description: project.description,
+        author: project.owner,
+    })) : [];
 
     createTheme(
         'solarized',

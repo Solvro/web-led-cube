@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useRefresh } from "./useRefresh";
 import { useAuth } from "./useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
+import toast from 'react-hot-toast';
 
 const useAxiosPrivate = () => {
   const refresh = useRefresh();
@@ -13,8 +14,10 @@ const useAxiosPrivate = () => {
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use(
       (config) => {
+        const accessToken = localStorage.getItem("accessToken") || auth?.accessToken;
+        console.log("useAxios is working...")
         if (!config.headers["Authorization"]) {
-          config.headers["Authorization"] = `Bearer ${auth?.accessToken}`;
+          config.headers["Authorization"] = `Bearer ${accessToken}`;
         }
         return config;
       },
@@ -26,32 +29,31 @@ const useAxiosPrivate = () => {
       async (error) => {
         const prevRequest = error?.config;
 
-        // 403 error = try refresh
-        if (error?.response?.status === 403 && !prevRequest?.sent) {
-          prevRequest.sent = true;
+        if ((error?.response?.status === 401 || error?.response?.status === 403) && !prevRequest?.sent) {
+          prevRequest.sent = true; // Prevent infinite loop
+
           try {
+            console.log("Attempting to refresh access token...");
             const newAccessToken = await refresh();
+
             if (!newAccessToken) {
-              throw new Error("Failed to refresh token"); // Force logout
+              setAuth({});
+              throw new Error("Failed to refresh token");   
             }
+
+            // Save new access token
             prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
             return axiosPrivate(prevRequest);
           } catch (err) {
-            console.error("Refresh failed:", err);
+            console.error("Token refresh failed:", err);
             setAuth({});
-            localStorage.removeItem("auth"); // Ensure auth is cleared
-            navigate("/login", { state: { from: location }, replace: true });
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+            localStorage.removeItem("user");
+            navigate(0);
+            toast.error("Session expired, please log in again.");
             return Promise.reject(error);
           }
-        }
-
-        // 401 = invalid = force logout
-        if (error?.response?.status === 401) {
-          console.error("Unauthorized - forcing logout");
-          setAuth({});
-          localStorage.removeItem("auth");
-          navigate("/login", { state: { from: location }, replace: true });
-          return Promise.reject(error);
         }
 
         return Promise.reject(error);

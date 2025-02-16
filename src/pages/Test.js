@@ -32,13 +32,6 @@ export const Test = () => {
       if (!err?.response) {
         toast.error("Error " + err?.response);
       }
-    //   } else if (err.response?.status === 400) {
-    //     toast.error("Missing Username or Password");
-    //   } else if (err.response?.status === 401) {
-    //     toast.error("Wrong Username or Password");
-    //   } else {
-    //     toast.error("Login Failed");
-    //   }
     }
   };
 
