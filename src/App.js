@@ -13,6 +13,8 @@ import Projects from "./main-page/ProjectsManager/Projects";
 import { YourProjects } from "./main-page/ProjectsManager/YourProjects";
 import { Test } from "./pages/Test";
 import { Test2 } from "./pages/Test2";
+import { SavedProjects } from "./main-page/ProjectsManager/SavedProjects";
+import { DiscoverProjects } from "./main-page/ProjectsManager/DiscoverProjects";
 
 const App = () => {
   const [code, setCode] = useState("");
@@ -62,13 +64,13 @@ const App = () => {
             <Route path="projects" element={<Projects />}>
               <Route element={<RequireAuth />}>
                 <Route index element={<YourProjects />} />
-                <Route path="saved" element={<div>XDD</div>} />
-                <Route path="discover" element={<div>XDDD</div>} />
+                <Route path="saved" element={<SavedProjects/>} />
+                <Route path="discover" element={<DiscoverProjects/>} />
               </Route>
             </Route>
             <Route
               path="info"
-              element={<div>Adjust your Settings here.</div>}
+              element={<div>Informacje są tutaj!</div>}
             />
             <Route
               path="settings"

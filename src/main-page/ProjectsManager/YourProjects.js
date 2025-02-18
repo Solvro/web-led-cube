@@ -11,7 +11,7 @@ export const YourProjects = () => {
     const [dataResponse, setDataResponse] = useState([]);
 
     useEffect(() => {
-        const submitAnimation = async () => {
+        const getUserAnimations = async () => {
             try {
                 const response = await axiosPrivate.get(
                   ANIM_URL,
@@ -22,11 +22,11 @@ export const YourProjects = () => {
                 setDataResponse(response.data);
               } catch (err) {
                 if (!err?.response) {
-                  toast.error("Error " + err?.response);
+                  console.error(err?.response);
                 }
               }
         };
-        submitAnimation();
+        getUserAnimations();
     }, []);
 
     const columns = [

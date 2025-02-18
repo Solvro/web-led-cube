@@ -35,6 +35,7 @@ const useAxiosPrivate = () => {
           try {
             console.log("Attempting to refresh access token...");
             const newAccessToken = await refresh();
+            localStorage.setItem("accessToken", newAccessToken);
 
             if (!newAccessToken) {
               setAuth({});
@@ -50,7 +51,7 @@ const useAxiosPrivate = () => {
             localStorage.removeItem("accessToken");
             localStorage.removeItem("refreshToken");
             localStorage.removeItem("user");
-            navigate(0);
+            navigate("/login", { replace: true });
             toast.error("Session expired, please log in again.");
             return Promise.reject(error);
           }
