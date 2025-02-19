@@ -9,25 +9,44 @@ const ANIM_URL = "http://127.0.0.1:8000/animations/";
 export const YourProjects = () => {
     const axiosPrivate = useAxiosPrivate();
     const [dataResponse, setDataResponse] = useState([]);
+    const [totalRows, setTotalRows] = useState(0);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [perPage] = useState(7);
+    const username = localStorage.getItem("username");
 
     useEffect(() => {
-        const getUserAnimations = async () => {
+        const getUserAnimations = async (page = 1) => {
+            if (!username) {
+                console.error("No username found in localStorage");
+                return;
+            }
             try {
                 const response = await axiosPrivate.get(
-                  ANIM_URL,
-                  {
-                    headers: { "Content-Type": "application/json" },
-                  }
+                    `${ANIM_URL}?username=${username}&page=${page}`,
+                    {
+                        headers: { "Content-Type": "application/json" },
+                    }
                 );
                 setDataResponse(response.data);
+                if (response.data && response.data.results) {
+                    setDataResponse(response.data.results);
+                    setTotalRows(response.data.count);
+                } else {
+                    setDataResponse([]);
+                }
               } catch (err) {
                 if (!err?.response) {
                   console.error(err?.response);
+                  toast.error("Failed to load animations.");
                 }
               }
         };
-        getUserAnimations();
-    }, []);
+        getUserAnimations(currentPage);
+    }, [username, currentPage]);
+
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
 
     const columns = [
         {
@@ -88,6 +107,10 @@ export const YourProjects = () => {
       columns={columns}
       data={data}
       pagination
+      paginationServer
+      paginationTotalRows={totalRows}
+      paginationPerPage={perPage}
+      onChangePage={handlePageChange}
       theme="solarized"
     />
   )

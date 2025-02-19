@@ -73,8 +73,8 @@ const App = () => {
               element={<div>Informacje są tutaj!</div>}
             />
             <Route
-              path="settings"
-              element={<div>Adjust your Settings here.</div>}
+              path="tutorial"
+              element={<div>Tutorial here.</div>}
             />
           </Route>
           <Route path="login" element={<Login />} />
