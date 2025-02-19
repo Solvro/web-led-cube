@@ -11,9 +11,9 @@ const PagesPanel = ({
   const navigate = useNavigate();
   const location = useLocation();
   const isActive = (path) => {
-    if (path === "/" && location.pathname === "/") return true; // Home case
-    return location.pathname.startsWith(`/${path}`); // Match other paths correctly
-  };
+    if (path === "/" && (location.pathname === "/" || location.pathname === "/upload")) return true; // Home case
+    return location.pathname === path; // Match other paths correctly
+  }
 
   const pages = [
     {
@@ -24,17 +24,17 @@ const PagesPanel = ({
     {
       number: 2,
       text: "Projects",
-      path: "projects",
+      path: "/projects",
     },
     {
       number: 3,
       text: "Info",
-      path: "info",
+      path: "/info",
     },
     {
       number: 4,
       text: "Settings",
-      path: "settings",
+      path: "/settings",
     },
   ];
 

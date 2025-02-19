@@ -3,7 +3,7 @@ import "./../MainPage.css";
 import {cleanupCoordScene, initializeCoordScene} from "./CoordScene";
 import { cleanupMainScene, initializeMainScene} from "./MainScene";
 
-const Scenes = ({ code, execute, reset, setIsError, numCubes}) => {
+const Scenes = ({ execute, code, reset, setIsError, numCubes}) => {
   const mainMountRef = useRef(null);
   const coordMountRef = useRef(null);
 

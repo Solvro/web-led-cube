@@ -1,13 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import CodeMirror from "@uiw/react-codemirror";
+import { vscodeDark } from "@uiw/codemirror-theme-vscode";
+import { javascript } from "@codemirror/lang-javascript";
+import { VscDebugStart } from "react-icons/vsc";
 
 const ANIM_URL = "http://127.0.0.1:8000/animations/";
 
-export const Test = () => {
+export const UploadAnimation = ({ uploadCode, setUploadCode }) => {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
-  const [code, setCode] = useState("");
+  const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
 
   const handleSubmit = async (e) => {
@@ -16,7 +21,11 @@ export const Test = () => {
     try {
       const response = await axiosPrivate.post(
         ANIM_URL,
-        JSON.stringify({ name: name, description: desc, animation: code }),
+        JSON.stringify({
+          name: name,
+          description: desc,
+          animation: uploadCode,
+        }),
         {
           headers: { "Content-Type": "application/json" },
         }
@@ -28,6 +37,8 @@ export const Test = () => {
       const Aanimation = response?.data?.animation;
       console.log(Aid + Aowner + Aname + Adescription + Aanimation);
       toast.success("Animation Submited");
+      setUploadCode("");
+      navigate("/", { replace: true });
     } catch (err) {
       if (!err?.response) {
         toast.error("Error " + err?.response);
@@ -37,6 +48,7 @@ export const Test = () => {
 
   return (
     <div>
+      <button onClick={() => navigate("/", {replace: true})}>Back</button>
       <form onSubmit={handleSubmit}>
         <div className="label-input-section">
           <label htmlFor="name">NAME</label>
@@ -60,17 +72,12 @@ export const Test = () => {
             placeholder="Enter description"
           />
         </div>
-        <div className="label-input-section">
-          <label htmlFor="code">CODE</label>
-          <input
-            type="text"
-            id="code"
-            onChange={(e) => setCode(e.target.value)}
-            value={code}
-            required
-            placeholder="Enter code"
+        <CodeMirror
+            extensions={[javascript({ jsx: true })]}
+            theme={vscodeDark}
+            value={uploadCode}
+            readOnly={true}
           />
-        </div>
         <button type="submit" className="sign-in-button">
           SUBMIT
         </button>

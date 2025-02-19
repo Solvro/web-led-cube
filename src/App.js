@@ -11,21 +11,39 @@ import { Toaster } from "react-hot-toast";
 import CodeEditor from "./main-page/CodeEditor";
 import Projects from "./main-page/ProjectsManager/Projects";
 import { YourProjects } from "./main-page/ProjectsManager/YourProjects";
-import { Test } from "./pages/Test";
 import { Test2 } from "./pages/Test2";
 import { SavedProjects } from "./main-page/ProjectsManager/SavedProjects";
 import { DiscoverProjects } from "./main-page/ProjectsManager/DiscoverProjects";
+import { UploadAnimation } from "./pages/UploadAnimation";
 
 const App = () => {
-  const [code, setCode] = useState("");
-  const [execute, setExecute] = useState(0); // that's stupid and temporary aproach to trigger useEffect even when the code does not change
+  const [executedCode, setExecutedCode] = useState("");
+  const [uploadCode, setUploadCode] = useState("");
   const [reset, setReset] = useState(0); // same aproach for reset button - easy to correct but I have no idea
+  const [execute, setExecute] = useState(0);
   const [isError, setIsError] = useState(false);
   const [numCubes, setNumCubes] = useState(5);
 
+  const [code, setCode] = useState(() => {
+    const savedCode = localStorage.getItem("code");
+    return savedCode !== null
+      ? JSON.parse(savedCode)
+      : ["/* Kod idzie tutaj */"];
+  });
+
+  const [visibleIndex, setVisibleIndex] = useState(() => {
+    const savedIndex = localStorage.getItem("visibleIndex");
+    if (!savedIndex || savedIndex === "undefined") {
+      return 0;
+    }
+    return JSON.parse(savedIndex);
+  });
+
   const handleExecuteCode = (newCode) => {
-    setCode(newCode);
-    setExecute((prev) => ++prev);
+    setExecutedCode(newCode);
+    console.log(execute)
+    setExecute((prev) => (++prev));
+    console.log(execute)
   };
   return (
     <>
@@ -38,13 +56,10 @@ const App = () => {
             element={
               <MainPage
                 execute={execute}
-                handleExecuteCode={handleExecuteCode}
                 reset={reset}
-                setReset={setReset}
-                code={code}
+                code={executedCode}
                 numCubes={numCubes}
                 setNumCubes={setNumCubes}
-                isError={isError}
                 setIsError={setIsError}
               />
             }
@@ -58,20 +73,44 @@ const App = () => {
                   numCubes={numCubes}
                   setNumCubes={setNumCubes}
                   isError={isError}
+                  code={code}
+                  setCode={setCode}
+                  visibleIndex={visibleIndex}
+                  setVisibleIndex={setVisibleIndex}
+                  setUploadCode={setUploadCode}
                 />
               }
             />
+            <Route
+              path="upload"
+              element={
+                <RequireAuth/>
+              }
+            >
+              <Route index element={<UploadAnimation
+                  uploadCode={uploadCode}
+                  setUploadCode={setUploadCode}
+                />}/>
+            </Route>
             <Route path="projects" element={<Projects />}>
               <Route element={<RequireAuth />}>
-                <Route index element={<YourProjects />} />
-                <Route path="saved" element={<SavedProjects/>} />
-                <Route path="discover" element={<DiscoverProjects/>} />
+                <Route
+                  index
+                  element={
+                    <YourProjects
+                      code={code}
+                      setCode={setCode}
+                      visibleIndex={visibleIndex}
+                      setVisibleIndex={setVisibleIndex}
+                      executeCode={handleExecuteCode}
+                    />
+                  }
+                />
+                <Route path="saved" element={<SavedProjects />} />
+                <Route path="discover" element={<DiscoverProjects />} />
               </Route>
             </Route>
-            <Route
-              path="info"
-              element={<div>Informacje są tutaj!</div>}
-            />
+            <Route path="info" element={<div>Informacje są tutaj!</div>} />
             <Route
               path="settings"
               element={<div>Adjust your Settings here.</div>}
@@ -82,7 +121,6 @@ const App = () => {
           <Route path="unauthorized" element={<Unauthorized />} />
 
           <Route element={<RequireAuth />}>
-            <Route path="test" element={<Test />} />
             <Route path="test2" element={<Test2 />} />
           </Route>
 

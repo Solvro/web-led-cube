@@ -6,6 +6,8 @@ import { VscDebugStart } from "react-icons/vsc";
 import { BiSolidPlusCircle } from "react-icons/bi";
 import { BiWindowClose } from "react-icons/bi";
 import "./../CodeEditor.css";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const CodeEditor = ({
   onExecute,
@@ -13,23 +15,24 @@ const CodeEditor = ({
   numCubes,
   setNumCubes,
   setReset,
+  code,
+  setCode,
+  visibleIndex,
+  setVisibleIndex,
+  setUploadCode,
 }) => {
+  const navigate = useNavigate();
   const [tempCubes, setTempCubes] = useState(numCubes);
-  const [code, setCode] = useState(() => {
-    const savedCode = localStorage.getItem("code");
-    return savedCode !== null
-      ? JSON.parse(savedCode)
-      : ["/* Kod idzie tutaj */"];
-  });
 
   useEffect(() => {
     localStorage.setItem("code", JSON.stringify(code));
   }, [code]);
 
-  const [visibleIndex, setVisibleIndex] = useState(() => {
-    const savedIndex = localStorage.getItem("visibleIndex");
-    return savedIndex !== null ? JSON.parse(savedIndex) : 0;
-  });
+  useEffect(() => {
+    if (isError === true) {
+      toast.error("There is an error in your code!");
+    }
+  }, [isError]);
 
   useEffect(() => {
     localStorage.setItem("visibleIndex", JSON.stringify(visibleIndex));
@@ -46,6 +49,24 @@ const CodeEditor = ({
     setCode(newCode);
   };
 
+  const addTextarea = () => {
+    setCode([...code, ""]);
+    setVisibleIndex(code.length);
+  };
+
+  const removeTextarea = (index) => {
+    if (code.length > 1) {
+      const newCode = code.filter((_, i) => i !== index);
+      setCode(newCode);
+      setVisibleIndex((prevIndex) =>
+        prevIndex >= newCode.length ? newCode.length - 1 : prevIndex
+      );
+    } else {
+      setCode([""]);
+      setVisibleIndex(0);
+    }
+  };
+
   const handleSliderChange = (event) => {
     setTempCubes(event.target.value);
   };
@@ -60,18 +81,10 @@ const CodeEditor = ({
   const handleResetScene = () => {
     setReset((prev) => ++prev);
   };
-
-  const addTextarea = () => {
-    setCode([...code, ""]);
-    setVisibleIndex(code.length);
-  };
-
-  const removeTextarea = () => {
-    if (code.length > 1) {
-      const newCode = code.slice(0, -1);
-      setCode(newCode);
-      setVisibleIndex(newCode.length - 1);
-    }
+  const handleUploadCode = () => {
+    // NA RAZIE BRAKUJE WERYFIKACJI, CZY ANIMACJA JEST POPRAWNA!!!!!!!!!!!!!!!
+    setUploadCode(code[visibleIndex]);
+    navigate("/upload", { replace: true });
   };
 
   return (
@@ -84,7 +97,10 @@ const CodeEditor = ({
             onClick={() => handleVisibility(index)}
           >
             Page {index + 1}
-            <BiWindowClose onClick={removeTextarea} className="delete-icon" />
+            <BiWindowClose
+              onClick={() => removeTextarea(index)}
+              className="delete-icon"
+            />
             {visibleIndex === index && <div className="window-active"></div>}
           </div>
         ))}
@@ -103,12 +119,11 @@ const CodeEditor = ({
           />
         ))}
       </div>
-      <button onClick={handleExecute} className="code-editor-button">
+      <button onClick={handleExecute}>
         <VscDebugStart />
       </button>
-      <button onClick={handleResetScene} className="code-editor-button">
-        Reset Scene
-      </button>
+      <button onClick={handleResetScene}>Reset Scene</button>
+      <button onClick={handleUploadCode}>Upload animation</button>
       <div>
         <input
           type="range"
