@@ -2,6 +2,7 @@ import * as THREE from 'three'
 
 onmessage = e => {
   const { code, cube, leds } = e.data
+  const interval = 200
 
   cube.position = new THREE.Vector3(...cube.position)
   cube.rotation = new THREE.Euler(...cube.rotation)
@@ -14,7 +15,7 @@ onmessage = e => {
     )
   )
 
-  // Expose a function for the custom code to post changes
+  // Expose a function for posting changes
   function postChanges () {
     postMessage({
       success: true,
@@ -41,7 +42,8 @@ onmessage = e => {
       Vector3: THREE.Vector3,
       Color: THREE.Color
     },
-    postChanges
+    postChanges,
+    interval
   }
 
   try {
@@ -55,7 +57,8 @@ onmessage = e => {
     )
 
     customEval(whitelist)
-    // Do not call postMessage here—instead, user code calls postChanges when desired.
+
+    setInterval(postChanges, interval)
   } catch (error) {
     postMessage({ success: false, error: error.message })
   }

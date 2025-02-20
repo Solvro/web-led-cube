@@ -56,6 +56,10 @@ function Scenes ({ code, execute, reset, setIsError, numCubes }) {
   }, [])
 
   const resetScene = () => {
+    if (workerRef.current) {
+      workerRef.current.terminate()
+      workerRef.current = null
+    }
     initializeMainScene(mainRefs, numCubes)
     controlsRef.current.reset()
     setIsError(false)
@@ -81,20 +85,15 @@ function Scenes ({ code, execute, reset, setIsError, numCubes }) {
     workerRef.current.onmessage = e => {
       const { success, error, changes } = e.data
       if (success) {
-        // Update the cube (and other objects) with the changes computed in the worker.
         if (changes && changes.cube) {
           const { position, rotation } = changes.cube
           cubeRef.current.position.fromArray(position)
           cubeRef.current.rotation.fromArray(rotation)
 
           const leds = changes.leds
-          console.log(leds)
           leds.forEach((row, x) => {
             row.forEach((col, y) => {
               col.forEach((led, z) => {
-                //console.log(led)
-                //console.log(new Color(...led.color))
-
                 cubesRef.current[x][y][z].material.color.set(
                   new Color(...led.color)
                 )
