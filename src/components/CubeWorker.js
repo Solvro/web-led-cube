@@ -1,17 +1,47 @@
 import * as THREE from 'three'
 
 onmessage = e => {
-  const { code, cube, cubes } = e.data
+  const { code, cube, leds } = e.data
 
   cube.position = new THREE.Vector3(...cube.position)
   cube.rotation = new THREE.Euler(...cube.rotation)
 
+  leds.forEach(row =>
+    row.forEach(col =>
+      col.forEach(led => {
+        led.color = new THREE.Color(...led.color)
+      })
+    )
+  )
+
+  // Expose a function for the custom code to post changes
+  function postChanges () {
+    postMessage({
+      success: true,
+      changes: {
+        cube: {
+          position: cube.position.toArray(),
+          rotation: cube.rotation.toArray()
+        },
+        leds: leds.map(row =>
+          row.map(col =>
+            col.map(led => ({
+              color: led.color.toArray()
+            }))
+          )
+        )
+      }
+    })
+  }
+
   const whitelist = {
     cube,
-    cubes,
+    leds,
     THREE: {
-      Vector3: THREE.Vector3
-    }
+      Vector3: THREE.Vector3,
+      Color: THREE.Color
+    },
+    postChanges
   }
 
   try {
@@ -24,21 +54,8 @@ onmessage = e => {
     `
     )
 
-    console.log(cube.rotation)
-
     customEval(whitelist)
-
-    // Convert the position vector back to an array
-    postMessage({
-      success: true,
-      changes: {
-        cube: {
-          position: whitelist.cube.position.toArray(),
-          rotation: whitelist.cube.rotation.toArray()
-        },
-        cubes: whitelist.cubes
-      }
-    })
+    // Do not call postMessage here—instead, user code calls postChanges when desired.
   } catch (error) {
     postMessage({ success: false, error: error.message })
   }

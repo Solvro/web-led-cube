@@ -65,9 +65,7 @@ function Scenes ({ code, execute, reset, setIsError, numCubes }) {
     return cubes.map(row =>
       row.map(col =>
         col.map(mesh => ({
-          position: mesh.position.toArray(),
-          rotation: mesh.rotation.toArray(),
-          color: new Color(155, 155, 155)
+          color: mesh.material.color.toArray()
         }))
       )
     )
@@ -89,9 +87,23 @@ function Scenes ({ code, execute, reset, setIsError, numCubes }) {
           cubeRef.current.position.fromArray(position)
           cubeRef.current.rotation.fromArray(rotation)
 
-          console.log(rotation)
+          const leds = changes.leds
+          console.log(leds)
+          leds.forEach((row, x) => {
+            row.forEach((col, y) => {
+              col.forEach((led, z) => {
+                //console.log(led)
+                //console.log(new Color(...led.color))
 
-          const cubes = changes.cubes
+                cubesRef.current[x][y][z].material.color.set(
+                  new Color(...led.color)
+                )
+                cubesRef.current[x][y][z].material.emissive.set(
+                  new Color(...led.color)
+                )
+              })
+            })
+          })
         }
         setIsError(false)
       } else {
@@ -100,17 +112,11 @@ function Scenes ({ code, execute, reset, setIsError, numCubes }) {
       }
     }
 
-    // Create "safe" (plain object) representations of the objects you want to update.
-    const safeCube = {
-      position: cubeRef.current.position.toArray(),
-      rotation: cubeRef.current.rotation.toArray()
-    }
-
     // Send only plain data to the worker.
     workerRef.current.postMessage({
       code,
       cube: createSafeCube(cubeRef.current),
-      cubes: convertCubesToSafe(cubesRef.current)
+      leds: convertCubesToSafe(cubesRef.current)
     })
   }
 
