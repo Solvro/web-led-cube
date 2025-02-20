@@ -4,7 +4,7 @@ import { cleanupCoordScene, initializeCoordScene } from './CoordScene'
 import { cleanupMainScene, initializeMainScene } from './MainScene'
 import { Color } from 'three'
 
-const Scenes = ({ code, execute, reset, setIsError, numCubes }) => {
+function Scenes ({ code, execute, reset, setIsError, numCubes }) {
   const mainMountRef = useRef(null)
   const coordMountRef = useRef(null)
 
@@ -84,11 +84,14 @@ const Scenes = ({ code, execute, reset, setIsError, numCubes }) => {
       const { success, error, changes } = e.data
       if (success) {
         // Update the cube (and other objects) with the changes computed in the worker.
-        // For example:
         if (changes && changes.cube) {
           const { position, rotation } = changes.cube
           cubeRef.current.position.fromArray(position)
           cubeRef.current.rotation.fromArray(rotation)
+
+          console.log(rotation)
+
+          const cubes = changes.cubes
         }
         setIsError(false)
       } else {
@@ -106,9 +109,16 @@ const Scenes = ({ code, execute, reset, setIsError, numCubes }) => {
     // Send only plain data to the worker.
     workerRef.current.postMessage({
       code,
-      cube: safeCube,
-      cubes: cubesRef.current ? convertCubesToSafe(cubesRef.current) : []
+      cube: createSafeCube(cubeRef.current),
+      cubes: convertCubesToSafe(cubesRef.current)
     })
+  }
+
+  const createSafeCube = cube => {
+    return {
+      position: cube.position.toArray(),
+      rotation: cube.rotation.toArray()
+    }
   }
 
   useEffect(() => {
