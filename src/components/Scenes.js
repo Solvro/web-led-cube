@@ -65,14 +65,49 @@ function Scenes ({ code, execute, reset, setIsError, numCubes }) {
     setIsError(false)
   }
 
-  const convertCubesToSafe = cubes => {
-    return cubes.map(row =>
-      row.map(col =>
-        col.map(mesh => ({
-          color: mesh.material.color.toArray()
-        }))
+  const serializeToPlain = ({ cube, cubes }) => {
+    return {
+      cube: {
+        position: cube.position.toArray(),
+        rotation: cube.rotation.toArray()
+      },
+      cubes: cubes.map(row =>
+        row.map(col =>
+          col.map(mesh => ({
+            color: mesh.material.color.toArray()
+          }))
+        )
       )
-    )
+    }
+  }
+
+  const applyChanges = ({ cube, leds }) => {
+    const { position, rotation } = cube
+    cubeRef.current.position.fromArray(position)
+    cubeRef.current.rotation.fromArray(rotation)
+
+    leds.forEach((row, i) => {
+      row.forEach((col, j) => {
+        col.forEach((led, k) => {
+          const color = new Color(...led.color)
+          cubesRef.current[i][j][k].material.color.set(color)
+          cubesRef.current[i][j][k].material.emissive.set(color)
+        })
+      })
+    })
+  }
+
+  const handleWorkerMessage = (e, setIsError, applyChanges) => {
+    const { success, error, changes } = e.data
+    if (!success) {
+      console.error('Error executing code: ', error)
+      setIsError(true)
+      return
+    }
+    if (changes) {
+      applyChanges(changes)
+    }
+    setIsError(false)
   }
 
   const executeCode = () => {
@@ -81,49 +116,18 @@ function Scenes ({ code, execute, reset, setIsError, numCubes }) {
     }
 
     workerRef.current = new Worker(new URL('./CubeWorker.js', import.meta.url))
+    workerRef.current.onmessage = e =>
+      handleWorkerMessage(e, setIsError, applyChanges)
 
-    workerRef.current.onmessage = e => {
-      const { success, error, changes } = e.data
-      if (success) {
-        if (changes && changes.cube) {
-          const { position, rotation } = changes.cube
-          cubeRef.current.position.fromArray(position)
-          cubeRef.current.rotation.fromArray(rotation)
-
-          const leds = changes.leds
-          leds.forEach((row, x) => {
-            row.forEach((col, y) => {
-              col.forEach((led, z) => {
-                cubesRef.current[x][y][z].material.color.set(
-                  new Color(...led.color)
-                )
-                cubesRef.current[x][y][z].material.emissive.set(
-                  new Color(...led.color)
-                )
-              })
-            })
-          })
-        }
-        setIsError(false)
-      } else {
-        console.error('Error executing code: ', error)
-        setIsError(true)
-      }
-    }
-
-    // Send only plain data to the worker.
+    const { cube, cubes } = serializeToPlain({
+      cube: cubeRef.current,
+      cubes: cubesRef.current
+    })
     workerRef.current.postMessage({
       code,
-      cube: createSafeCube(cubeRef.current),
-      leds: convertCubesToSafe(cubesRef.current)
+      cube: cube,
+      leds: cubes
     })
-  }
-
-  const createSafeCube = cube => {
-    return {
-      position: cube.position.toArray(),
-      rotation: cube.rotation.toArray()
-    }
   }
 
   useEffect(() => {

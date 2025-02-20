@@ -1,9 +1,6 @@
 import * as THREE from 'three'
 
-onmessage = e => {
-  const { code, cube, leds } = e.data
-  const interval = 200
-
+function plainToThree ({ cube, leds }) {
   cube.position = new THREE.Vector3(...cube.position)
   cube.rotation = new THREE.Euler(...cube.rotation)
 
@@ -14,24 +11,34 @@ onmessage = e => {
       })
     )
   )
+}
 
-  // Expose a function for posting changes
+function serializeToPlain ({ cube, leds }) {
+  return {
+    cube: {
+      position: cube.position.toArray(),
+      rotation: cube.rotation.toArray()
+    },
+    leds: leds.map(row =>
+      row.map(col =>
+        col.map(led => ({
+          color: led.color.toArray()
+        }))
+      )
+    )
+  }
+}
+
+onmessage = e => {
+  const { code, cube, leds } = e.data
+  const interval = 200
+
+  plainToThree({ cube, leds })
+
   function postChanges () {
     postMessage({
       success: true,
-      changes: {
-        cube: {
-          position: cube.position.toArray(),
-          rotation: cube.rotation.toArray()
-        },
-        leds: leds.map(row =>
-          row.map(col =>
-            col.map(led => ({
-              color: led.color.toArray()
-            }))
-          )
-        )
-      }
+      changes: serializeToPlain({ cube, leds })
     })
   }
 
@@ -57,9 +64,9 @@ onmessage = e => {
     )
 
     customEval(whitelist)
-
     setInterval(postChanges, interval)
   } catch (error) {
     postMessage({ success: false, error: error.message })
+    return
   }
 }
