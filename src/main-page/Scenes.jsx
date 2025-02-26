@@ -1,9 +1,9 @@
-import React, { useRef, useEffect} from "react";
+import React, { useRef, useEffect } from "react";
 import "./../MainPage.css";
-import {cleanupCoordScene, initializeCoordScene} from "./CoordScene";
-import { cleanupMainScene, initializeMainScene} from "./MainScene";
+import { cleanupCoordScene, initializeCoordScene } from "./CoordScene";
+import { cleanupMainScene, initializeMainScene } from "./MainScene";
 
-const Scenes = ({ execute, code, reset, setIsError, numCubes}) => {
+const Scenes = ({ execute, code, reset, setIsError, numCubes }) => {
   const mainMountRef = useRef(null);
   const coordMountRef = useRef(null);
 
@@ -24,8 +24,8 @@ const Scenes = ({ execute, code, reset, setIsError, numCubes}) => {
     controlsRef: controlsRef,
     cubeRef: cubeRef,
     cubesRef: cubesRef,
-    stopRenderRef: stopRenderRef
-  }
+    stopRenderRef: stopRenderRef,
+  };
 
   const coordRefs = {
     mountRef: coordMountRef,
@@ -35,7 +35,7 @@ const Scenes = ({ execute, code, reset, setIsError, numCubes}) => {
     coordCubeRef: useRef(null),
     mainCamera: cameraRef,
     secondaryCubeDiv: null, // To hold secondaryCubeDiv for cleanup
-    stopRenderRef: stopRenderRef
+    stopRenderRef: stopRenderRef,
   };
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const Scenes = ({ execute, code, reset, setIsError, numCubes}) => {
 
   const resetScene = () => {
     initializeMainScene(mainRefs, numCubes);
-        // no changes to coordScene, so no need to reset (just controls)
+    // no changes to coordScene, so no need to reset (just controls)
     controlsRef.current.reset();
     setIsError(false);
   };
@@ -61,10 +61,25 @@ const Scenes = ({ execute, code, reset, setIsError, numCubes}) => {
   const executeCode = () => {
     try {
       /* eslint-disable */
-      const customEval = new Function("scene", "camera", "renderer", "controls", "cube", "cubes", code);
-  
-      customEval(sceneRef.current, cameraRef.current, rendererRef.current, controlsRef.current, cubeRef.current, cubesRef.current);
-  
+      const customEval = new Function(
+        "scene",
+        "camera",
+        "renderer",
+        "controls",
+        "cube",
+        "cubes",
+        code
+      );
+
+      customEval(
+        sceneRef.current,
+        cameraRef.current,
+        rendererRef.current,
+        controlsRef.current,
+        cubeRef.current,
+        cubesRef.current
+      );
+
       setIsError(false);
     } catch (error) {
       console.error("Error executing code: ", error);
@@ -76,17 +91,19 @@ const Scenes = ({ execute, code, reset, setIsError, numCubes}) => {
     executeCode();
   }, [execute]);
 
-
   useEffect(() => {
     resetScene();
   }, [numCubes, reset]);
 
-  return <><div className="main-scene" ref={mainMountRef}>
-    <div className="coord-scene" ref={coordMountRef}>
-      <button id="coord-button">Hide Coordinates</button>
-    </div>
-  </div>
-  </>
+  return (
+    <>
+      <div className="main-scene" ref={mainMountRef}>
+        <div className="coord-scene" ref={coordMountRef}>
+          <button id="coord-button">Hide Coordinates</button>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Scenes;
