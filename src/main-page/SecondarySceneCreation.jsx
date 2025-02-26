@@ -69,7 +69,7 @@ export function createSecondaryScene() {
       const textGeometryRed = new TextGeometry("X", {
         font: font,
         size: 0.1,
-        height: 0.01,
+        depth: 0.01,
         curveSegments: 12,
       });
       textGeometryRed.computeBoundingBox();
@@ -88,7 +88,7 @@ export function createSecondaryScene() {
       const textGeometryBlue = new TextGeometry("Y", {
         font: font,
         size: 0.1,
-        height: 0.01,
+        depth: 0.01,
         curveSegments: 12,
       });
       textGeometryBlue.computeBoundingBox();
@@ -111,7 +111,7 @@ export function createSecondaryScene() {
       const textGeometryGreen = new TextGeometry("Z", {
         font: font,
         size: 0.1,
-        height: 0.01,
+        depth: 0.01,
         curveSegments: 12,
       });
       textGeometryGreen.computeBoundingBox();

@@ -1,31 +1,18 @@
-import "./App.css";
-import Scenes from "./components/Scenes";
-import CodeEditor from "./components/CodeEditor";
+import "./MainPage.css";
+import Scenes from "./main-page/Scenes";
 import { useState, useRef } from "react";
 
 import { VscChevronDown, VscChevronUp } from "react-icons/vsc";
+import PagesPanel from "./main-page/PagesPanel";
 
-function App() {
-  const [code, setCode] = useState("");
-
-
-  const [execute, setExecute] = useState(0); // that's stupid and temporary aproach to trigger useEffect even when the code does not change
-  const [reset, setReset] = useState(0); // same aproach for reset button - easy to correct but I have no idea
-
-
-  const [isError, setIsError] = useState(false);
+function MainPage({execute, reset, code, setIsError, numCubes}) {
   const [editorWidth, setEditorWidth] = useState(600);
   const [isEditorVisible, setIsEditorVisible] = useState(true);
   const [cubeSceneVisible, setCubeSceneVisible] = useState(true); // State for visibility
   const [cubeSceneKey, setCubeSceneKey] = useState(0); // State for CubeScene key
-  const [numCubes, setNumCubes] = useState(5);
-  const minEditorWidth = 200;
+  const minEditorWidth = 400;
   const previousMouseX = useRef(null);
 
-  const handleExecuteCode = (newCode) => {
-    setCode(newCode);
-    setExecute(prev => ++prev);
-  };
 
   const handleMouseDown = (event) => {
     event.preventDefault();
@@ -37,9 +24,9 @@ function App() {
   const handleMouseMove = (event) => {
     const deltaX = event.clientX - previousMouseX.current;
     previousMouseX.current = event.clientX;
-    setEditorWidth((prevWidth) => Math.max(minEditorWidth, prevWidth - deltaX));
+    setEditorWidth((prevWidth) => Math.max(minEditorWidth, prevWidth - deltaX) > 360 ? Math.max(minEditorWidth, prevWidth - deltaX) : 360);
   };
-
+  console.log("isEditorVisible in parent:", isEditorVisible);
   const handleMouseUp = () => {
     document.removeEventListener("mousemove", handleMouseMove);
     document.removeEventListener("mouseup", handleMouseUp);
@@ -54,6 +41,7 @@ function App() {
 
   const toggleEditorVisibility = () => {
     setIsEditorVisible(!isEditorVisible);
+    console.log("isEditorVisible in parent:", isEditorVisible);
     // Force re-render of CubeScene when toggling editor visibility
     setCubeSceneVisible(false);
     setTimeout(() => {
@@ -61,32 +49,34 @@ function App() {
     }, 400);
     setCubeSceneKey((prevKey) => prevKey + 1);
   };
-
   return (
-    <div className="App">
-      <div className="container">
+    <div className="main-page">
+      <div className="mp-container">
         <Scenes
           execute={execute}
           reset={reset}
           key={cubeSceneKey}
           code={code}
           setIsError={setIsError}
-          className={`cube-scene ${cubeSceneVisible ? "" : "hidden"}`}
+          className={`cube-scene ${cubeSceneVisible ? "" : "mp-hidden"}`}
           numCubes={numCubes}
         />
         <div
-          className={`code-editor ${isEditorVisible ? "" : "hidden"}`}
+          className={`mp-panels ${isEditorVisible ? "" : "mp-hidden"}`}
           style={{ width: editorWidth }}
         >
-          <button className="toggle-button" onClick={toggleEditorVisibility}>
+          <button className="mp-toggle-button" onClick={toggleEditorVisibility}>
             {isEditorVisible ? <VscChevronDown /> : <VscChevronUp />}
           </button>
           <div className="resizer" onMouseDown={handleMouseDown} />
-          <CodeEditor onExecute={handleExecuteCode} isError={isError} numCubes={numCubes} setNumCubes={setNumCubes} setReset={setReset} />
+          
+          <PagesPanel
+            isVisible={isEditorVisible}
+          />
         </div>
       </div>
     </div>
   );
 }
 
-export default App;
+export default MainPage;

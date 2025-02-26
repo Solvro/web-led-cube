@@ -2,29 +2,37 @@ import React, { useState, useEffect } from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { javascript } from "@codemirror/lang-javascript";
-import { VscDiffAdded, VscDiffRemoved, VscDebugStart } from "react-icons/vsc";
+import { VscDebugStart } from "react-icons/vsc";
 import { BiSolidPlusCircle } from "react-icons/bi";
 import { BiWindowClose } from "react-icons/bi";
+import "./../CodeEditor.css";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-const CodeEditor = ({ onExecute, isError , numCubes, setNumCubes, setReset }) => {
+const CodeEditor = ({
+  onExecute,
+  isError,
+  numCubes,
+  setNumCubes,
+  setReset,
+  code,
+  setCode,
+  visibleIndex,
+  setVisibleIndex,
+  setUploadCode,
+}) => {
+  const navigate = useNavigate();
   const [tempCubes, setTempCubes] = useState(numCubes);
-  const [code, setCode] = useState(() => {
-    const savedCode = localStorage.getItem("code");
-    return savedCode !== null
-      ? JSON.parse(savedCode)
-      : ["/* Kod idzie tutaj */"];
-  });
-
-
 
   useEffect(() => {
     localStorage.setItem("code", JSON.stringify(code));
   }, [code]);
 
-  const [visibleIndex, setVisibleIndex] = useState(() => {
-    const savedIndex = localStorage.getItem("visibleIndex");
-    return savedIndex !== null ? JSON.parse(savedIndex) : 0;
-  });
+  useEffect(() => {
+    if (isError === true) {
+      toast.error("There is an error in your code!");
+    }
+  }, [isError]);
 
   useEffect(() => {
     localStorage.setItem("visibleIndex", JSON.stringify(visibleIndex));
@@ -41,60 +49,58 @@ const CodeEditor = ({ onExecute, isError , numCubes, setNumCubes, setReset }) =>
     setCode(newCode);
   };
 
+  const addTextarea = () => {
+    setCode([...code, ""]);
+    setVisibleIndex(code.length);
+  };
+
+  const removeTextarea = (index) => {
+    if (code.length > 1) {
+      const newCode = code.filter((_, i) => i !== index);
+      setCode(newCode);
+      setVisibleIndex((prevIndex) =>
+        prevIndex >= newCode.length ? newCode.length - 1 : prevIndex
+      );
+    } else {
+      setCode([""]);
+      setVisibleIndex(0);
+    }
+  };
+
   const handleSliderChange = (event) => {
     setTempCubes(event.target.value);
   };
 
   const handleSliderBlur = () => {
     setNumCubes(tempCubes);
-  }
+  };
 
   const handleExecute = () => {
     onExecute(code[visibleIndex]);
   };
   const handleResetScene = () => {
-    setReset(prev => ++prev);
+    setReset((prev) => ++prev);
   };
-
-  const addTextarea = () => {
-    setCode([...code, ""]);
-    setVisibleIndex(code.length);
-  };
-
-  const removeTextarea = () => {
-    if (code.length > 1) {
-      const newCode = code.slice(0, -1);
-      setCode(newCode);
-      setVisibleIndex(newCode.length - 1);
-    }
+  const handleUploadCode = () => {
+    // NA RAZIE BRAKUJE WERYFIKACJI, CZY ANIMACJA JEST POPRAWNA!!!!!!!!!!!!!!!
+    setUploadCode(code[visibleIndex]);
+    navigate("/upload", { replace: true });
   };
 
   return (
-    <div className="code-editor-container">
-      <div className="slidecontainer">
-        <input type="range" min="5" max="10" step="1" value={tempCubes} onChange={handleSliderChange} onBlur={handleSliderBlur}/>
-        <div style={{color: "white"}}>{tempCubes}</div>
-      </div>
+    <div style={{ width: "100%", height: "100%" }}>
       <div className="tab-container">
         {code.map((_, index) => (
-          // <button
-          //   key={index}
-          // className={`tab-button ${
-          //   code[index] !== "" && visibleIndex !== index
-          //     ? "button-not-empty"
-          //     : ""
-          // } ${visibleIndex === index ? "button-active" : ""}`}
-          //   onClick={() => handleVisibility(index)}
-          // >
-          //   {index + 1}
-          // </button>
           <div
             key={index}
             className={"tab-window"}
             onClick={() => handleVisibility(index)}
           >
             Page {index + 1}
-            <BiWindowClose onClick={removeTextarea} className="delete-icon" />
+            <BiWindowClose
+              onClick={() => removeTextarea(index)}
+              className="delete-icon"
+            />
             {visibleIndex === index && <div className="window-active"></div>}
           </div>
         ))}
@@ -113,20 +119,23 @@ const CodeEditor = ({ onExecute, isError , numCubes, setNumCubes, setReset }) =>
           />
         ))}
       </div>
-      {/* <div className="control-buttons">
-        <button className="tab-button" onClick={addTextarea}>
-          <VscDiffAdded />
-        </button>
-        <button className="tab-button" onClick={removeTextarea}>
-          <VscDiffRemoved />
-        </button>
-      </div> */}
       <button onClick={handleExecute}>
         <VscDebugStart />
       </button>
-      <button onClick={handleResetScene}>
-        Reset Scene
-      </button>
+      <button onClick={handleResetScene}>Reset Scene</button>
+      <button onClick={handleUploadCode}>Upload animation</button>
+      <div>
+        <input
+          type="range"
+          min="5"
+          max="10"
+          step="1"
+          value={tempCubes}
+          onChange={handleSliderChange}
+          onBlur={handleSliderBlur}
+        />
+        <div style={{ color: "white" }}>{tempCubes}</div>
+      </div>
     </div>
   );
 };
