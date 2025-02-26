@@ -1,9 +1,10 @@
 import React, { useRef, useEffect } from "react";
 import "./../MainPage.css";
+import * as THREE from "three";
 import { cleanupCoordScene, initializeCoordScene } from "./CoordScene";
 import { cleanupMainScene, initializeMainScene } from "./MainScene";
 
-const Scenes = ({ execute, code, reset, setIsError, numCubes }) => {
+export const Scenes = ({ execute, code, reset, setIsError, numCubes }) => {
   const mainMountRef = useRef(null);
   const coordMountRef = useRef(null);
 
@@ -15,6 +16,7 @@ const Scenes = ({ execute, code, reset, setIsError, numCubes }) => {
   const cubesRef = useRef(null);
 
   const stopRenderRef = useRef(false);
+  const workerRef = useRef(null);
 
   const mainRefs = {
     mountRef: mainMountRef,
@@ -41,50 +43,86 @@ const Scenes = ({ execute, code, reset, setIsError, numCubes }) => {
   useEffect(() => {
     initializeMainScene(mainRefs, numCubes);
     initializeCoordScene(coordRefs);
-    // buttons are temporary
 
     return () => {
       cleanupMainScene(mainRefs);
       cleanupCoordScene(coordRefs);
       stopRenderRef.current = true;
+      cleanupWorker();
     };
     /* eslint-disable */
   }, []);
 
   const resetScene = () => {
+    cleanupWorker();
     initializeMainScene(mainRefs, numCubes);
-    // no changes to coordScene, so no need to reset (just controls)
-    controlsRef.current.reset();
+    controlsRef.current.reset()
+    setIsError(false);
+  };
+
+  const cleanupWorker = () => {
+    if (workerRef.current) {
+      workerRef.current.onmessage = null; 
+      workerRef.current.terminate();
+      workerRef.current = null; 
+    }
+  };
+
+  const serializeToPlain = ({ cubes }) => {
+    return {
+      cubes: cubes.map((row) =>
+        row.map((col) =>
+          col.map((mesh) => ({
+            color: mesh.material.color.toArray(),
+          }))
+        )
+      ),
+    };
+  };
+
+  const applyChanges = ({ leds }) => {
+    if (!cubesRef.current) return;
+
+    leds.forEach((row, i) => {
+      row.forEach((col, j) => {
+        col.forEach((led, k) => {
+          const color = new THREE.Color(...led.color);
+          cubesRef.current[i][j][k].material.color.set(color);
+          cubesRef.current[i][j][k].material.emissive.set(color);
+        });
+      });
+    });
+  };
+
+  const handleWorkerMessage = (e, setIsError, applyChanges) => {
+    const { success, error, changes } = e.data;
+    if (!success) {
+      console.error("Error executing code: ", error);
+      setIsError(true);
+      return;
+    }
+    if (changes) {
+      applyChanges(changes);
+    }
     setIsError(false);
   };
 
   const executeCode = () => {
-    try {
-      /* eslint-disable */
-      const customEval = new Function(
-        "scene",
-        "camera",
-        "renderer",
-        "controls",
-        "cube",
-        "cubes",
-        code
-      );
+    cleanupWorker();
 
-      customEval(
-        sceneRef.current,
-        cameraRef.current,
-        rendererRef.current,
-        controlsRef.current,
-        cubeRef.current,
-        cubesRef.current
-      );
+    if (!cubesRef.current) return;
 
-      setIsError(false);
-    } catch (error) {
-      console.error("Error executing code: ", error);
-      setIsError(true);
-    }
+    workerRef.current = new Worker(new URL("./CubeWorker.worker.jsx", import.meta.url), { type: "module" });
+    workerRef.current.onmessage = (e) =>
+      handleWorkerMessage(e, setIsError, applyChanges);
+
+    const { cubes } = serializeToPlain({
+      cubes: cubesRef.current,
+    });
+    workerRef.current.postMessage({
+      code,
+      leds: cubes,
+    });
   };
 
   useEffect(() => {
@@ -105,5 +143,3 @@ const Scenes = ({ execute, code, reset, setIsError, numCubes }) => {
     </>
   );
 };
-
-export default Scenes;

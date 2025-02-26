@@ -6,6 +6,7 @@ import CodeMirror from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { javascript } from "@codemirror/lang-javascript";
 import { VscDebugStart } from "react-icons/vsc";
+import "./UploadAnimation.css"
 
 const ANIM_URL = "http://127.0.0.1:8000/animations/";
 
@@ -77,6 +78,7 @@ export const UploadAnimation = ({ uploadCode, setUploadCode }) => {
             theme={vscodeDark}
             value={uploadCode}
             readOnly={true}
+            className="text-area upload upload-text-area"
           />
         <button type="submit" className="sign-in-button">
           SUBMIT

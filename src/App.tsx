@@ -41,9 +41,7 @@ const App = () => {
 
   const handleExecuteCode = (newCode) => {
     setExecutedCode(newCode);
-    console.log(execute)
     setExecute((prev) => (++prev));
-    console.log(execute)
   };
   return (
     <>

@@ -1,9 +1,8 @@
 import "./MainPage.css";
-import Scenes from "./main-page/Scenes";
 import { useState, useRef } from "react";
-
 import { VscChevronDown, VscChevronUp } from "react-icons/vsc";
 import PagesPanel from "./main-page/PagesPanel";
+import { Scenes } from "./main-page/Scenes";
 
 function MainPage({execute, reset, code, setIsError, numCubes}) {
   const [editorWidth, setEditorWidth] = useState(600);
