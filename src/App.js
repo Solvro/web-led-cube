@@ -15,6 +15,7 @@ import { Test } from "./pages/Test";
 import { Test2 } from "./pages/Test2";
 import { SavedProjects } from "./main-page/ProjectsManager/SavedProjects";
 import { DiscoverProjects } from "./main-page/ProjectsManager/DiscoverProjects";
+import Tutorial from "./main-page/ProjectsManager/Tutorial";
 
 const App = () => {
   const [code, setCode] = useState("");
@@ -74,7 +75,7 @@ const App = () => {
             />
             <Route
               path="tutorial"
-              element={<div>Tutorial here.</div>}
+              element={<Tutorial/>}
             />
           </Route>
           <Route path="login" element={<Login />} />
