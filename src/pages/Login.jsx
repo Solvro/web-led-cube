@@ -64,7 +64,7 @@ const Login = () => {
   };
 
   return (
-    <div className="page-container">
+    <div className="page-container bg-[#061527]">
       <section className="login-section">
         <h1>LOGIN</h1>
         <form onSubmit={handleSubmit}>

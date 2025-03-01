@@ -7,13 +7,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-  
+/*   
     background: rgb(183, 115, 255);
     background: linear-gradient(
       141deg,
       rgba(183, 115, 255, 1) 9%,
       rgb(70, 212, 255) 100%
-    );
+    ); */
     /* background-color: rgb(95, 0, 0); */
   }
   .login-section {
