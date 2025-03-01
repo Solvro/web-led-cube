@@ -4,6 +4,7 @@
   padding: 2rem;
   text-align: center;
 }
+@import "tailwindcss";
 
 .logo {
   height: 6em;
