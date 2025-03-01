@@ -33,8 +33,8 @@ const PagesPanel = ({
     },
     {
       number: 4,
-      text: "Settings",
-      path: "/settings",
+      text: "Tutorial",
+      path: "/tutorial",
     },
   ];
 

@@ -9,7 +9,7 @@ import "./../CodeEditor.css";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-const CodeEditor = ({
+export const CodeEditor = ({
   onExecute,
   isError,
   numCubes,
@@ -139,5 +139,3 @@ const CodeEditor = ({
     </div>
   );
 };
-
-export default CodeEditor;

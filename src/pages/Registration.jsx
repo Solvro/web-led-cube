@@ -14,7 +14,7 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 const REGISTER_URL = "http://127.0.0.1:8000/auth/register/";
 
-const Registration = () => {
+export const Registration = () => {
   const navigate = useNavigate();
   const userRef = useRef();
 
@@ -350,5 +350,3 @@ const Registration = () => {
     </div>
   );
 };
-
-export default Registration;

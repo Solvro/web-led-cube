@@ -19,7 +19,7 @@ const pages = [
     },
   ];
 
-const Projects = () => {
+export const Projects = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -52,5 +52,3 @@ const Projects = () => {
     </div>
   )
 }
-
-export default Projects;

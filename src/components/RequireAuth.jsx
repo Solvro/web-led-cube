@@ -1,7 +1,7 @@
 import { useAuth } from "../hooks/useAuth";
 import {Outlet, useLocation, Link } from "react-router-dom";
 
-const RequireAuth = () => {
+export const RequireAuth = () => {
     const { auth } = useAuth();  // Get auth state from the useAuth hook
     const location = useLocation();
 
@@ -22,5 +22,3 @@ const RequireAuth = () => {
             )
     );
 }
-
-export default RequireAuth;
