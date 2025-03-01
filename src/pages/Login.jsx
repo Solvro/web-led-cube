@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import toast from 'react-hot-toast';
 import axios from "../api/axios";
+import solvroLogo from "../assets/solvro-logo.svg";
 
 import "./Login.css";
 import { useAuth } from "../hooks/useAuth";
@@ -62,10 +63,12 @@ const Login = () => {
       }
     }
   };
-
+  
   return (
-    <div className="page-container bg-[#061527]">
+    <div className="page-container w-full h-lvh flex items-center justify-center">
+
       <section className="login-section">
+      <img src={solvroLogo} alt="Solvro Logo" className="relative" />
         <h1>LOGIN</h1>
         <form onSubmit={handleSubmit}>
           <div className="label-input-section">
@@ -86,7 +89,6 @@ const Login = () => {
             <input
               type="password"
               id="password"
-              ref={userRef}
               autoComplete="password"
               onChange={(e) => setPwd(e.target.value)}
               value={pwd}
