@@ -67,14 +67,14 @@ const Login = () => {
   return (
     <div className="page-container w-full h-lvh flex items-center justify-center">
 
-      <section className="login-section">
-      <img src={solvroLogo} alt="Solvro Logo" className="relative" />
-        <h1>LOGIN</h1>
+      <section className="login-section flex flex-col items-center justify-center w-1/3 h-full text-white">
+      <img src={solvroLogo} alt="Solvro Logo" className="solvroImg mt-8 " />
         <form onSubmit={handleSubmit}>
-          <div className="label-input-section">
-            <label htmlFor="username">USERNAME</label>
+          <div className="label-input-section ">
+            <label htmlFor="username">EMAIL</label>
             <input
               type="text"
+              className="bg-[#808796]"
               id="username"
               ref={userRef}
               autoComplete="username"
@@ -89,6 +89,7 @@ const Login = () => {
             <input
               type="password"
               id="password"
+              className="bg-[#808796]"
               autoComplete="password"
               onChange={(e) => setPwd(e.target.value)}
               value={pwd}
@@ -96,7 +97,7 @@ const Login = () => {
               placeholder="Enter your password"
             />
           </div>
-          <button type="submit" className="sign-in-button">Sign In</button>
+          <button type="submit" className="sign-in-button bg-[#152959]">Sign In</button>
         </form>
         <div className="info-container">
           <p className="info-text">

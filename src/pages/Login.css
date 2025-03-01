@@ -10,14 +10,11 @@
 }
 
 .login-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  border-radius: 0.4rem;
-  height: clamp(426px, 93vw, 620px);
-  width: clamp(320px, 75vw, 500px);
+  
   container-type: inline-size;
+}
+.solvroImg{
+  margin-top: 2rem;
 }
 
 .registration-section {
@@ -97,7 +94,7 @@ input {
   padding: 8px;
   color: black;
 
-  background-color: rgba(255, 255, 255, 0.452);
+  
   border: solid 3px rgba(240, 248, 255, 0);
 }
 
@@ -119,7 +116,7 @@ input:focus {
   border: none;
 
   color: white;
-  background-color: rgba(0, 0, 0, 0.678);
+
   transition: all 0.3s ease;
 }
 
