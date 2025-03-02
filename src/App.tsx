@@ -26,10 +26,8 @@ const App = () => {
   const [numCubes, setNumCubes] = useState(5);
 
   const [code, setCode] = useState(() => {
-    const savedCode = localStorage.getItem("code");
-    return savedCode !== null
-      ? JSON.parse(savedCode)
-      : ["/* Kod idzie tutaj */"];
+    const storedCode = localStorage.getItem("code");
+    return storedCode ? JSON.parse(storedCode) : ["/* Kod idzie tutaj */"];
   });
 
   const [visibleIndex, setVisibleIndex] = useState(() => {
@@ -106,7 +104,11 @@ const App = () => {
                   }
                 />
                 <Route path="saved" element={<SavedProjects />} />
-                <Route path="discover" element={<DiscoverProjects />} />
+                <Route path="discover" element={<DiscoverProjects code={code}
+                      setCode={setCode}
+                      visibleIndex={visibleIndex}
+                      setVisibleIndex={setVisibleIndex}
+                      executeCode={handleExecuteCode}/>} />
               </Route>
             </Route>
             <Route path="info" element={<div>Informacje są tutaj!</div>} />

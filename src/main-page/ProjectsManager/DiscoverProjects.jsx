@@ -2,16 +2,24 @@ import React, {useEffect, useState} from 'react'
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import DataTable, {createTheme} from "react-data-table-component";
 import toast from "react-hot-toast";
+import { useNavigate } from 'react-router-dom';
 
 const ANIM_URL = "http://127.0.0.1:8000/animations/";
 
 
-export const DiscoverProjects = () => {
+export const DiscoverProjects = ({
+  code,
+  setCode,
+  visibleIndex,
+  setVisibleIndex,
+  executeCode,
+}) => {
   const axiosPrivate = useAxiosPrivate();
   const [dataResponse, setDataResponse] = useState([]);
   const [totalRows, setTotalRows] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage] = useState(7);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getAnimations = async (page = 1) => {
@@ -42,6 +50,20 @@ export const DiscoverProjects = () => {
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+  const previewCode = (projectCode) => {
+    console.log(projectCode);
+    executeCode(projectCode);
+  };
+  const importCode = (projectCode) => {
+    setCode((prevCode) => {
+        const newCode = [...prevCode, projectCode];
+        setVisibleIndex(newCode.length - 1);
+        return newCode;
+    });
+
+    navigate("/", { replace: true });
+    toast.success("Code imported!");
+  };
 
   const columns = [
     {
@@ -57,8 +79,14 @@ export const DiscoverProjects = () => {
       selector: row => row.author,
     },
     {
-      name: '',
-      selector: row => row.buttons,
+      name: "Code",
+      button: true,
+      cell: (row) => (
+        <div>
+          <button onClick={() => importCode(row.projectCode)}>Import</button>
+          <button onClick={() => previewCode(row.projectCode)}>Preview</button>
+        </div>
+      ),
     },
   ];
 
@@ -66,6 +94,7 @@ export const DiscoverProjects = () => {
     title: project.name,
     description: project.description,
     author: project.owner,
+    projectCode: project.animation,
   })) : [];
 
   createTheme(
