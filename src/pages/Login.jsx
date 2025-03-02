@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 import axios from "../api/axios";
 import solvroLogo from "../assets/solvro-logo.svg";
 
-import "./Login.css";
+import "./Login.css"; // Ensure the CSS file is imported
 import { useAuth } from "../hooks/useAuth";
 
 const LOGIN_URL = "http://127.0.0.1:8000/auth/token/";
@@ -65,16 +65,16 @@ const Login = () => {
   };
   
   return (
-    <div className="page-container w-full h-lvh flex items-center justify-center">
+    <div className="page-container w-full h-screen flex items-center justify-center bg-cover bg-center">
 
       <section className="login-section flex flex-col items-center justify-center w-1/3 h-full text-white">
-      <img src={solvroLogo} alt="Solvro Logo" className="solvroImg mt-8 " />
-        <form onSubmit={handleSubmit}>
-          <div className="label-input-section ">
-            <label htmlFor="username">EMAIL</label>
+        <img src={solvroLogo} alt="Solvro Logo" className="solvroImg w-7/10" />
+        <form onSubmit={handleSubmit} className="w-full flex flex-col items-center px-12 py-5">
+          <div className="label-input-section flex flex-col mb-10 w-full relative">
+            <label htmlFor="username" className="mb-1 h-8 flex items-center">EMAIL</label>
             <input
               type="text"
-              className="bg-[#808796]"
+              className="w-full h-14 rounded-md text-lg p-2 text-black bg-[#808796] border-3 border-transparent focus:outline-none focus:border-black"
               id="username"
               ref={userRef}
               autoComplete="username"
@@ -84,12 +84,12 @@ const Login = () => {
               placeholder="Enter your login"
             />
           </div>
-          <div className="label-input-section">
-            <label htmlFor="password">PASSWORD</label>
+          <div className="label-input-section flex flex-col w-full relative">
+            <label htmlFor="password" className="mb-1 h-8 flex items-center">PASSWORD</label>
             <input
               type="password"
               id="password"
-              className="bg-[#808796]"
+              className="w-full h-14 rounded-md text-lg p-2 text-black bg-[#808796] border-3 border-transparent focus:outline-none focus:border-black"
               autoComplete="password"
               onChange={(e) => setPwd(e.target.value)}
               value={pwd}
@@ -97,14 +97,18 @@ const Login = () => {
               placeholder="Enter your password"
             />
           </div>
-          <button type="submit" className="sign-in-button bg-[#152959]">Sign In</button>
+          <button type="submit" className="sign-in-button w-4/5 h-14 rounded-md text-xl bg-[#152959] hover:bg-[#061527] text-white transition-all duration-300 ease-in-out">Sign In</button>
         </form>
-        <div className="info-container">
-          <p className="info-text">
-            <Link to="/register" aria-label="Need an account? Sign up!" className="no-underline"><div className="info-button">Need an account?</div></Link>
+        <div className="info-container w-full flex flex-row justify-evenly mt-8">
+          <p className="info-text w-1/2 flex flex-col text-center px-4 text-sm">
+            <Link to="/register" aria-label="Need an account? Sign up!" className="no-underline">
+              <div className="info-button rounded-md h-11 w-full flex justify-center items-center bg-black bg-opacity-70 text-white transition-all duration-300 ease-in-out hover:bg-opacity-50">Need an account?</div>
+            </Link>
           </p>
-          <p className="info-text">
-            <Link to="/register" aria-label="Forgot your password?" className="no-underline"><div className="info-button">Forgot password?</div></Link>
+          <p className="info-text w-1/2 flex flex-col text-center px-4 text-sm">
+            <Link to="/register" aria-label="Forgot your password?" className="no-underline">
+              <div className="info-button rounded-md h-11 w-full flex justify-center items-center bg-black bg-opacity-70 text-white transition-all duration-300 ease-in-out hover:bg-opacity-50">Forgot password?</div>
+            </Link>
           </p>
         </div>
       </section>
