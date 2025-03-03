@@ -1,25 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useContext, useDebugValue } from "react";
+import AuthContext from "../context/AuthProvider";
 
 export const useAuth = () => {
-  const [auth, setAuth] = useState({
-    accessToken: null,
-    refreshToken: null,
-    user: null,
-  });
-
-  useEffect(() => {
-    const storedAccessToken = localStorage.getItem("accessToken");
-    const storedRefreshToken = localStorage.getItem("refreshToken");
-    const storedUsername = localStorage.getItem("username");
-
-    if (storedAccessToken && storedRefreshToken && storedUsername) {
-      setAuth({
-        accessToken: storedAccessToken,
-        refreshToken: storedRefreshToken,
-        user: storedUsername
-      });
-    }
-  }, []);
-
-  return { auth, setAuth };
-};
+    const { auth } = useContext(AuthContext);
+    useDebugValue(auth, auth => auth?.user ? "Logged In" : "Logged Out")
+    return useContext(AuthContext);
+}

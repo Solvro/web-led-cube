@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 import axios from "../api/axios";
 
 import "./Login.css";
@@ -9,15 +9,15 @@ import { useAuth } from "../hooks/useAuth";
 const LOGIN_URL = "http://127.0.0.1:8000/auth/token/";
 
 export const Login = () => {
-  const { setAuth } = useAuth();
+  const { setAuth, persist, setPersist } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Determine where to navigate after login, default to "/" if no previous page
-  const from = location.state?.from?.pathname === "/login" 
-    ? "/" 
-    : location.state?.from?.pathname || "/";
+  const from =
+    location.state?.from?.pathname === "/login"
+      ? "/"
+      : location.state?.from?.pathname || "/";
 
   const userRef = useRef();
 
@@ -30,39 +30,48 @@ export const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      const response = await axios.post(
-        LOGIN_URL,
-        JSON.stringify({ username: user, password: pwd }),
-        {
-          headers: { "Content-Type": "application/json" },
+    await toast.promise(
+      (async () => {
+        try {
+          const response = await axios.post(
+            LOGIN_URL,
+            JSON.stringify({ username: user, password: pwd }),
+            {
+              headers: { "Content-Type": "application/json" },
+              withCredentials: true,
+            }
+          );
+  
+          const accessToken = response?.data?.access;
+          const username = response?.data?.username;
+  
+          setAuth({ username, accessToken });
+          setUser("");
+          setPwd("");
+          console.log("navigating from login...");
+          navigate(from);
+        } catch (err) {
+          if (!err?.response) {
+            throw new Error("No server response. Please try again.");
+          } else if (err.response?.status === 400) {
+            throw new Error("Missing Username or Password.");
+          } else if (err.response?.status === 401) {
+            throw new Error("Wrong Username or Password.");
+          } else {
+            throw new Error("Unexpected error. Please try again.");
+          }
         }
-      );
-      const accessToken = response?.data?.access;
-      const refreshToken = response?.data?.refresh;
-      const username = response?.data?.username;
-      console.log("accessToken: " + accessToken + " ,refreshToken: " + refreshToken);
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
-      localStorage.setItem("username", username);
-      setAuth((prev) => ({ ...prev, user, accessToken, refreshToken }));
-      setUser("");
-      setPwd("");
-      console.log("navigating from login...");
-      navigate(from, { replace: true });
-      toast.success("Logged in Successfully");
-    } catch (err) {
-      if (!err?.response) {
-        toast.error("No server response");
-      } else if (err.response?.status === 400) {
-        toast.error("Missing Username or Password");
-      } else if (err.response?.status === 401) {
-        toast.error("Wrong Username or Password");
-      } else {
-        toast.error("Login Failed");
+      })(),
+      {
+        loading: "Logging in...",
+        success: "Logged in Successfully",
+        error: (err) => err.message,
       }
-    }
+    );
+  };
+
+  const togglePersist = () => {
+    setPersist((prev) => !prev);
   };
 
   return (
@@ -96,15 +105,38 @@ export const Login = () => {
               placeholder="Enter your password"
             />
           </div>
-          <button type="submit" className="sign-in-button">Sign In</button>
+          <button type="submit" className="sign-in-button">
+            Sign In
+          </button>
+          <div className="persistCheck">
+            <input
+              type="checkbox"
+              id="persist"
+              onChange={togglePersist}
+              checked={persist}
+            />
+            <label htmlFor="persist">Trust This Device</label>
+          </div>
         </form>
         <div className="info-container">
-          <p className="info-text">
-            <Link to="/register" aria-label="Need an account? Sign up!" className="no-underline"><div className="info-button">Need an account?</div></Link>
-          </p>
-          <p className="info-text">
-            <Link to="/register" aria-label="Forgot your password?" className="no-underline"><div className="info-button">Forgot password?</div></Link>
-          </p>
+          <div className="info-text">
+            <Link
+              to="/register"
+              aria-label="Need an account? Sign up!"
+              className="no-underline"
+            >
+              <div className="info-button">Need an account?</div>
+            </Link>
+          </div>
+          <div className="info-text">
+            <Link
+              to="/register"
+              aria-label="Forgot your password?"
+              className="no-underline"
+            >
+              <div className="info-button">Forgot password?</div>
+            </Link>
+          </div>
         </div>
       </section>
     </div>

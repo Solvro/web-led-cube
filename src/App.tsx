@@ -16,12 +16,13 @@ import { SavedProjects } from "./main-page/ProjectsManager/SavedProjects";
 import { DiscoverProjects } from "./main-page/ProjectsManager/DiscoverProjects";
 import { UploadAnimation } from "./pages/UploadAnimation";
 import { Tutorial } from "./main-page/Tutorial";
+import { PersistLogin } from "./components/PersistLogin";
 
 const App = () => {
   const [executedCode, setExecutedCode] = useState("");
   const [uploadCode, setUploadCode] = useState("");
-  const [reset, setReset] = useState(0); // same aproach for reset button - easy to correct but I have no idea
-  const [execute, setExecute] = useState(0);
+  const [reset, setReset] = useState(0); // dumb
+  const [execute, setExecute] = useState(0); // dumb
   const [isError, setIsError] = useState(false);
   const [numCubes, setNumCubes] = useState(5);
 
@@ -47,83 +48,93 @@ const App = () => {
       <Toaster />
       {/* notifications - react-hot-toaster */}
       <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route
-            path="/"
-            element={
-              <MainPage
-                execute={execute}
-                reset={reset}
-                code={executedCode}
-                numCubes={numCubes}
-                setNumCubes={setNumCubes}
-                setIsError={setIsError}
-              />
-            }
-          >
+        <Route element={<PersistLogin />}>
+          <Route path="/" element={<Layout />}>
             <Route
-              index
+              path="/"
               element={
-                <CodeEditor
-                  onExecute={handleExecuteCode}
-                  setReset={setReset}
+                <MainPage
+                  execute={execute}
+                  reset={reset}
+                  code={executedCode}
                   numCubes={numCubes}
                   setNumCubes={setNumCubes}
-                  isError={isError}
-                  code={code}
-                  setCode={setCode}
-                  visibleIndex={visibleIndex}
-                  setVisibleIndex={setVisibleIndex}
-                  setUploadCode={setUploadCode}
+                  setIsError={setIsError}
                 />
               }
-            />
-            <Route path="upload" element={<RequireAuth />}>
+            >
               <Route
                 index
                 element={
-                  <UploadAnimation
-                    uploadCode={uploadCode}
+                  <CodeEditor
+                    onExecute={handleExecuteCode}
+                    setReset={setReset}
+                    numCubes={numCubes}
+                    setNumCubes={setNumCubes}
+                    isError={isError}
+                    code={code}
+                    setCode={setCode}
+                    visibleIndex={visibleIndex}
+                    setVisibleIndex={setVisibleIndex}
                     setUploadCode={setUploadCode}
                   />
                 }
               />
-            </Route>
-            <Route path="projects" element={<Projects />}>
-              <Route element={<RequireAuth />}>
+              <Route path="upload" element={<RequireAuth />}>
                 <Route
                   index
                   element={
-                    <YourProjects
-                      code={code}
-                      setCode={setCode}
-                      visibleIndex={visibleIndex}
-                      setVisibleIndex={setVisibleIndex}
-                      executeCode={handleExecuteCode}
+                    <UploadAnimation
+                      uploadCode={uploadCode}
+                      setUploadCode={setUploadCode}
                     />
                   }
                 />
-                <Route path="saved" element={<SavedProjects />} />
-                <Route path="discover" element={<DiscoverProjects code={code}
-                      setCode={setCode}
-                      visibleIndex={visibleIndex}
-                      setVisibleIndex={setVisibleIndex}
-                      executeCode={handleExecuteCode}/>} />
               </Route>
+              <Route path="projects" element={<Projects />}>
+                <Route element={<RequireAuth />}>
+                  <Route
+                    index
+                    element={
+                      <YourProjects
+                        code={code}
+                        setCode={setCode}
+                        visibleIndex={visibleIndex}
+                        setVisibleIndex={setVisibleIndex}
+                        executeCode={handleExecuteCode}
+                      />
+                    }
+                  />
+                  <Route path="saved" element={<SavedProjects />} />
+                  <Route
+                    path="discover"
+                    element={
+                      <DiscoverProjects
+                        code={code}
+                        setCode={setCode}
+                        visibleIndex={visibleIndex}
+                        setVisibleIndex={setVisibleIndex}
+                        executeCode={handleExecuteCode}
+                      />
+                    }
+                  />
+                </Route>
+              </Route>
+
+              <Route path="info" element={<div>Informacje są tutaj!</div>} />
+              <Route path="tutorial" element={<Tutorial />} />
             </Route>
-            <Route path="info" element={<div>Informacje są tutaj!</div>} />
-            <Route path="tutorial" element={<Tutorial />} />
-          </Route>
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Registration />} />
-          <Route path="unauthorized" element={<Unauthorized />} />
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Registration />} />
+            <Route path="unauthorized" element={<Unauthorized />} />
 
-          <Route element={<RequireAuth />}>
-            <Route path="test2" element={<Test2 />} />
-          </Route>
+            <Route element={<RequireAuth />}>
+              <Route path="test2" element={<Test2 />} />
+            </Route>
 
-          {/* "*" is the rest of paths that are not stated*/}
-          <Route path="*" element={<MissingPage />} />
+            {/* "*" is the rest of paths that are not stated*/}
+            <Route path="*" element={<MissingPage />} />
+          </Route>
         </Route>
       </Routes>
     </>
