@@ -26,9 +26,6 @@
   height: clamp(426px, 95vw, 700px);
   width: clamp(320px, 78vw, 550px);
   container-type: inline-size;
-
-  background-color: rgba(240, 248, 255, 0.89);
-  border: solid 1px rgba(248, 248, 248, 0.5);
 }
 
 .tooltip {

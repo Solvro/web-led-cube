@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import toast from 'react-hot-toast';
 import axios from "../api/axios";
 import { Link, useNavigate } from "react-router-dom";
+import solvroLogo from "../assets/solvro-logo.svg";
 
 import { IoCheckmarkOutline } from "react-icons/io5";
 import { IoCloseOutline } from "react-icons/io5";
@@ -124,12 +125,13 @@ const Registration = () => {
   };
 
   return (
-    <div className="page-container">
-      <section className="registration-section">
+    <div className="page-container w-full h-screen flex items-center justify-center bg-cover bg-center">
+      <section className="registration-section  text-white">
         <h1>REGISTER</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="label-input-section">
-            <label htmlFor="userName">
+        <img src={solvroLogo} alt="Solvro Logo" className="solvroImg w-7/10" />
+        <form onSubmit={handleSubmit} className="w-full flex flex-col items-center px-12 py-5">
+          <div className="label-input-section flex flex-col mb-10 w-full relative">
+            <label htmlFor="userName"  className="mb-1 h-8 flex items-center">
               USERNAME
               <span className={validUser ? "valid" : "hide"}>
                 <IoCheckmarkOutline />
@@ -141,6 +143,7 @@ const Registration = () => {
             <input
               type="text"
               id="username"
+              className="w-full h-14 rounded-md text-lg p-2 text-black bg-[#808796] border-3 border-transparent focus:outline-none focus:border-black"
               ref={userRef}
               autoComplete="username"
               onChange={(e) => setUser(e.target.value)}
@@ -164,7 +167,7 @@ const Registration = () => {
               Letters, numbers, underscores, hyphens allowed.
             </p>
           </div>
-          <div className="label-input-section">
+          <div className="label-input-section flex flex-col w-full relative">
             <label htmlFor="email">
               EMAIL
               <span className={validEmail ? "valid" : "hide"}>
@@ -177,6 +180,7 @@ const Registration = () => {
             <input
               type="text"
               id="email"
+              className="w-full h-14 rounded-md text-lg p-2 text-black bg-[#808796] border-3 border-transparent focus:outline-none focus:border-black"
               ref={userRef}
               autoComplete="email"
               onChange={(e) => setEmail(e.target.value)}
@@ -187,7 +191,7 @@ const Registration = () => {
               placeholder="Enter your email"
             />
           </div>
-          <div className="label-input-section">
+          <div className="label-input-section flex flex-col w-full relative">
             <label htmlFor="name">
               FIRST NAME
               <span className={validName ? "valid" : "hide"}>
@@ -202,6 +206,7 @@ const Registration = () => {
               id="name"
               ref={userRef}
               autoComplete="firstName"
+              className="w-full h-14 rounded-md text-lg p-2 text-black bg-[#808796] border-3 border-transparent focus:outline-none focus:border-black"
               onChange={(e) => setName(e.target.value)}
               required
               value={name}
@@ -235,6 +240,7 @@ const Registration = () => {
             <input
               type="text"
               id="lname"
+              className="w-full h-14 rounded-md text-lg p-2 text-black bg-[#808796] border-3 border-transparent focus:outline-none focus:border-black"
               ref={userRef}
               autoComplete="firstName"
               onChange={(e) => setLname(e.target.value)}
@@ -270,6 +276,7 @@ const Registration = () => {
             <input
               type="password"
               id="password"
+              className="w-full h-14 rounded-md text-lg p-2 text-black bg-[#808796] border-3 border-transparent focus:outline-none focus:border-black"
               autoComplete="new-password"
               onChange={(e) => setPwd(e.target.value)}
               required
@@ -311,6 +318,7 @@ const Registration = () => {
             <input
               type="password"
               id="confirm_pwd"
+              className="w-full h-14 rounded-md text-lg p-2 text-black bg-[#808796] border-3 border-transparent focus:outline-none focus:border-black"
               autoComplete="new-password"
               onChange={(e) => setMatchPwd(e.target.value)}
               required
@@ -334,7 +342,7 @@ const Registration = () => {
 
           <button
             disabled={!validUser || !validEmail || !validName || !validLname || !validPwd || !validMatch ? true : false}
-            className="sign-in-button"
+            className="sign-in-button w-4/5 h-14 rounded-md text-xl bg-[#152959] hover:bg-[#061527] text-white transition-all duration-300 ease-in-out" 
           >
             Sign Up
           </button>
