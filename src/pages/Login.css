@@ -3,28 +3,21 @@
 @tailwind utilities;
 
 .page-container {
-
   background-image: url('../assets/loginbackground.png');
   background-size: cover;
   background-position: center;
+  overflow-y: auto;
 }
 
 .login-section {
-  
   container-type: inline-size;
 }
-.solvroImg{
-  margin-top: 2rem;
+
+.solvroImg {
+  margin-top: 1rem;
 }
 
 .registration-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  border-radius: 0.4rem;
-  height: clamp(426px, 95vw, 700px);
-  width: clamp(320px, 78vw, 550px);
   container-type: inline-size;
 }
 
@@ -73,7 +66,6 @@ h1 {
   display: flex;
   flex-direction: column;
   margin-bottom: 42px;
-
   position: relative;
 }
 
@@ -90,8 +82,6 @@ input {
   font-size: 16px;
   padding: 8px;
   color: black;
-
-  
   border: solid 3px rgba(240, 248, 255, 0);
 }
 
@@ -105,18 +95,14 @@ input:focus {
 }
 
 .sign-in-button {
-  margin-top: 30px;
-
+  margin-top: 1px;
   height: 58px;
   border-radius: 0.4rem;
   font-size: 20px;
   border: none;
-
   color: white;
-
   transition: all 0.3s ease;
 }
-
 
 .sign-in-button:disabled {
   background-color: rgba(0, 0, 0, 0.24);
@@ -148,13 +134,11 @@ input:focus {
   border-radius: 0.25rem;
   height: 45px;
   width: 100%;
-
   border: none;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.678);
-
   transition: all 0.3s ease;
   color: white;
 }
@@ -180,6 +164,12 @@ form {
   align-items: center;
 }
 
+.flex-row-custom {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
 @container (max-width: 520px) {
   .registration-section form {
     padding: 10px 20px 10px 20px;
@@ -190,7 +180,7 @@ form {
     min-height: 40px;
   }
   .registration-section .label-input-section {
-    margin-bottom: 4vw;
+    margin-bottom: 1vw;
   }
   .registration-section .info-text {
     padding: 0;
@@ -200,10 +190,10 @@ form {
     height: 8vw;
     max-height: 55px;
     min-height: 40px;
-    margin-top: 2vw;
+    margin-top: 1vw;
   }
   .registration-section h1 {
-    margin-top: 5px;
+    margin-top: 1px;
   }
   .registration-section .info-button {
     height: 7vw;
