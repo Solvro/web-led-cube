@@ -6,7 +6,7 @@
   background-image: url('../assets/loginbackground.png');
   background-size: cover;
   background-position: center;
-  overflow-y: auto;
+
 }
 
 .login-section {
@@ -132,7 +132,7 @@ input:focus {
 
 .info-button {
   border-radius: 0.25rem;
-  height: 45px;
+  height: 30px;
   width: 100%;
   border: none;
   display: flex;

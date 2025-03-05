@@ -330,7 +330,7 @@ const Registration = () => {
             Sign Up
           </button>
         </form>
-        <div className="info-container mt-4">
+        <div className="info-container mt-1">
           <p className="info-text">
             <Link to="/login" aria-label="Already registered? Sign in!" className="no-underline">
               <div className="info-button">Already registered?</div>
