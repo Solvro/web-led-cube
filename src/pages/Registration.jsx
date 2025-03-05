@@ -48,32 +48,25 @@ const Registration = () => {
 
   useEffect(() => {
     const result = USER_REGEX.test(user);
-console.log("User " + user + " + " + result);
-console.log("User " + user + " + " + result);
     setValidUser(result);
   }, [user]);
   useEffect(() => {
     const result = NAME_REGEX.test(name);
-console.log("Name " + name + " + " + result);
     setValidName(result);
   }, [name]);
   useEffect(() => {
     const result = LNAME_REGEX.test(lname);
-console.log("Lname " + lname + " + " + result);
     setValidLname(result);
   }, [lname]);
   useEffect(() => {
     const result = EMAIL_REGEX.test(email);
-console.log("Email " + email + " + " + result);
     setValidEmail(result);
   }, [email]);
 
   useEffect(() => {
     const result = PWD_REGEX.test(pwd);
-console.log("Pwd: " + pwd + " + " + result);
     setValidPwd(result);
     const match = pwd === matchPwd;
-console.log("Match: " + match);
     setValidMatch(match);
   }, [pwd, matchPwd]);
 
@@ -97,8 +90,6 @@ console.log("Match: " + match);
           headers: { "Content-Type": "application/json" },
         }
       );
-// toast.success(JSON.stringify(response.data));
-      console.log(JSON.stringify(response.data))
       toast.success("Registration complete");
       setUser("");
       setEmail("");
@@ -111,7 +102,6 @@ console.log("Match: " + match);
       if (!err?.response) {
         toast.error("No Server Response");
       } else if (err.response?.status === 400) {
-// Check if the error is due to email conflict
         if (err.response?.data?.email) {
           toast.error("Email Already Taken");
         } else if (err.response?.data?.username) {
@@ -156,12 +146,9 @@ console.log("Match: " + match);
               onBlur={() => setUserFocus(false)}
               placeholder="Enter your username"
             />
-
             <p
               id="uidnote"
-              className={` tooltip
-${userFocus && user && !validUser ? "" : "offscreen"}
-`}
+              className={`tooltip ${userFocus && user && !validUser ? "" : "offscreen"}`}
             >
               4 to 24 characters. <br />
               Must begin with a letter. <br />
@@ -219,12 +206,8 @@ ${userFocus && user && !validUser ? "" : "offscreen"}
                 placeholder="Enter your first name"
               />
               <p
-
                 id="uidnote"
-                className={
-` tooltip
-${nameFocus && name && !validName ? "" : "offscreen"}
-`}
+                className={`tooltip ${nameFocus && name && !validName ? "" : "offscreen"}`}
               >
                 Cannot contain numbers. <br />
                 At least 1 letter long. <br />
@@ -255,14 +238,10 @@ ${nameFocus && name && !validName ? "" : "offscreen"}
                 onFocus={() => setLnameFocus(true)}
                 onBlur={() => setLnameFocus(false)}
                 placeholder="Enter your last name"
-
               />
               <p
                 id="uidnote"
-
-                className={` tooltip
-${lnameFocus && lname && !validLname ? "" : "offscreen"}
-`}
+                className={`tooltip ${lnameFocus && lname && !validLname ? "" : "offscreen"}`}
               >
                 Cannot contain numbers. <br />
                 At least 1 letter long. <br />
@@ -270,86 +249,78 @@ ${lnameFocus && lname && !validLname ? "" : "offscreen"}
               </p>
             </div>
           </div>
-          <div className="label-input-section flex flex-col mb-6 w-full relative">
-            <label htmlFor="password">
-              PASSWORD
-              <span className={validPwd ? "valid" : "hide"}>
-                <IoCheckmarkOutline />
-              </span>
-              <span className={validPwd || !pwd ? "hide" : "invalid"}>
-                <IoCloseOutline />
-              </span>
-            </label>
-            <input
-              type="password"
-              id="password"
-              className="w-full h-12 rounded-md text-lg p-2 text-black bg-[#808796] border-3 border-transparent focus:outline-none focus:border-black"
-              autoComplete="new-password"
-              onChange={(e) => setPwd(e.target.value)}
-              required
-              value={pwd}
-              aria-invalid={validPwd ? "false" : "true"}
-              aria-describedby="pwdnote"
-              onFocus={() => setPwdFocus(true)}
-              onBlur={() => setPwdFocus(false)}
-              placeholder="
-Enter your password"
-            />
-            <p
-
-              id="pwdnote"
-              className={`tooltip ${
-pwdFocus && !validPwd ? "instructions" : "offscreen"
-}`}
-            >
-              8 to 24 characters. <br />
-              Must include uppercase and lowercase letters, a number and a
-              special character.
-              <br />
-              Allowed special characters:{" "}
-              <span aria-label="exclamation mark">!</span>
-              <span aria-label="at symbol">@</span>
-              <span aria-label="hashtag">#</span>
-              <span aria-label="dollar sign">$</span>
-              <span aria-label="percent">%</span>
-            </p>
-          </div>
-          <div className="label-input-section flex flex-col mb-6 w-full relative">
-            <label htmlFor="confirm_pwd">
-              CONFIRM PASSWORD
-              <span className={validMatch && matchPwd ? "valid" : "hide"}>
-                <IoCheckmarkOutline />
-              </span>
-              <span className={validMatch || !matchPwd ? "hide" : "invalid"}>
-                <IoCloseOutline />
-              </span>
-            </label>
-            <input
-              type="password"
-              id="confirm_pwd"
-              className="w-full h-12 rounded-md text-lg p-2 text-black bg-[#808796] border-3 border-transparent focus:outline-none f// I am not sure if I can give matchPwd value - if it causes problems, clear it
-ocus:border-black"
-              autoComplete="new-password"
-              onChange={(e) => setMatchPwd(e.target.value)}
-              required
-// I am not sure if I can give matchPwd value - if it causes problems, clear it
-              value={matchPwd}
-              aria-invalid={validMatch ? "false" : "true"}
-              aria-describedby="confirmnote"
-              onFocus={() => setMatchFocus(true)}
-              onBlur={() => setMatchFocus(false)}
-
-              placeholder="Enter your password again"
-
-            />
-            <p
-              id="confirmnote"
-              className={`tooltip ${
-matchFocus && !validMatch ? "instructions" : "offscreen"
-}`}
-            >
-              Must match the first password input field.
-            </p>
+          <div className="flex flex-row-custom w-full space-x-4 mb-8">
+            <div className="label-input-section flex flex-col w-1/2 relative">
+              <label htmlFor="password">
+                PASSWORD
+                <span className={validPwd ? "valid" : "hide"}>
+                  <IoCheckmarkOutline />
+                </span>
+                <span className={validPwd || !pwd ? "hide" : "invalid"}>
+                  <IoCloseOutline />
+                </span>
+              </label>
+              <input
+                type="password"
+                id="password"
+                className="w-full h-12 rounded-md text-lg p-2 text-black bg-[#808796] border-3 border-transparent focus:outline-none focus:border-black"
+                autoComplete="new-password"
+                onChange={(e) => setPwd(e.target.value)}
+                required
+                value={pwd}
+                aria-invalid={validPwd ? "false" : "true"}
+                aria-describedby="pwdnote"
+                onFocus={() => setPwdFocus(true)}
+                onBlur={() => setPwdFocus(false)}
+                placeholder="Enter your password"
+              />
+              <p
+                id="pwdnote"
+                className={`tooltip ${pwdFocus && !validPwd ? "instructions" : "offscreen"}`}
+              >
+                8 to 24 characters. <br />
+                Must include uppercase and lowercase letters, a number and a
+                special character.
+                <br />
+                Allowed special characters:{" "}
+                <span aria-label="exclamation mark">!</span>
+                <span aria-label="at symbol">@</span>
+                <span aria-label="hashtag">#</span>
+                <span aria-label="dollar sign">$</span>
+                <span aria-label="percent">%</span>
+              </p>
+            </div>
+            <div className="label-input-section flex flex-col w-1/2 relative">
+              <label htmlFor="confirm_pwd">
+                CONFIRM PASSWORD
+                <span className={validMatch && matchPwd ? "valid" : "hide"}>
+                  <IoCheckmarkOutline />
+                </span>
+                <span className={validMatch || !matchPwd ? "hide" : "invalid"}>
+                  <IoCloseOutline />
+                </span>
+              </label>
+              <input
+                type="password"
+                id="confirm_pwd"
+                className="w-full h-12 rounded-md text-lg p-2 text-black bg-[#808796] border-3 border-transparent focus:outline-none focus:border-black"
+                autoComplete="new-password"
+                onChange={(e) => setMatchPwd(e.target.value)}
+                required
+                value={matchPwd}
+                aria-invalid={validMatch ? "false" : "true"}
+                aria-describedby="confirmnote"
+                onFocus={() => setMatchFocus(true)}
+                onBlur={() => setMatchFocus(false)}
+                placeholder="Enter your password again"
+              />
+              <p
+                id="confirmnote"
+                className={`tooltip ${matchFocus && !validMatch ? "instructions" : "offscreen"}`}
+              >
+                Must match the first password input field.
+              </p>
+            </div>
           </div>
 
           <button
