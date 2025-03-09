@@ -87,48 +87,40 @@ export const Registration = () => {
       toast.error("Invalid entry, try again");
       return;
     }
-    await toast.promise(
-      (async () => {
-        try {
-          const response = await axios.post(
-            REGISTER_URL,
-            JSON.stringify({ username: user, password: pwd, email: email, first_name: name, last_name: lname }),
-            {
-              headers: { "Content-Type": "application/json" },
-            }
-          );
-          // toast.success(JSON.stringify(response.data));
-          console.log(JSON.stringify(response.data))
-          setUser("");
-          setEmail("");
-          setName("");
-          setLname("");
-          setPwd("");
-          setMatchPwd("");
-          navigate("/login");
-        } catch (err) {
-          if (!err?.response) {
-            throw new Error("No server response. Please try again.");
-          } else if (err.response?.status === 400) {
-            // check if the error is due to email conflict
-            if (err.response?.data?.email) {
-              throw new Error("Email Already Taken");
-            } else if (err.response?.data?.username) {
-              throw new Error("Username Taken");
-            } else {
-              throw new Error("Registration Failed");
-            }
-          } else {
-            throw new Error("Registration Failed");
-          }
+    try {
+      const response = await axios.post(
+        REGISTER_URL,
+        JSON.stringify({ username: user, password: pwd, email: email, first_name: name, last_name: lname }),
+        {
+          headers: { "Content-Type": "application/json" },
         }
-      })(),
-      {
-        loading: "",
-        success: "Registered Successfully",
-        error: (err) => err.message,
+      );
+      // toast.success(JSON.stringify(response.data));
+      console.log(JSON.stringify(response.data))
+      toast.success("Registration complete");
+      setUser("");
+      setEmail("");
+      setName("");
+      setLname("");
+      setPwd("");
+      setMatchPwd("");
+      navigate("/login", { replace: true });
+    } catch (err) {
+      if (!err?.response) {
+        toast.error("No Server Response");
+      } else if (err.response?.status === 400) {
+        // Check if the error is due to email conflict
+        if (err.response?.data?.email) {
+          toast.error("Email Already Taken");
+        } else if (err.response?.data?.username) {
+          toast.error("Username Taken");
+        } else {
+          toast.error("Registration Failed");
+        }
+      } else {
+        toast.error("Registration Failed");
       }
-    );
+    }
   };
 
   return (

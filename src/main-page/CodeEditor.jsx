@@ -59,14 +59,11 @@ export const CodeEditor = ({
     if (code.length > 1) {
       const newCode = code.filter((_, i) => i !== index);
       setCode(newCode);
-  
-      setVisibleIndex((prevIndex) => {
-        if (prevIndex === index) {
-          // If the last tab was deleted, move to the previous one
-          return Math.max(0, index - 1);
-        }
-        return prevIndex > index ? prevIndex - 1 : prevIndex; // Adjust for shifting
-      });
+      setTimeout(() => { // sorry for that one! BUT IT WORKS
+        setVisibleIndex((prevIndex) =>
+          prevIndex >= newCode.length ? newCode.length - 1 : prevIndex
+        );
+      }, 0);
     } else {
       setCode([""]);
       setVisibleIndex(0);

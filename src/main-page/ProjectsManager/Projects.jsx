@@ -9,11 +9,6 @@ const pages = [
     },
     { 
       number: 2, 
-      text: "Polubione",
-      path: "saved"
-    },
-    { 
-      number: 3, 
       text: "Odkrywaj",
       path: "discover"
     },

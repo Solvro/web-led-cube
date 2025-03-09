@@ -16,6 +16,13 @@ export const UploadAnimation = ({ uploadCode, setUploadCode }) => {
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
 
+  useEffect(()=>{
+    if(uploadCode === ""){
+      toast.success("Select a code to submit!");
+      navigate("/", { replace: true });
+    }
+  },[]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
