@@ -1,241 +1,228 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .page-container {
-    width: 100vw;
-    height: 100vh;
-    border: solid 2px;
-    overflow: none;
-  
-    display: flex;
-    align-items: center;
-    justify-content: center;
-/*   
-    background: rgb(183, 115, 255);
-    background: linear-gradient(
-      141deg,
-      rgba(183, 115, 255, 1) 9%,
-      rgb(70, 212, 255) 100%
-    ); */
-    /* background-color: rgb(95, 0, 0); */
+  background-image: url('../assets/loginbackground.png');
+  background-size: cover;
+  background-position: center;
+
+}
+
+.login-section {
+  container-type: inline-size;
+}
+
+.solvroImg {
+  margin-top: 1rem;
+}
+
+.registration-section {
+  container-type: inline-size;
+}
+
+.tooltip {
+  position: absolute;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  color: #fff;
+  font-size: 16px;
+  min-width: 85%;
+  text-align: center;
+  padding: 1.25em;
+  background-color: rgba(138, 138, 138, 0.788);
+  border-radius: 0.25rem;
+}
+
+.offscreen {
+  visibility: hidden;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-top: 20px;
+  color: rgba(0, 0, 0, 0.836);
+}
+
+.hide {
+  display: none;
+}
+
+.valid {
+  color: rgb(56, 243, 56);
+}
+
+.invalid {
+  color: red;
+}
+
+.valid,
+.invalid {
+  font-size: 25px;
+}
+
+.label-input-section {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 42px;
+  position: relative;
+}
+
+label {
+  margin-bottom: 5px;
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+}
+
+input {
+  height: 58px;
+  border-radius: 0.25rem;
+  font-size: 16px;
+  padding: 8px;
+  color: black;
+  border: solid 3px rgba(240, 248, 255, 0);
+}
+
+input:focus {
+  outline: none;
+  border: solid 3px rgba(0, 0, 0, 0.678);
+}
+
+.registration-section .label-input-section {
+  margin-bottom: 32px;
+}
+
+.sign-in-button {
+  margin-top: 1px;
+  height: 58px;
+  border-radius: 0.4rem;
+  font-size: 20px;
+  border: none;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.sign-in-button:disabled {
+  background-color: rgba(0, 0, 0, 0.24);
+}
+
+.info-container {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.info-text {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 0 50px 0 18px;
+  font-size: 14px;
+}
+
+.info-text:first-child {
+  padding: 0 18px 0 50px;
+}
+
+.info-button {
+  border-radius: 0.25rem;
+  height: 30px;
+  width: 100%;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.678);
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.no-underline {
+  text-decoration: none;
+}
+
+.info-button:hover {
+  background-color: rgba(0, 0, 0, 0.479);
+}
+
+.registration-section .info-text {
+  padding: 0;
+}
+
+form {
+  width: 100%;
+  height: auto;
+  padding: 20px 50px 20px 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flex-row-custom {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+@container (max-width: 520px) {
+  .registration-section form {
+    padding: 10px 20px 10px 20px;
   }
-  .login-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-    border-radius: 0.4rem;
-    height: clamp(426px, 93vw, 620px);
-    width: clamp(320px, 75vw, 500px);
-    /* height: 426px;
-      width: 320px; */
-    container-type: inline-size;
-  
-    background-color: rgba(240, 248, 255, 0.89);
-    border: solid 1px rgba(248, 248, 248, 0.5);
+  .registration-section input {
+    height: 8vw;
+    max-height: 55px;
+    min-height: 40px;
   }
-  .registration-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
-    border-radius: 0.4rem;
-    height: clamp(426px, 95vw, 700px);
-    width: clamp(320px, 78vw, 550px);
-    /* height: 426px; */
-    /* width: 320px; */
-    container-type: inline-size;
-  
-    background-color: rgba(240, 248, 255, 0.89);
-    border: solid 1px rgba(248, 248, 248, 0.5);
+  .registration-section .label-input-section {
+    margin-bottom: 1vw;
   }
-  
-  .tooltip {
-    position: absolute;
-    top: 0%;
-    left: 50%;
-    transform: translate(-50%, -100%);
-    color: #fff;
-    font-size: 16px;
-    min-width: 85%;
-    text-align: center;
-    padding: 1.25em;
-    background-color: rgba(138, 138, 138, 0.788);
-    border-radius: 0.25rem;
+  .registration-section .info-text {
+    padding: 0;
   }
-  .offscreen {
-    visibility: hidden;
+
+  .registration-section .sign-in-button {
+    height: 8vw;
+    max-height: 55px;
+    min-height: 40px;
+    margin-top: 1vw;
   }
-  h1 {
-    font-size: 2rem;
-    margin-top: 20px;
-    color: rgba(0, 0, 0, 0.836);
+  .registration-section h1 {
+    margin-top: 1px;
   }
-  .hide {
-    display: none;
+  .registration-section .info-button {
+    height: 7vw;
+    max-height: 45px;
+    min-height: 35px;
   }
-  .valid {
-    color: rgb(56, 243, 56);
+}
+
+@container (max-width: 420px) {
+  .login-section form {
+    padding: 10px 20px 10px 20px;
   }
-  .invalid {
-    color: red;
+  .login-section input {
+    height: 40px;
   }
-  .valid,
-  .invalid {
-    font-size: 25px;
+  .login-section .label-input-section {
+    margin-bottom: 10px;
   }
-  
-  .label-input-section {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 42px;
-    width: 100%;
-    position: relative;
+  .login-section .info-text {
+    padding: 0 20px 0 18px;
   }
-  label {
-    margin-bottom: 5px;
-    height: 30px;
-    display: flex;
-    flex-direction: row;
+  .login-section .info-text:first-child {
+    padding: 0 18px 0 20px;
   }
-  input {
-    height: 58px;
-    border-radius: 0.25rem;
-    font-size: 16px;
-    padding: 8px;
-    color: black;
-  
-    background-color: rgba(255, 255, 255, 0.452);
-    border: solid 3px rgba(240, 248, 255, 0);
-  }
-  input:focus {
-    outline: none;
-    border: solid 3px rgba(0, 0, 0, 0.678);
-  }
-  .registration-section .label-input-section{
-      margin-bottom: 32px;
-  }
-  .sign-in-button {
+  .login-section .sign-in-button {
+    height: 40px;
     margin-top: 30px;
-    width: 100%;
-    height: 58px;
-    border-radius: 0.4rem;
-    font-size: 20px;
-    border: none;
-  
-    color: white;
-    background-color: rgba(0, 0, 0, 0.678);
-    transition: all 0.3s ease;
   }
-  .sign-in-button:hover{
-    /* color: black; */
-    background-color: rgba(0, 0, 0, 0.479);
+  .login-section h1 {
+    margin-top: 5px;
   }
-  .sign-in-button:disabled{
-    background-color: rgba(0, 0, 0, 0.24);
-  }
-  .info-container {
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-  }
-  .info-text {
-    width: 50%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    padding: 0 50px 0 18px;
-    font-size: 14px;
-  }
-  .info-text:first-child {
-    padding: 0 18px 0 50px;
-  }
-  .info-button {
-    border-radius: 0.25rem;
-    height: 45px;
-    width: 100%;
-    
-    border: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.678);
-  
-    transition: all 0.3s ease;
-    color: white;
-  
-  }
-  .no-underline{
-    text-decoration: none; 
-  }
-  .info-button:hover{
-    background-color: rgba(0, 0, 0, 0.479);
-  }
-  .registration-section .info-text{
-      padding: 0;
-  }
-  form {
-    width: 100%;
-    height: auto;
-    padding: 20px 50px 20px 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  @container (max-width: 520px) {
-      .registration-section form {
-        padding: 10px 20px 10px 20px;
-      }
-      .registration-section input {
-        height: 8vw;
-        max-height: 55px;
-        min-height: 40px;
-      }
-      .registration-section .label-input-section {
-        margin-bottom: 4vw;
-      }
-      .registration-section .info-text {
-        padding: 0;
-      }
-  
-      .registration-section .sign-in-button {
-          height: 8vw;
-          max-height: 55px;
-          min-height: 40px;
-        margin-top: 2vw;
-      }
-      .registration-section h1 {
-        margin-top: 5px;
-      }
-      .registration-section .info-button{
-          height: 7vw;
-          max-height: 45px;
-          min-height: 35px;
-      }
-    }
-  
-  @container (max-width: 420px) {
-    .login-section form {
-      padding: 10px 20px 10px 20px;
-    }
-    .login-section input {
-      height: 40px;
-    }
-    .login-section .label-input-section {
-      margin-bottom: 10px;
-    }
-    .login-section .info-text {
-      padding: 0 20px 0 18px;
-    }
-    .login-section .info-text:first-child {
-      padding: 0 18px 0 20px;
-    }
-    .login-section .sign-in-button {
-      height: 40px;
-      margin-top: 30px;
-    }
-    .login-section h1 {
-      margin-top: 5px;
-    }
-  }
-  
+}
