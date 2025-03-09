@@ -3,7 +3,6 @@ import CodeMirror from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { javascript } from "@codemirror/lang-javascript";
 import { VscDebugStart } from "react-icons/vsc";
-import { BiSolidPlusCircle } from "react-icons/bi";
 import { BiWindowClose } from "react-icons/bi";
 import "./../CodeEditor.css";
 import toast from "react-hot-toast";
@@ -104,7 +103,7 @@ const CodeEditor = ({
             {visibleIndex === index && <div className="window-active"></div>}
           </div>
         ))}
-        <BiSolidPlusCircle className="add-icon" onClick={addTextarea} />
+        <button className="add-icon" onClick={addTextarea}>+</button>
       </div>
       <div className="text-area-container">
         {code.map((text_area_code, index) => (
