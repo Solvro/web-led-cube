@@ -7,6 +7,9 @@ import { BiWindowClose } from "react-icons/bi";
 import "./../CodeEditor.css";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import Polygon1 from "../assets/Polygon 1.svg"; 
+import RotateCW from "../assets/rotate-cw.svg"; 
+import SolvroLogo from "../assets/solvro-big-logo.svg"; // Import the SVG file
 
 const CodeEditor = ({
   onExecute,
@@ -66,12 +69,10 @@ const CodeEditor = ({
     }
   };
 
-  const handleSliderChange = (event) => {
-    setTempCubes(event.target.value);
-  };
-
-  const handleSliderBlur = () => {
-    setNumCubes(tempCubes);
+  const handleSelectChange = (event) => {
+    const value = parseInt(event.target.value);
+    setTempCubes(value);
+    setNumCubes(value);
   };
 
   const handleExecute = () => {
@@ -88,6 +89,9 @@ const CodeEditor = ({
 
   return (
     <div style={{ width: "100%", height: "100%" }}>
+      {/* <div className="header-container">
+        <img src={SolvroLogo} alt="Solvro Logo" className="solvro-logo" />
+      </div> */}
       <div className="tab-container">
         {code.map((_, index) => (
           <div
@@ -96,10 +100,12 @@ const CodeEditor = ({
             onClick={() => handleVisibility(index)}
           >
             Page {index + 1}
-            <BiWindowClose
+            <button
               onClick={() => removeTextarea(index)}
-              className="delete-icon"
-            />
+              className="delete-button"
+            >
+              x
+            </button>
             {visibleIndex === index && <div className="window-active"></div>}
           </div>
         ))}
@@ -118,22 +124,26 @@ const CodeEditor = ({
           />
         ))}
       </div>
-      <button onClick={handleExecute}>
-        <VscDebugStart />
-      </button>
-      <button onClick={handleResetScene}>Reset Scene</button>
-      <button onClick={handleUploadCode}>Upload animation</button>
+      <div className="button-container">
+        <button className="execute-button" onClick={handleExecute}>
+          <img src={Polygon1} alt="Execute" className="execute-icon" />
+        </button>
+        <button className="execute-button" onClick={handleResetScene}>
+          <img src={RotateCW} alt="Reset Scene" className="execute-icon" />
+        </button>
+        <button className="execute-button" onClick={handleUploadCode}>
+          Upload animation
+        </button>
+      </div>
       <div>
-        <input
-          type="range"
-          min="5"
-          max="10"
-          step="1"
-          value={tempCubes}
-          onChange={handleSliderChange}
-          onBlur={handleSliderBlur}
-        />
-        <div style={{ color: "white" }}>{tempCubes}</div>
+        <select className="select-button" value={tempCubes} onChange={handleSelectChange}>
+          <option value="5">5x5x5</option>
+          <option value="6">6x6x6</option>
+          <option value="7">7x7x7</option>
+          <option value="8">8x8x8</option>
+          <option value="9">9x9x9</option>
+          <option value="10">10x10x10</option>
+        </select>
       </div>
     </div>
   );
