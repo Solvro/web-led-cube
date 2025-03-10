@@ -1,98 +1,207 @@
 .code-editor-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  
-    width: 100%;
-    height: 100%;
-    /* min-width: 300px; */
-  }
-.sub-tab-wall{
-    width: 20px;
-    height: 100%;
-    background-color: black;
-    transition: all 0.1s;
-}
-.colored-left{
-    width: 20px;
-    height: 100%;
-    background-color: black;
-    border-bottom-right-radius: 0.3rem;
-}
-.colored-right{
-    width: 20px;
-    height: 100%;
-    background-color: black;
-    border-bottom-left-radius: 0.3rem;
-}
-.sub-tabs-container{
-    width: 100%;
-    height: 55px;
-    background-color: black;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-    margin-bottom: 10px;
-}
-.sub-tab-container{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    height: 100%;
-    align-items: end;
-}
-.sub-tab-button{
-    height: 70%;
-    border: none;
-    width: 65px;
-    background-color: black;
-    color: white;
-    cursor:pointer;
-    transition: all 0.1s;
-}
-.sub-tab-button.sub-active{
-    background-color: #191b20;
-    color: white;
-    border-top-right-radius: 0.3rem;
-    border-top-left-radius: 0.3rem;
-}
-.sub-tab-wall.sub-active{
-    background-color: #191b20;
-}
-.sub-tab-button:hover{
-    background-color: #191b20;
-    color: white;
-    border-top-right-radius: 0.3rem;
-    border-top-left-radius: 0.3rem;
-}
-.sub-tab-wall:hover{
-    background-color: #191b20;
-}
-.sub-page-content-container{
-    flex: 1;
-    width: 100%;
-    position: relative;
-}
-.sub-page-content{
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    visibility: hidden;
-}
-.sub-page-content.sub-active-content{
-    visibility: visible;
-}
-@media (max-width: 768px) {
-    .sub-page-hidden{
-        position: absolute;
-        opacity: 0; 
-      transform: translateX(-100vw); /* Moves the element far to the left */
-      pointer-events: none;
-    }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
+.sub-tab-wall {
+  width: 20px;
+  height: 100%;
+  background-color: black;
+  transition: all 0.1s;
+}
+
+.colored-left {
+  width: 20px;
+  height: 100%;
+  background-color: black;
+  border-bottom-right-radius: 0.3rem;
+}
+
+.colored-right {
+  width: 20px;
+  height: 100%;
+  background-color: black;
+  border-bottom-left-radius: 0.3rem;
+}
+
+.sub-tabs-container {
+  width: 100%;
+  height: 55px;
+  background-color: black;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.sub-tab-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  height: 100%;
+  align-items: end;
+}
+
+.sub-tab-button {
+  height: 70%;
+  border: none;
+  width: 65px;
+  background-color: #000;
+  color: white;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+.sub-tab-button.sub-active {
+  background-color: #061527;
+  color: white;
+  border-top-right-radius: 0.3rem;
+  border-top-left-radius: 0.3rem;
+}
+
+.sub-tab-wall.sub-active {
+  background-color: #191b20;
+}
+
+.sub-tab-button:hover {
+  background-color: #191b20;
+  color: white;
+  border-top-right-radius: 0.3rem;
+  border-top-left-radius: 0.3rem;
+}
+
+.sub-tab-wall:hover {
+  background-color: #191b20;
+}
+
+.sub-page-content-container {
+  flex: 1;
+  width: 100%;
+  position: relative;
+}
+
+.sub-page-content {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  visibility: hidden;
+}
+
+.sub-page-content.sub-active-content {
+  visibility: visible;
+}
+
+@media (max-width: 768px) {
+  .sub-page-hidden {
+    position: absolute;
+    opacity: 0;
+    transform: translateX(-100vw); /* Moves the element far to the left */
+    pointer-events: none;
+  }
+}
+
+.select-button {
+  background-color: #152959;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 3rem 0rem 0rem 3rem;
+
+}
+
+.select-button:hover {
+  background-color: #061527;
+}
+
+.add-icon {
+  background-color: #152959;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.add-icon:hover {
+  background-color: #061527;
+}
+
+.execute-button {
+  background-color: #152959;
+  border: none;
+  border-radius: 4px;
+  width: 100px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin: 10px;
+  color: white; /* Ensure text is white */
+}
+
+
+.execute-button:hover {
+  background-color: #061527;
+}
+
+.execute-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.delete-button {
+  background-color: transparent;
+  color: white;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+}
+
+.delete-button:hover {
+  color: darkred;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #061527; /* Darker background */
+  position: fixed;
+  margin-top: 7%;
+  margin-left:20%;
+  width: 100%;
+  z-index: 1000; /* Ensure it is on top of everything */
+}
+
+.solvro-logo {
+  height: 40px;
+  margin-right: 20px;
+}
+=======
 .sub-logout-button{
     height: 70%;
     border: none;
@@ -117,3 +226,4 @@
     align-items: end;
     width: 100px;
 }
+
