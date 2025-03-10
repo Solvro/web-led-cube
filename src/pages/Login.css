@@ -1,5 +1,4 @@
-@tailwind base;
-@tailwind components;
+@import "tailwindcss/preflight";
 @tailwind utilities;
 
 .page-container {
@@ -28,7 +27,7 @@
   transform: translate(-50%, -100%);
   color: #fff;
   font-size: 16px;
-  min-width: 85%;
+  min-width: 125%;
   text-align: center;
   padding: 1.25em;
   background-color: rgba(138, 138, 138, 0.788);
@@ -171,8 +170,14 @@ form {
 }
 
 @container (max-width: 520px) {
+  .solvroImg{
+    width: 100vw;
+    height: auto;
+  }
   .registration-section form {
     padding: 10px 20px 10px 20px;
+    width: 40vw;
+    min-width: 350px;
   }
   .registration-section input {
     height: 8vw;
@@ -203,8 +208,14 @@ form {
 }
 
 @container (max-width: 420px) {
+  .solvroImg{
+    width: 100vw;
+    height: auto;
+  }
   .login-section form {
     padding: 10px 20px 10px 20px;
+    width: 60vw;
+    min-width: 320px;
   }
   .login-section input {
     height: 40px;
@@ -225,4 +236,5 @@ form {
   .login-section h1 {
     margin-top: 5px;
   }
+
 }

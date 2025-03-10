@@ -118,7 +118,6 @@ export const Registration = () => {
   return (
     <div className="page-container w-full h-screen flex items-center justify-center bg-cover bg-center">
       <section className="registration-section flex flex-col items-center justify-center w-1/3 h-2/3 text-white">
-        <h1 className="mb-2">REGISTER</h1>
         <img src={solvroLogo} alt="Solvro Logo" className="solvroImg w-7/10 mb-2" />
         <form onSubmit={handleSubmit} className="w-full flex flex-col items-center px-8 py-4">
           <div className="label-input-section flex flex-col mb-4 w-full relative">
@@ -325,7 +324,7 @@ export const Registration = () => {
 
           <button
             disabled={!validUser || !validEmail || !validName || !validLname || !validPwd || !validMatch}
-            className="sign-in-button w-4/5 h-12 rounded-md text-xl bg-[#152959] hover:bg-[#061527] text-white transition-all duration-300 ease-in-out"
+            className="sign-in-button w-4/5 h-14 rounded-md text-xl bg-[#152959] hover:bg-[#061527] text-white transition-all duration-300 ease-in-out"
           >
             Sign Up
           </button>

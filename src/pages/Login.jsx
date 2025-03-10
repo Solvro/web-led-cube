@@ -73,7 +73,7 @@ export const Login = () => {
         <img src={solvroLogo} alt="Solvro Logo" className="solvroImg w-7/10" />
         <form onSubmit={handleSubmit} className="w-full flex flex-col items-center px-12 py-5">
           <div className="label-input-section flex flex-col mb-10 w-full relative">
-            <label htmlFor="username" className="mb-1 h-8 flex items-center">EMAIL</label>
+            <label htmlFor="username" className="mb-1 h-8 flex items-center">USERNAME</label>
             <input
               type="text"
               className="w-full h-14 rounded-md text-lg p-2 text-black bg-[#808796] border-3 border-transparent focus:outline-none focus:border-black"
@@ -105,11 +105,6 @@ export const Login = () => {
           <p className="info-text w-1/2 flex flex-col text-center px-4 text-sm">
             <Link to="/register" aria-label="Need an account? Sign up!" className="no-underline">
               <div className="info-button rounded-md h-11 w-full flex justify-center items-center bg-black bg-opacity-70 text-white transition-all duration-300 ease-in-out hover:bg-opacity-50">Need an account?</div>
-            </Link>
-          </p>
-          <p className="info-text w-1/2 flex flex-col text-center px-4 text-sm">
-            <Link to="/register" aria-label="Forgot your password?" className="no-underline">
-              <div className="info-button rounded-md h-11 w-full flex justify-center items-center bg-black bg-opacity-70 text-white transition-all duration-300 ease-in-out hover:bg-opacity-50">Forgot password?</div>
             </Link>
           </p>
         </div>
