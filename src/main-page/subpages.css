@@ -112,6 +112,8 @@
   padding: 5px 10px;
   border-radius: 4px;
   cursor: pointer;
+  margin: 3rem 0rem 0rem 3rem;
+
 }
 
 .select-button:hover {
@@ -187,9 +189,9 @@
   align-items: center;
   padding: 10px;
   background-color: #061527; /* Darker background */
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: fixed;
+  margin-top: 7%;
+  margin-left:20%;
   width: 100%;
   z-index: 1000; /* Ensure it is on top of everything */
 }

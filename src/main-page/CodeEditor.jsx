@@ -89,9 +89,7 @@ const CodeEditor = ({
 
   return (
     <div style={{ width: "100%", height: "100%" }}>
-      {/* <div className="header-container">
-        <img src={SolvroLogo} alt="Solvro Logo" className="solvro-logo" />
-      </div> */}
+
       <div className="tab-container">
         {code.map((_, index) => (
           <div
@@ -144,6 +142,9 @@ const CodeEditor = ({
           <option value="9">9x9x9</option>
           <option value="10">10x10x10</option>
         </select>
+      </div>
+            <div className="header-container">
+        <img src={SolvroLogo} alt="Solvro Logo" className="solvro-logo" />
       </div>
     </div>
   );
