@@ -1,26 +1,31 @@
 import { useAuth } from "../hooks/useAuth";
-import {Outlet, useLocation, Link } from "react-router-dom";
+import { Outlet, useLocation, Link } from "react-router-dom";
+import "./reqAuth.css";
 
-const RequireAuth = () => {
-    const { auth } = useAuth();  // Get auth state from the useAuth hook
-    const location = useLocation();
+export const RequireAuth = () => {
+  const { auth } = useAuth();
+  const location = useLocation();
 
-    // Check if the access token is available in localStorage (persistent login)
-    const accessToken = localStorage.getItem("accessToken") || auth?.accessToken;
+  const accessToken = localStorage.getItem("accessToken") || auth?.accessToken;
 
-    return (
-        accessToken
-            ? <Outlet />  // If there's an access token, render the protected route
-            : (
-                <div>
-                    <button>
-                        <Link to="/login" state={{ from: location }} replace>
-                            Log in
-                        </Link>
-                    </button>
-                </div>  // Otherwise, show the "Log in" button
-            )
-    );
-}
-
-export default RequireAuth;
+  return accessToken ? (
+    <Outlet />
+  ) : (
+    <div
+      style={{
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <button
+        className="reqauth-button"
+      >
+        <Link to="/login" state={{ from: location }} replace>
+          Log in
+        </Link>
+      </button>
+    </div>
+  );
+};

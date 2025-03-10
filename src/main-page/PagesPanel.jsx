@@ -2,18 +2,25 @@ import React from "react";
 import "./../MainPage.css";
 import "./subpages.css";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-//tymczasowe podejście
-//this is a panel that displays tabs that switch to different pages like
-// tutorial, upload etc.
-const PagesPanel = ({
-  isVisible
-}) => {
+import { RequireAuth } from "../components/RequireAuth";
+const PagesPanel = ({ isVisible }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const isActive = (path) => {
-    if (path === "/" && (location.pathname === "/" || location.pathname === "/upload")) return true; // Home case
-    return location.pathname === path; // Match other paths correctly
-  }
+    if (
+      path === "/" &&
+      (location.pathname === "/" || location.pathname === "/upload")
+    )
+      return true;
+    return location.pathname === path;
+  };
+
+  const logoutUser = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("username");
+    navigate("/login");
+  };
 
   const pages = [
     {
@@ -28,13 +35,8 @@ const PagesPanel = ({
     },
     {
       number: 3,
-      text: "Info",
-      path: "/info",
-    },
-    {
-      number: 4,
-      text: "Settings",
-      path: "/settings",
+      text: "Tutorial",
+      path: "/tutorial",
     },
   ];
 
@@ -47,33 +49,41 @@ const PagesPanel = ({
         {pages.map(({ number, text, path }) => (
           <div key={number} className="sub-tab-container">
             <div
-              className={`sub-tab-wall ${
-                isActive(path) ? "sub-active" : ""
-              }`}
+              className={`sub-tab-wall ${isActive(path) ? "sub-active" : ""}`}
             >
               <div className="colored-left"></div>
             </div>
             <button
               onClick={() => navigate(path)}
-              className={`sub-tab-button ${
-                isActive(path) ? "sub-active" : ""
-              }`}
+              className={`sub-tab-button ${isActive(path) ? "sub-active" : ""}`}
             >
               {text}
             </button>
             <div
-              className={`sub-tab-wall ${
-                isActive(path) ? "sub-active" : ""
-              }`}
+              className={`sub-tab-wall ${isActive(path) ? "sub-active" : ""}`}
             >
               <div className="colored-right"></div>
             </div>
           </div>
         ))}
+        <div className="sub-tab-button-container">
+          {localStorage.getItem("accessToken") ? (
+            <button className="sub-logout-button" onClick={logoutUser}>
+              Log Out
+            </button>
+          ) : (
+            <button
+              className="sub-logout-button"
+              onClick={() => navigate("/login")}
+            >
+              Log in
+            </button>
+          )}
+        </div>
       </div>
       {/* Page Content */}
       <div className={`sub-page-content-container`}>
-        <Outlet/>
+        <Outlet />
       </div>
     </div>
   );

@@ -10,11 +10,13 @@ export const useAuth = () => {
   useEffect(() => {
     const storedAccessToken = localStorage.getItem("accessToken");
     const storedRefreshToken = localStorage.getItem("refreshToken");
+    const storedUsername = localStorage.getItem("username");
 
-    if (storedAccessToken && storedRefreshToken) {
+    if (storedAccessToken && storedRefreshToken && storedUsername) {
       setAuth({
         accessToken: storedAccessToken,
         refreshToken: storedRefreshToken,
+        user: storedUsername
       });
     }
   }, []);

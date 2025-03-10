@@ -1,0 +1,71 @@
+.tutorial-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 8px;
+    color: #e0e0e0;
+}
+
+.tutorial-content {
+    font-family: "Inter", sans-serif;
+    line-height: 1.7;
+}
+
+.tutorial-content h1 {
+    font-size: 26px;
+    color: #0b79b4;
+    margin-bottom: 10px;
+}
+
+.tutorial-content h2 {
+    font-size: 22px;
+    color: #07547e;
+    margin-top: 20px;
+}
+
+.tutorial-content p {
+    font-size: 16px;
+    color: #e0e0e0;
+}
+
+.tutorial-content ul {
+    list-style-type: square;
+    padding-left: 20px;
+}
+
+.tutorial-content li {
+    margin-bottom: 5px;
+}
+
+.tutorial-content blockquote {
+    font-style: italic;
+    border-left: 4px solid #064262; /* Gold for highlight */
+    color: #b0b0b0;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.tutorial-content code {
+    background-color: #1e1e1e;
+    color: #a6ebff;
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-family: "Courier New", monospace;
+}
+
+.tutorial-content a {
+    color: #617c93;
+    text-decoration: none;
+}
+
+.tutorial-content a:hover {
+    text-decoration: underline;
+}
+
+.tutorial-content hr {
+    border: none;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 20px 0;
+}

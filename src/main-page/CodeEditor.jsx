@@ -11,7 +11,7 @@ import Polygon1 from "../assets/Polygon 1.svg";
 import RotateCW from "../assets/rotate-cw.svg"; 
 import SolvroLogo from "../assets/solvro-big-logo.svg"; // Import the SVG file
 
-const CodeEditor = ({
+export const CodeEditor = ({
   onExecute,
   isError,
   numCubes,
@@ -47,22 +47,25 @@ const CodeEditor = ({
 
   const handleTextChange = (value, index) => {
     const newCode = [...code];
-    newCode[index] = value;
+    newCode[index] = typeof value === "string" ? value : "";
     setCode(newCode);
   };
 
   const addTextarea = () => {
     setCode([...code, ""]);
     setVisibleIndex(code.length);
+    console.log(code.length)
   };
 
   const removeTextarea = (index) => {
     if (code.length > 1) {
       const newCode = code.filter((_, i) => i !== index);
       setCode(newCode);
-      setVisibleIndex((prevIndex) =>
-        prevIndex >= newCode.length ? newCode.length - 1 : prevIndex
-      );
+      setTimeout(() => { // sorry for that one! BUT IT WORKS
+        setVisibleIndex((prevIndex) =>
+          prevIndex >= newCode.length ? newCode.length - 1 : prevIndex
+        );
+      }, 0);
     } else {
       setCode([""]);
       setVisibleIndex(0);
@@ -116,7 +119,7 @@ const CodeEditor = ({
             key={index}
             theme={vscodeDark}
             className={`text-area ${visibleIndex === index ? "visible" : ""}`}
-            value={text_area_code}
+            value={typeof text_area_code === "string" ? text_area_code : ""}
             onChange={(value) => handleTextChange(value, index)}
             style={{ borderColor: isError ? "red" : "black" }}
           />
@@ -149,5 +152,3 @@ const CodeEditor = ({
     </div>
   );
 };
-
-export default CodeEditor;
