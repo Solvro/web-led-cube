@@ -4,7 +4,7 @@ import { VscChevronDown, VscChevronUp } from "react-icons/vsc";
 import PagesPanel from "./main-page/PagesPanel";
 import { Scenes } from "./main-page/Scenes";
 
-function MainPage({execute, reset, code, setIsError, numCubes}) {
+export const MainPage = ({execute, reset, code, setIsError, numCubes}) => {
   const [editorWidth, setEditorWidth] = useState(600);
   const [isEditorVisible, setIsEditorVisible] = useState(true);
   const [cubeSceneVisible, setCubeSceneVisible] = useState(true); // State for visibility
@@ -77,5 +77,3 @@ function MainPage({execute, reset, code, setIsError, numCubes}) {
     </div>
   );
 }
-
-export default MainPage;

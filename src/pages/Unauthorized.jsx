@@ -1,11 +1,9 @@
 import React from 'react'
 
-const Unauthorized = () => {
+export const Unauthorized = () => {
   return (
     <div>
       Unauthorized
     </div>
   )
 }
-
-export default Unauthorized

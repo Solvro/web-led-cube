@@ -9,17 +9,12 @@ const pages = [
     },
     { 
       number: 2, 
-      text: "Polubione",
-      path: "saved"
-    },
-    { 
-      number: 3, 
       text: "Odkrywaj",
       path: "discover"
     },
   ];
 
-const Projects = () => {
+export const Projects = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -52,5 +47,3 @@ const Projects = () => {
     </div>
   )
 }
-
-export default Projects;

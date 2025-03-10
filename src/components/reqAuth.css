@@ -1,0 +1,21 @@
+.reqauth-button {
+    width: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.25rem;
+    color: white;
+    border-radius: 8px;
+    background-color: black;
+    transition: background-color 0.15s ease-in-out, transform 0.1s ease-in-out;
+    cursor: pointer;
+    border: none;
+    padding: 10px 20px;
+  }
+  
+
+  .reqauth-button:hover {
+    background-color: #46474b; 
+    transform: scale(1.02);
+  }

@@ -55,9 +55,44 @@ export const Scenes = ({ execute, code, reset, setIsError, numCubes }) => {
 
   const resetScene = () => {
     cleanupWorker();
-    initializeMainScene(mainRefs, numCubes);
-    controlsRef.current.reset()
+    // initializeMainScene(mainRefs, numCubes);
+    // controlsRef.current.reset() old reset way - too expensive but i keep it just in case
+    resetCubeColors(cubesRef.current);
     setIsError(false);
+  };
+
+  const resetCubeColors = (cubes) => {
+    const color1 = new THREE.Color(0xff0000); // Red
+    const color2 = new THREE.Color(0x00ff00); // Green
+    const color3 = new THREE.Color(0x0000ff); // Blue
+  
+    const cubesInRow = cubes.length;
+  
+    for (let x = 0; x < cubesInRow; x++) {
+      for (let y = 0; y < cubesInRow; y++) {
+        for (let z = 0; z < cubesInRow; z++) {
+          const mesh = cubes[x][y][z];
+  
+          const normalizedX = x / (cubesInRow - 1);
+          const normalizedY = y / (cubesInRow - 1);
+          const normalizedZ = z / (cubesInRow - 1);
+  
+          const averageRatio = (normalizedX + normalizedY + normalizedZ) / 3;
+  
+          let color;
+          if (averageRatio < 0.5) {
+            const ratio = averageRatio * 2; // scale to [0, 1]
+            color = color1.clone().lerp(color2, ratio);
+          } else {
+            const ratio = (averageRatio - 0.5) * 2; // scale to [0, 1]
+            color = color2.clone().lerp(color3, ratio);
+          }
+  
+          mesh.material.color.copy(color);
+          mesh.material.emissive.copy(color);
+        }
+      }
+    }
   };
 
   const cleanupWorker = () => {

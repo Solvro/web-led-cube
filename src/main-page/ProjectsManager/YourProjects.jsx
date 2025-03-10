@@ -17,21 +17,44 @@ export const YourProjects = ({
   const [dataResponse, setDataResponse] = useState([]);
   const navigate = useNavigate();
 
+  const [totalRows, setTotalRows] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage] = useState(7);
+  const username = localStorage.getItem("username");
+
   useEffect(() => {
-    const getUserAnimations = async () => {
+    const getUserAnimations = async (page = 1) => {
+      if (!username) {
+          console.error("No username found in localStorage");
+          return;
+      }
       try {
-        const response = await axiosPrivate.get(ANIM_URL, {
-          headers: { "Content-Type": "application/json" },
-        });
+        const response = await axiosPrivate.get(
+          `${ANIM_URL}?username=${username}&page=${page}`,
+                    {
+                        headers: { "Content-Type": "application/json" },
+                    }
+      );
         setDataResponse(response.data);
+        if (response.data && response.data.results) {
+          setDataResponse(response.data.results);
+          setTotalRows(response.data.count);
+      } else {
+          setDataResponse([]);
+      }
       } catch (err) {
         if (!err?.response) {
           console.error(err?.response);
+          toast.error("Failed to load animations.");
         }
       }
     };
-    getUserAnimations();
-  }, []);
+    getUserAnimations(currentPage);
+  }, [username, currentPage]);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   useEffect(() => {
     localStorage.setItem("visibleIndex", JSON.stringify(visibleIndex));
@@ -55,10 +78,6 @@ export const YourProjects = ({
       selector: (row) => row.author,
     },
     {
-        name: "Code1",
-        selector: (row) => row.projectCode,
-      },
-    {
       name: "Code",
       button: true,
       cell: (row) => (
@@ -75,9 +94,9 @@ export const YourProjects = ({
   };
   const importCode = (projectCode) => {
     setCode((prevCode) => {
-        const newCode = [...prevCode, projectCode];
-        setVisibleIndex(newCode.length - 1);
-        return newCode;
+      const newCode = [...prevCode, projectCode];
+      setVisibleIndex(newCode.length - 1);
+      return newCode;
     });
 
     navigate("/", { replace: true });
@@ -122,6 +141,15 @@ export const YourProjects = ({
     "dark"
   );
   return (
-    <DataTable columns={columns} data={data} pagination theme="solarized" />
+    <DataTable
+      columns={columns}
+      data={data}
+      pagination
+      theme="solarized"
+      paginationServer
+      paginationTotalRows={totalRows}
+      paginationPerPage={perPage}
+      onChangePage={handlePageChange}
+    />
   );
 };
