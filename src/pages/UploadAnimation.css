@@ -56,3 +56,13 @@
   .submit-button:hover{
     background-color: rgb(70, 70, 70);
   }
+  .back-button{
+    width: 50px;
+    height: 25px;
+    background-color: black;
+    color: white;
+    border-radius: 2px;
+  }
+  .back-button:hover{
+    background-color: rgb(70, 70, 70);
+  }

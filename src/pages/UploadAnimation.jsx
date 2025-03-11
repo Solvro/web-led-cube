@@ -56,7 +56,7 @@ export const UploadAnimation = ({ uploadCode, setUploadCode }) => {
 
   return (
     <div className="upload-container">
-      <button onClick={() => navigate("/", {replace: true})}>Back</button>
+      <button onClick={() => navigate("/", {replace: true})} className="back-button">Back</button>
       <form onSubmit={handleSubmit}>
         <div className="upload-input-section">
           <label htmlFor="name" className="upload-label">NAME</label>
