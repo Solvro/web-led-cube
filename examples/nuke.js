@@ -59,7 +59,7 @@ function drawMushroomHead () {
         if (dx * dx + dz * dz <= headRadius * headRadius) {
           let x = centerX + dx,
             z = centerZ + dz
-          if (x >= 0 && x < cubes.length && z >= 0 && z < cubes.length) {
+          if (x >= 0 && x < cubes.length && z >= 0 && z < cubes.length && y >= 0 && y < cubes.length) {
             let color = getRandomColor(0xffd700, 40)
             cubes[z][y][x].material.color.set(color)
             cubes[z][y][x].material.emissive.set(getRandomColor(0xffa500, 40))
