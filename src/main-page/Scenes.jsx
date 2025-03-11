@@ -166,7 +166,7 @@ export const Scenes = ({ execute, code, reset, setIsError, numCubes }) => {
 
   useEffect(() => {
     resetScene();
-  }, [numCubes]);
+  }, [reset]);
 
   useEffect(() => {
     initializeMainScene(mainRefs, numCubes);

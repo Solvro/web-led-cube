@@ -1,3 +1,10 @@
+
+@media (max-width: 768px) {
+  .upload-container{
+    height: 38vh;
+    overflow-y: scroll;
+  }
+}
 .upload-text-area {
     width: 100%;
     max-height: 20vh;
@@ -17,4 +24,35 @@
     display: flex;
     width: 100%;
     position: static;
+  }
+  .upload-input-section{
+    /* border: solid red 1px; */
+    width: 70%;
+    margin-bottom: 15px;
+
+  }
+  .upload-label{
+    color: white;
+  }
+  .upload-input{
+    color: white;
+    border-bottom: 1px white solid;
+    width: 100%;
+  }
+  .upload-input:focus {
+    outline: none;
+    border: none;
+    border-bottom: 1px white solid;
+    border-radius: 0;
+  }
+  .submit-button{
+    margin-top: 10px;
+    width: 40%;
+    height: 50px;
+    background-color: black;
+    color: white;
+    border-radius: 4px;
+  }
+  .submit-button:hover{
+    background-color: rgb(70, 70, 70);
   }

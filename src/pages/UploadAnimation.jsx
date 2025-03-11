@@ -55,11 +55,11 @@ export const UploadAnimation = ({ uploadCode, setUploadCode }) => {
   };
 
   return (
-    <div>
+    <div className="upload-container">
       <button onClick={() => navigate("/", {replace: true})}>Back</button>
       <form onSubmit={handleSubmit}>
-        <div className="label-input-section">
-          <label htmlFor="name">NAME</label>
+        <div className="upload-input-section">
+          <label htmlFor="name" className="upload-label">NAME</label>
           <input
             type="text"
             id="name"
@@ -67,10 +67,11 @@ export const UploadAnimation = ({ uploadCode, setUploadCode }) => {
             value={name}
             required
             placeholder="Enter anim name"
+            className="upload-input"
           />
         </div>
-        <div className="label-input-section">
-          <label htmlFor="desc">DESCTRIPTION</label>
+        <div className="upload-input-section">
+          <label htmlFor="desc" className="upload-label">DESCTRIPTION</label>
           <input
             type="text"
             id="desc"
@@ -78,6 +79,7 @@ export const UploadAnimation = ({ uploadCode, setUploadCode }) => {
             value={desc}
             required
             placeholder="Enter description"
+            className="upload-input"
           />
         </div>
         <CodeMirror
@@ -87,7 +89,7 @@ export const UploadAnimation = ({ uploadCode, setUploadCode }) => {
             readOnly={true}
             className="text-area upload upload-text-area"
           />
-        <button type="submit" className="sign-in-button">
+        <button type="submit" className="submit-button">
           SUBMIT
         </button>
       </form>
