@@ -4,9 +4,14 @@
     padding: 20px;
     border-radius: 8px;
     color: #e0e0e0;
+    overflow-y: scroll;
+    height: 100%;
 }
 
 .tutorial-content {
+    height: 100px;
+    /* FOR SOME REASON THE COMPONENT HAS TO HAVE SMALL HEIGHT */
+    /* IF IT HAS HIGH HEIGHT VALUE OR NO VALUE THE CONTENT DOES NOT OBEY LAWS OF PHYSICS */
     font-family: "Inter", sans-serif;
     line-height: 1.7;
 }

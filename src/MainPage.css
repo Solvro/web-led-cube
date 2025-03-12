@@ -51,32 +51,6 @@ body {
   height: 100%;
 }
 
-
-
-
-@keyframes lineAnimation {
-  0% {
-    left: 50%;
-    width: 0;
-  }
-
-  100% {
-    left: 0;
-  }
-}
-
-@keyframes windowAnimation {
-  0% {
-    scale: 0;
-  }
-
-  100% {
-    scale: 1;
-  }
-}
-
-
-
 .mp-toggle-button {
   display: none;
 }
@@ -103,7 +77,6 @@ body {
 #coord-button.coord-button-closed {
   border-radius: 0.3rem;
 }
-
 @media (max-width: 768px) {
   .App {
     flex-direction: column;
@@ -131,6 +104,6 @@ body {
     display: block;
   }
   .mp-panels.mp-hidden {
-    height: auto;
+    height: 100%;
   }
 }
