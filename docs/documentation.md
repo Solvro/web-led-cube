@@ -60,7 +60,7 @@ for (let i = 0; i < leds.length; i++) {
 }
 ```
 
-for loops, always use the variable interval (miliseconds)
+for loops, always use the variable interval (milliseconds)
 
 ```js
 function x()
