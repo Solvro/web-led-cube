@@ -1,0 +1,290 @@
+.tab-button {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  
+  .tab-container {
+    width: 100%;
+    display: flex;
+    margin-bottom: 12px;
+  }
+  .tab-window {
+    color: #55637a;
+    border-radius: 3px;
+    background-color: #152959;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    width: 150px;
+    height: 30px;
+    margin-left: 0.5rem;
+    text-align: center;
+    position: relative;
+    font-weight: bold;
+    animation: windowAnimation 0.4s;
+    transition: all 0.1s ease;
+  
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  @keyframes lineAnimation {
+    0% {
+      width: 0;
+    }
+  
+  }
+  
+  @keyframes windowAnimation {
+    0% {
+      width: 0;
+      color: transparent;
+    }
+    60%{
+      color: transparent;
+    }
+  }
+  .tab-window:hover{
+    .window-underline{
+      height: 30px;
+      z-index: 10;
+      font-size: 14px;
+    }
+  }
+  .code-editor .code-editor-button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #606166;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+
+  .text-area-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 80%;
+    width: 100%;
+    padding-bottom: 10px;
+    padding-top: 10px;
+  }
+  
+  .text-area.visible {
+    display: flex;
+    width: 100%;
+  }
+  
+  .text-area {
+    width: 20rem;
+    height: 100%;
+    resize: none;
+    margin-top: 10px;
+    font-size: 14px;
+    font-family: Consolas, monospace;
+    color: white;
+    background-color: #323338;
+    border: 1px solid black;
+    outline: none;
+    position: absolute;
+    display: none;
+    border: none;
+  }
+  /* tak na przyszłość: okazuje się że .text-area to dodatkowy div otaczający
+      to co jest w codeMirror, za długo się pierdzieliłem z tym gdzie błąd, ale jak coś
+      nie działa z CM to patrzcie tutaj raczej*/
+  
+  .cm-editor {
+    width: 100%;
+  }
+  .cm-content {
+    padding: 10px;
+  }
+  .cm-scroller {
+    overflow: auto;
+  }
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #282c34;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  ::-webkit-scrollbar-corner {
+    background: #282c34;
+  }
+  /* https://codemirror.net/examples/styling/ */
+
+  .add-icon {
+background-color: #152959;
+    color: white;
+    border: none;
+    margin-left: 0.5rem;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+      cursor: pointer;
+    border-radius: 4px;
+          }
+
+  .add-icon:hover {
+    background-color: #061527;
+  }
+
+  .delete-icon {
+    position: absolute;
+    top: 0;
+    right: 5px;
+    width: 20px;
+    height: 18px;
+    color: rgb(99, 6, 6);
+  
+    &:hover {
+      cursor: pointer;
+      scale: 1.1;
+      transition: "1s";
+    }
+  }
+
+  .window-underline {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    border-radius: 0 0 3px 3px;
+    width: 100%;
+    height: 4px;
+    background-color: #B2DAFF;
+    animation: lineAnimation 0.4s;
+    font-size: 0;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    color: #152959;
+    transition: all 0.1s ease;
+  }
+  .window-underline.window-chosen{
+    height: 10px;
+  }
+  .button-select-container{
+    display: flex;
+    justify-content: space-between;
+    height: 10%;
+    margin-top: 10px;
+  }
+
+  .button-container{
+    width: 60%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+  }
+  .select-container{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+  }
+  .select-button {
+    background-color: #152959;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 50%;
+    width: 80%;
+  
+  }
+  
+  .select-button:hover {
+    background-color: #061527;
+  }
+  
+  .execute-button {
+    background-color: #152959;
+    border: none;
+    border-radius: 4px;
+    max-width: 80px;
+    max-height: 50px;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white; /* Ensure text is white */
+    font-size: small;
+  }
+  
+  
+  .execute-button:hover {
+    background-color: #061527;
+  }
+  
+  .execute-icon {
+    width: 25px;
+    height: 25px;
+  }
+  
+  .delete-button {
+    background-color: transparent;
+    color: white;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px;
+  }
+  
+  .delete-button:hover {
+    color: darkred;
+  }
+  
+  .header-container {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #061527; /* Darker background */
+    position: fixed;
+    margin-top: 7%;
+    margin-left:20%;
+    width: 100%;
+    z-index: 1000; /* Ensure it is on top of everything */
+  }
+  
+  @media (max-width: 768px) {
+    .text-area-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      height: 50%;
+      width: 100%;
+      padding-bottom: 10px;
+      padding-top: 10px;
+    }
+
+    .button-select-container{
+      display: flex;
+      justify-content: space-between;
+      height: 30%;
+      margin-top: 10px;
+    }
+  }

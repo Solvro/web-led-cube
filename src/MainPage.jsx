@@ -38,16 +38,6 @@ export const MainPage = ({execute, reset, code, setIsError, numCubes}) => {
     }, 400); // 300ms matches the transition duration
   };
 
-  const toggleEditorVisibility = () => {
-    setIsEditorVisible(!isEditorVisible);
-    console.log("isEditorVisible in parent:", isEditorVisible);
-    // Force re-render of CubeScene when toggling editor visibility
-    setCubeSceneVisible(false);
-    setTimeout(() => {
-      setCubeSceneVisible(true);
-    }, 400);
-    setCubeSceneKey((prevKey) => prevKey + 1);
-  };
   return (
     <div className="main-page">
       <div className="mp-container">
@@ -57,20 +47,15 @@ export const MainPage = ({execute, reset, code, setIsError, numCubes}) => {
           key={cubeSceneKey}
           code={code}
           setIsError={setIsError}
-          className={`cube-scene ${cubeSceneVisible ? "" : "mp-hidden"}`}
           numCubes={numCubes}
         />
         <div
-          className={`mp-panels ${isEditorVisible ? "" : "mp-hidden"}`}
+          className={`mp-panels`}
           style={{ width: editorWidth }}
         >
-          <button className="mp-toggle-button" onClick={toggleEditorVisibility}>
-            {isEditorVisible ? <VscChevronDown /> : <VscChevronUp />}
-          </button>
           <div className="resizer" onMouseDown={handleMouseDown} />
           
           <PagesPanel
-            isVisible={isEditorVisible}
           />
         </div>
       </div>
