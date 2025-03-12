@@ -8,7 +8,7 @@ const COLOR_WATER = 0x0005d2
 const COLOR_FOAM = 0xffffff
 const interval = 300
 
-function animateWave () {
+function animateWave() {
   for (let x = 0; x < leds.length; x++) {
     for (let y = 0; y < leds.length; y++) {
       for (let z = 0; z < leds.length; z++) {
@@ -21,7 +21,7 @@ function animateWave () {
   setTimeout(animateWave, interval)
 }
 
-function setCubeColor (x, y, z) {
+function setCubeColor(x, y, z) {
   const cube = leds[z][y][x]
 
   cube.color.set(COLOR_DEFAULT)

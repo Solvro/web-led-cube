@@ -87,11 +87,11 @@ const interval = 500
 let counter = 0
 const offset = 4
 
-function hexToRGB (hex) {
+function hexToRGB(hex) {
   return parseInt(hex.replace('#', '0x'), 16)
 }
 
-function updateLedCube () {
+function updateLedCube() {
   let width = leds.length
   let mid = Math.floor(width / 2)
   let mode = counter % 4
