@@ -39,6 +39,8 @@ animateWalls();
 
 leds is a 3D array of [three.js Color](https://threejs.org/docs/index.html#api/en/math/Color)
 
+on this object, you can only set a new color
+
 ```js
 for (let i = 0; i < leds.length; i++) {
     for (let j = 0; j < leds.length; j++) {
