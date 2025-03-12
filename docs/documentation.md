@@ -60,14 +60,15 @@ for (let i = 0; i < leds.length; i++) {
 }
 ```
 
-for loops, always use the variable interval (milliseconds)
+For animating changes over time, always use the variable **interval** (in milliseconds) as setTimeout **ms** parameter. This is the only way to ensure this function will be called again after the specified time.
 
 ```js
-function x()
-{
-    cube.position.x += 0.01
-}
-setTimeout(animateWalls, interval);
+// you can set your own interval, by default it's 200 miliseconds
+// interval = 400;
 
-// you can set your own framerate, by default it's 200 miliseconds
+function updateCube()
+{
+    leds[0][0][0].color.set(0xff0000); // Red
+}
+setTimeout(updateCube, interval);
 ```
