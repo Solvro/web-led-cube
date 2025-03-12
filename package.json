@@ -12,6 +12,7 @@
   "dependencies": {
     "@codemirror/lang-javascript": "^6.2.2",
     "@tailwindcss/vite": "^4.0.9",
+    "@uiw/codemirror-theme-nord": "^4.23.10",
     "@uiw/codemirror-theme-vscode": "^4.23.0",
     "@uiw/react-codemirror": "^4.23.0",
     "axios": "^1.7.9",
@@ -20,11 +21,11 @@
     "react-dom": "^18.3.1",
     "react-hot-toast": "^2.4.1",
     "react-icons": "^5.2.1",
+    "react-markdown": "^10.0.0",
     "react-router-dom": "^7.0.2",
     "tailwindcss": "^4.0.9",
     "three": "^0.164.1",
-    "web-vitals": "^2.1.4",
-    "react-markdown": "^10.0.0"
+    "web-vitals": "^2.1.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

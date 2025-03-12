@@ -1,6 +1,6 @@
-# Welcome to the LedCube Tutorial!
+# Welcome to the LedCube Tutorial
 
-## Since LedCube offers the potential for an infinite variety of animations, we’ll guide you through creating a sample animation to introduce the essential elements of animation creation.
+## Since LedCube offers the potential for an infinite variety of animations, we’ll guide you through creating a sample animation to introduce the essential elements of animation creation
 
 ## Step 1 - Changing Color
 
@@ -9,6 +9,7 @@ Animations in LedCube are based on changing the color of individual LEDs. So, be
 ```javascript
 cubes[0][0][0].material.emissive.set(0xffffff); 
 ```
+
 The elements in our cube are stored in a three-dimensional array called cubes. This is because the cube consists of smaller, independent cubes, allowing us to reference each one by its coordinates. In this example, the simplest way is to refer to the cube at index [0][0][0], located at the position shown in the illustration:
 
 ![Ilustracja](screens/cubewhiteback.png)
@@ -16,7 +17,6 @@ The elements in our cube are stored in a three-dimensional array called cubes. T
 In our application, vectors are labeled as follows: [Z][Y][X]
 
 Therefore, if we want to reference the cube at the front, we need to refer to the highest index on the X-axis. For a 5x5x5 cube, this would be the cube with coordinates [0][0][4]:
-
 
 ![Ilustracja](screens/cubewhitefront.png)
 
@@ -26,6 +26,7 @@ It’s a good practice to add a line that sets the color of the cube itself, not
 cubes[0][0][4].material.color.set(0xffffff);
 cubes[0][0][4].material.emissive.set(0xffffff); 
 ```
+
 As you can see, colors are set using hexadecimal values. If we want to set the color of our cube to navy blue, we would write it as: 0x0005d2.
 
 ## Step 2 - Referencing Multiple Cubes
@@ -43,6 +44,7 @@ for (let y = 0; y < wallCount; y++) {
   }
 }
 ```
+
 ![ilustracja](screens/cubeBlueFront.png)
 
 As shown above, the entire front wall has changed color to navy blue. Note that the cube shown above is a 10x10x10. LedCube allows you to work with cubes of various sizes, so it’s good practice to reference the size of the cubes array containing all the cubes, ensuring the code works regardless of the dimensions.
@@ -64,6 +66,7 @@ setTimeout(() => {
   }
 }, 1000);
 ```
+
 After running this code, we create a simple animation where the front wall lights up in navy blue after one second.
 
 ## Step 4 - A Full Animation
@@ -94,6 +97,5 @@ animateWalls();
 ```
 
 As you can see, we created a recursion function named animateWalls. Its operation is based on for loops, which we use to change the color of successive walls. The result of running this code is the following animation:
-
 
 ![Animacja](screens/LedGIf.gif)

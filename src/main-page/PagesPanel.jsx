@@ -3,7 +3,7 @@ import "./../MainPage.css";
 import "./subpages.css";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { RequireAuth } from "../components/RequireAuth";
-const PagesPanel = ({ isVisible }) => {
+const PagesPanel = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isActive = (path) => {
@@ -42,7 +42,7 @@ const PagesPanel = ({ isVisible }) => {
 
   return (
     <div
-      className={`code-editor-container ${isVisible ? "" : "sub-page-hidden"}`}
+      className={`code-editor-container `}
     >
       {/* Tabs */}
       <div className="sub-tabs-container">

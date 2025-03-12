@@ -72,6 +72,11 @@ export const YourProjects = ({
       name: "Description",
       selector: (row) => row.description,
       wrap: true,
+      cell: row => (
+        <span title={row.description}>
+          {row.description.length > 24 ? row.description.substring(0, 24) + "..." : row.description}
+        </span>
+      ),
     },
     {
       name: "Author",
@@ -81,9 +86,9 @@ export const YourProjects = ({
       name: "Code",
       button: true,
       cell: (row) => (
-        <div>
-          <button onClick={() => importCode(row.projectCode)}>Import</button>
-          <button onClick={() => previewCode(row.projectCode)}>Preview</button>
+        <div className="table-buttons-container">
+          <button className="table-buttons" onClick={() => importCode(row.projectCode)}>Import</button>
+          <button className="table-buttons" onClick={() => previewCode(row.projectCode)}>Preview</button>
         </div>
       ),
     },
@@ -115,11 +120,11 @@ export const YourProjects = ({
     "solarized",
     {
       text: {
-        primary: "#268bd2",
+        primary: "#ffffff",
         secondary: "#2aa198",
       },
       background: {
-        default: "#191b20",
+        default: "#061527",
       },
       context: {
         background: "#cb4b16",
@@ -141,6 +146,7 @@ export const YourProjects = ({
     "dark"
   );
   return (
+    <div className='data-table'>
     <DataTable
       columns={columns}
       data={data}
@@ -151,5 +157,6 @@ export const YourProjects = ({
       paginationPerPage={perPage}
       onChangePage={handlePageChange}
     />
+    </div>
   );
 };

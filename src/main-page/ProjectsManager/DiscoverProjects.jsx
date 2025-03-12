@@ -73,6 +73,12 @@ export const DiscoverProjects = ({
     {
       name: 'Description',
       selector: row => row.description,
+      wrap: true,
+      cell: row => (
+        <span title={row.description}>
+          {row.description.length > 20 ? row.description.substring(0, 20) + "..." : row.description}
+        </span>
+      ),
     },
     {
       name: 'Author',
@@ -82,9 +88,9 @@ export const DiscoverProjects = ({
       name: "Code",
       button: true,
       cell: (row) => (
-        <div>
-          <button onClick={() => importCode(row.projectCode)}>Import</button>
-          <button onClick={() => previewCode(row.projectCode)}>Preview</button>
+        <div className="table-buttons-container">
+          <button className="table-buttons" onClick={() => importCode(row.projectCode)}>Import</button>
+          <button className="table-buttons" onClick={() => previewCode(row.projectCode)}>Preview</button>
         </div>
       ),
     },
@@ -98,35 +104,37 @@ export const DiscoverProjects = ({
   })) : [];
 
   createTheme(
-      'solarized',
-      {
-        text: {
-          primary: '#268bd2',
-          secondary: '#2aa198',
-        },
-        background: {
-          default: '#191b20',
-        },
-        context: {
-          background: '#cb4b16',
-          text: '#FFFFFF',
-        },
-        divider: {
-          default: '#073642',
-        },
-        button: {
-          default: '#2aa198',
-          hover: 'rgba(0,0,0,.08)',
-          focus: 'rgba(255,255,255,.12)',
-          disabled: 'rgba(255, 255, 255, .34)',
-        },
-        sortFocus: {
-          default: '#2aa198',
-        },
+    "solarized",
+    {
+      text: {
+        primary: "#ffffff",
+        secondary: "#2aa198",
       },
-      'dark',
+      background: {
+        default: "#061527",
+      },
+      context: {
+        background: "#cb4b16",
+        text: "#FFFFFF",
+      },
+      divider: {
+        default: "#073642",
+      },
+      button: {
+        default: "#2aa198",
+        hover: "rgba(0,0,0,.08)",
+        focus: "rgba(255,255,255,.12)",
+        disabled: "rgba(255, 255, 255, .34)",
+      },
+      sortFocus: {
+        default: "#2aa198",
+      },
+    },
+    "dark"
   );
+
   return (
+    <div className='data-table'>
       <DataTable
           columns={columns}
           data={data}
@@ -137,5 +145,6 @@ export const DiscoverProjects = ({
           onChangePage={handlePageChange}
           theme="solarized"
       />
+    </div>
   )
 }
