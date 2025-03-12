@@ -63,7 +63,7 @@ for (let i = 0; i < leds.length; i++) {
 For animating changes over time, always use the variable **interval** (in milliseconds) as setTimeout **ms** parameter. This is the only way to ensure this function will be called again after the specified time.
 
 ```js
-// you can set your own interval, by default it's 200 miliseconds
+// you can set your own interval, by default it's 200 milliseconds
 // interval = 400;
 
 function updateCube()
