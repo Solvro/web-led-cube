@@ -1,13 +1,13 @@
-let centerX = Math.floor(cubes.length / 2)
-let centerZ = Math.floor(cubes.length / 2)
-let maxHeight = Math.floor(cubes.length / 2)
+let centerX = Math.floor(leds.length / 2)
+let centerZ = Math.floor(leds.length / 2)
+let maxHeight = Math.floor(leds.length / 2)
 let thickness = 1
 let currentHeight = 0
 let headRadius = 1
 let headActive = false
 const COLOR_DEFAULT = 0x202020
 
-function getRandomColor (baseColor, variation) {
+function getRandomColor(baseColor, variation) {
   let r =
     ((baseColor >> 16) & 0xff) + (Math.random() * variation - variation / 2)
   let g =
@@ -21,15 +21,14 @@ function getRandomColor (baseColor, variation) {
   )
 }
 
-function clearCubes () {
-  for (let x = 0; x < cubes.length; x++)
-    for (let y = 0; y < cubes.length; y++)
-      for (let z = 0; z < cubes.length; z++)
-        cubes[z][y][x].material.color.set(COLOR_DEFAULT),
-          cubes[z][y][x].material.emissive.set(COLOR_DEFAULT)
+function clearLeds() {
+  for (let x = 0; x < leds.length; x++)
+    for (let y = 0; y < leds.length; y++)
+      for (let z = 0; z < leds.length; z++)
+        leds[z][y][x].color.set(COLOR_DEFAULT)
 }
 
-function drawTrunk () {
+function drawTrunk() {
   for (let y = 0; y <= currentHeight; y++)
     for (
       let dx = -Math.floor(thickness / 2);
@@ -43,15 +42,14 @@ function drawTrunk () {
       ) {
         let x = centerX + dx,
           z = centerZ + dz
-        if (x >= 0 && x < cubes.length && z >= 0 && z < cubes.length) {
+        if (leds[z] && leds[z][y] && leds[z][y][x]) {
           let color = getRandomColor(0xffa500, 30)
-          cubes[z][y][x].material.color.set(color)
-          cubes[z][y][x].material.emissive.set(getRandomColor(0xff4500, 30))
+          leds[z][y][x].color.set(color)
         }
       }
 }
 
-function drawMushroomHead () {
+function drawMushroomHead() {
   let headHeight = maxHeight + 2
   for (let y = headHeight - 2; y <= headHeight + 2; y++)
     for (let dx = -headRadius; dx <= headRadius; dx++)
@@ -59,16 +57,15 @@ function drawMushroomHead () {
         if (dx * dx + dz * dz <= headRadius * headRadius) {
           let x = centerX + dx,
             z = centerZ + dz
-          if (x >= 0 && x < cubes.length && z >= 0 && z < cubes.length && y >= 0 && y < cubes.length) {
+          if (leds[z] && leds[z][y] && leds[z][y][x]) {
             let color = getRandomColor(0xffd700, 40)
-            cubes[z][y][x].material.color.set(color)
-            cubes[z][y][x].material.emissive.set(getRandomColor(0xffa500, 40))
+            leds[z][y][x].color.set(color)
           }
         }
 }
 
-function animateExplosion () {
-  clearCubes()
+function animateExplosion() {
+  clearLeds()
 
   if (!headActive) {
     if (currentHeight < maxHeight) {
